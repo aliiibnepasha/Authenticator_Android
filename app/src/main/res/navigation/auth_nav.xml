@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_signupFragment_to_onboardingFragment"
             app:destination="@id/onboardingFragment" />
+        <action
+            android:id="@+id/action_signupFragment_to_setPinFragment2"
+            app:destination="@id/setPinFragment2" />
     </fragment>
     <fragment
         android:id="@+id/signinFragment"
@@ -40,4 +43,9 @@
             android:id="@+id/action_onboardingFragment_to_signupFragment"
             app:destination="@id/signupFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/setPinFragment2"
+        android:name="com.husnain.authy.ui.fragment.main.setPin.SetPinFragment"
+        android:label="fragment_set_pin"
+        tools:layout="@layout/fragment_set_pin" />
 </navigation>

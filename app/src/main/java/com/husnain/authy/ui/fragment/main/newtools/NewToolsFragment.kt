@@ -1,4 +1,4 @@
-package com.husnain.authy.ui.fragment.main
+package com.husnain.authy.ui.fragment.main.newtools
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -9,6 +9,7 @@ import com.husnain.authy.R
 import com.husnain.authy.app.App
 import com.husnain.authy.databinding.FragmentNewToolsBinding
 import com.husnain.authy.preferences.PreferenceManager
+import com.husnain.authy.utls.navigate
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -34,6 +35,10 @@ class NewToolsFragment : Fragment() {
     }
 
     private fun setOnClickListener() {
+        binding.lyAppLock.setOnClickListener {
+            navigate(R.id.action_newToolsFragment_to_appLockFragment)
+        }
+
         binding.switchAllowScreenShots.setOnCheckedChangeListener { _, isChecked ->
             preferenceManager.saveIsAllowScreenShots(isChecked)
 

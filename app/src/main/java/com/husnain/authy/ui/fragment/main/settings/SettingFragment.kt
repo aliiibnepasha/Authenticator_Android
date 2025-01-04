@@ -1,11 +1,10 @@
-package com.husnain.authy.ui.fragment.main
+package com.husnain.authy.ui.fragment.main.settings
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.husnain.authy.R
 import com.husnain.authy.databinding.FragmentSettingBinding
 
 class SettingFragment : Fragment() {

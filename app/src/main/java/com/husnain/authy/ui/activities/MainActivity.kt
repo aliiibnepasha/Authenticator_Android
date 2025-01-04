@@ -7,7 +7,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.husnain.authy.R
 import com.husnain.authy.databinding.ActivityMainBinding
-import com.husnain.authy.ui.fragment.main.HomeFragment
+import com.husnain.authy.ui.fragment.main.home.HomeFragment
 import com.husnain.authy.utls.BackPressedExtensions.goBackPressed
 import com.husnain.authy.utls.gone
 import com.husnain.authy.utls.visible

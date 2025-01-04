@@ -7,17 +7,21 @@
 
     <fragment
         android:id="@+id/settingFragment"
-        android:name="com.husnain.authy.ui.fragment.main.SettingFragment"
+        android:name="com.husnain.authy.ui.fragment.main.settings.SettingFragment"
         android:label="fragment_setting"
         tools:layout="@layout/fragment_setting" />
     <fragment
         android:id="@+id/newToolsFragment"
-        android:name="com.husnain.authy.ui.fragment.main.NewToolsFragment"
+        android:name="com.husnain.authy.ui.fragment.main.newtools.NewToolsFragment"
         android:label="fragment_new_tools"
-        tools:layout="@layout/fragment_new_tools" />
+        tools:layout="@layout/fragment_new_tools" >
+        <action
+            android:id="@+id/action_newToolsFragment_to_appLockFragment"
+            app:destination="@id/appLockFragment" />
+    </fragment>
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.husnain.authy.ui.fragment.main.HomeFragment"
+        android:name="com.husnain.authy.ui.fragment.main.home.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" >
         <action
@@ -42,4 +46,18 @@
             android:id="@+id/action_addNewFragment_to_addAccountManuallyFragment"
             app:destination="@id/addAccountManuallyFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/appLockFragment"
+        android:name="com.husnain.authy.ui.fragment.main.applock.AppLockFragment"
+        android:label="fragment_app_lock"
+        tools:layout="@layout/fragment_app_lock" >
+        <action
+            android:id="@+id/action_appLockFragment_to_setPinFragment"
+            app:destination="@id/setPinFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/setPinFragment"
+        android:name="com.husnain.authy.ui.fragment.main.setPin.SetPinFragment"
+        android:label="fragment_set_pin"
+        tools:layout="@layout/fragment_set_pin" />
 </navigation>

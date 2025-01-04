@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/img_colored_bg"
+    tools:context=".ui.fragment.main.setPin.SetPinFragment">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/imgBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="23dp"
+        android:layout_marginBottom="5dp"
+        android:padding="3dp"
+        app:layout_constraintBottom_toBottomOf="@+id/appCompatTextView2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/appCompatTextView2"
+        app:srcCompat="@drawable/ic_back" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvToolBarTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="10dp"
+        android:fontFamily="@font/poppins_bold"
+        android:text="Set pin"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_16ssp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvSetPinTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:fontFamily="@font/poppins_medium"
+        android:text="Set your pin"
+        android:textColor="@color/colorPrimary"
+        android:textSize="32sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvToolBarTitle" />
+
+    <LinearLayout
+        android:id="@+id/pin_dots_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="23dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvSetPinTitle">
+
+        <ImageView
+            android:id="@+id/pin_dot1"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:layout_marginEnd="8dp"
+            android:src="@drawable/ic_pin_dot_inactive" />
+
+        <ImageView
+            android:id="@+id/pin_dot2"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:layout_marginEnd="8dp"
+            android:src="@drawable/ic_pin_dot_inactive" />
+
+        <ImageView
+            android:id="@+id/pin_dot3"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:layout_marginEnd="8dp"
+            android:src="@drawable/ic_pin_dot_inactive" />
+
+        <ImageView
+            android:id="@+id/pin_dot4"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:src="@drawable/ic_pin_dot_inactive" />
+    </LinearLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/keypad_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="110dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/pin_dots_layout">
+
+        <TextView
+            android:id="@+id/btn_1"
+            style="@style/keypadButton"
+            android:text="1"
+            app:layout_constraintEnd_toStartOf="@+id/btn_2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/btn_2"
+            style="@style/keypadButton"
+            android:text="2"
+            app:layout_constraintEnd_toStartOf="@+id/btn_3"
+            app:layout_constraintStart_toEndOf="@+id/btn_1"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/btn_3"
+            style="@style/keypadButton"
+            android:text="3"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/btn_2"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <TextView
+            android:id="@+id/btn_4"
+            style="@style/keypadButton"
+            android:text="4"
+            app:layout_constraintEnd_toStartOf="@+id/btn_5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_1" />
+
+        <TextView
+            android:id="@+id/btn_5"
+            style="@style/keypadButton"
+            android:text="5"
+            app:layout_constraintEnd_toStartOf="@+id/btn_6"
+            app:layout_constraintStart_toEndOf="@+id/btn_4"
+            app:layout_constraintTop_toBottomOf="@+id/btn_2" />
+
+        <TextView
+            android:id="@+id/btn_6"
+            style="@style/keypadButton"
+            android:text="6"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/btn_5"
+            app:layout_constraintTop_toBottomOf="@+id/btn_3" />
+
+        <TextView
+            android:id="@+id/btn_7"
+            style="@style/keypadButton"
+            android:text="7"
+            app:layout_constraintEnd_toStartOf="@+id/btn_8"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_4" />
+
+        <TextView
+            android:id="@+id/btn_8"
+            style="@style/keypadButton"
+            android:text="8"
+            app:layout_constraintEnd_toStartOf="@+id/btn_9"
+            app:layout_constraintStart_toEndOf="@+id/btn_7"
+            app:layout_constraintTop_toBottomOf="@+id/btn_5" />
+
+        <TextView
+            android:id="@+id/btn_9"
+            style="@style/keypadButton"
+            android:text="9"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/btn_8"
+            app:layout_constraintTop_toBottomOf="@+id/btn_6" />
+
+
+        <TextView
+            android:id="@+id/btn_cross"
+            style="@style/keypadButton"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:background="@android:color/transparent"
+            android:text="X"
+            android:textColor="@color/black"
+            android:textSize="30sp"
+            android:textAlignment="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/btn_0"
+            app:layout_constraintTop_toBottomOf="@+id/btn_9" />
+
+        <TextView
+            android:id="@+id/btn_0"
+            style="@style/keypadButton"
+            android:text="0"
+            app:layout_constraintEnd_toStartOf="@+id/btn_cross"
+            app:layout_constraintStart_toEndOf="@+id/dummyBtn"
+            app:layout_constraintTop_toBottomOf="@+id/btn_8" />
+
+        <TextView
+            android:id="@+id/dummyBtn"
+            style="@style/keypadButton"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:background="@android:color/transparent"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toStartOf="@+id/btn_0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_7" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

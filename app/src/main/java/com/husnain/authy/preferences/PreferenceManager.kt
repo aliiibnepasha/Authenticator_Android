@@ -11,6 +11,8 @@ class PreferenceManager @Inject constructor(@ApplicationContext private val cont
         private const val PREF_NAME = "MyPrefs"
         private const val KEY_ONBOARDING_FINISHED = "key_onboarding_finished"
         private const val KEY_ALLOW_SCREEN_SHOTS = "key_allow_screen_shots"
+        private const val KEY_PIN = "keyPin"
+        private const val KEY_BIOMETRIC_LOCK = "biometric_lock"
     }
 
 
@@ -38,6 +40,25 @@ class PreferenceManager @Inject constructor(@ApplicationContext private val cont
 
     fun isAllowScreenShots(): Boolean {
         return myPref.getBoolean(KEY_ALLOW_SCREEN_SHOTS, false)
+    }
+
+    fun savePin(pin: String) {
+        myPref.edit().apply {
+            putString(KEY_PIN, pin)
+            apply()
+        }
+    }
+
+    fun getPin(): String? {
+        return myPref.getString(KEY_PIN, "")
+    }
+
+    fun saveBiometricLock(isEnabled: Boolean) {
+        myPref.edit().putBoolean(KEY_BIOMETRIC_LOCK, isEnabled).apply()
+    }
+
+    fun isBiometricLockEnabled(): Boolean {
+        return myPref.getBoolean(KEY_BIOMETRIC_LOCK, false)
     }
 
 }

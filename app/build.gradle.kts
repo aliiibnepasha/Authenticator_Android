@@ -100,4 +100,7 @@ dependencies {
 
     //Qr code scanner
     implementation("io.github.g00fy2.quickie:quickie-bundled:1.10.0")
+
+    //biometric
+    implementation ("androidx.biometric:biometric:1.2.0-alpha05")
 }

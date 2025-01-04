@@ -1,14 +1,21 @@
 package com.husnain.authy.ui.fragment.signup
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.biometric.BiometricManager
+import androidx.biometric.BiometricPrompt
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.FragmentActivity
 import com.husnain.authy.R
 import com.husnain.authy.databinding.FragmentSignupBinding
 import com.husnain.authy.preferences.PreferenceManager
 import com.husnain.authy.ui.activities.MainActivity
+import com.husnain.authy.utls.Constants
 import com.husnain.authy.utls.CustomToast.showCustomToast
 import com.husnain.authy.utls.navigate
 import com.husnain.authy.utls.startActivity
@@ -23,14 +30,25 @@ class SignupFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentSignupBinding.inflate(inflater, container, false)
-        startActivity(MainActivity::class.java)
+//        startActivity(MainActivity::class.java)
         inIt()
         return binding.root
     }
 
     private fun inIt() {
+        checkForPin()
+        checkForBiometricLogin()
         checkForOnBoarding()
         setOnClickListener()
+    }
+
+    private fun checkForPin() {
+        if (!preferenceManager.getPin().isNullOrEmpty()){
+            val bundle = Bundle().apply {
+                putBoolean(Constants.SIGNUPTOPIN_KEY,true)
+            }
+            navigate(R.id.action_signupFragment_to_setPinFragment2,bundle)
+        }
     }
 
     private fun checkForOnBoarding() {
@@ -86,6 +104,62 @@ class SignupFragment : Fragment() {
         }
     }
 
+
+    private fun checkForBiometricLogin() {
+        if (preferenceManager.isBiometricLockEnabled()) {
+            // Ensure no fragment transactions are in progress before showing biometric prompt
+            if (!requireActivity().supportFragmentManager.isStateSaved) {
+                showBiometricPrompt(
+                    activity = requireActivity(),
+                    onSuccess = {
+                        // You can do the navigation after the biometric authentication succeeds
+                        startActivity(Intent(requireActivity(), MainActivity::class.java))
+                        requireActivity().finish()
+                    },
+                    onFailure = {
+                        // Handle failure if needed
+                    }
+                )
+            }
+        }
+    }
+
+    private fun showBiometricPrompt(
+        activity: FragmentActivity,
+        onSuccess: () -> Unit,
+        onFailure: () -> Unit
+    ) {
+        val executor = ContextCompat.getMainExecutor(activity)
+
+        val biometricPrompt = BiometricPrompt(this, executor, object : BiometricPrompt.AuthenticationCallback() {
+            override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
+                super.onAuthenticationError(errorCode, errString)
+                Log.d("BiometricAuth", "Error: $errString")
+                onFailure()
+            }
+
+            override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
+                super.onAuthenticationSucceeded(result)
+                Log.d("BiometricAuth", "Authentication succeeded!")
+                onSuccess()
+            }
+
+            override fun onAuthenticationFailed() {
+                super.onAuthenticationFailed()
+                Log.d("BiometricAuth", "Authentication failed.")
+                onFailure()
+            }
+        })
+
+        val promptInfo = BiometricPrompt.PromptInfo.Builder()
+            .setTitle("Biometric Authentication")
+            .setSubtitle("Log in using your biometric credentials")
+            .setNegativeButtonText("Cancel")
+            .setAllowedAuthenticators(BiometricManager.Authenticators.BIOMETRIC_STRONG)
+            .build()
+
+        biometricPrompt.authenticate(promptInfo)
+    }
 
 
     override fun onDestroyView() {
