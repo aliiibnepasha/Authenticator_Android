@@ -10,6 +10,7 @@ class PreferenceManager @Inject constructor(@ApplicationContext private val cont
         //Keys
         private const val PREF_NAME = "MyPrefs"
         private const val KEY_ONBOARDING_FINISHED = "key_onboarding_finished"
+        private const val KEY_ALLOW_SCREEN_SHOTS = "key_allow_screen_shots"
     }
 
 
@@ -26,6 +27,17 @@ class PreferenceManager @Inject constructor(@ApplicationContext private val cont
 
     fun isOnboardingFinished(): Boolean {
         return myPref.getBoolean(KEY_ONBOARDING_FINISHED, false)
+    }
+
+    fun saveIsAllowScreenShots(allow: Boolean) {
+        myPref.edit().apply {
+            putBoolean(KEY_ALLOW_SCREEN_SHOTS, allow)
+            apply()
+        }
+    }
+
+    fun isAllowScreenShots(): Boolean {
+        return myPref.getBoolean(KEY_ALLOW_SCREEN_SHOTS, false)
     }
 
 }

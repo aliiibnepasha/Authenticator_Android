@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/home_nav.xml"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/settingFragment"
+        android:name="com.husnain.authy.ui.fragment.main.SettingFragment"
+        android:label="fragment_setting"
+        tools:layout="@layout/fragment_setting" />
+    <fragment
+        android:id="@+id/newToolsFragment"
+        android:name="com.husnain.authy.ui.fragment.main.NewToolsFragment"
+        android:label="fragment_new_tools"
+        tools:layout="@layout/fragment_new_tools" />
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.husnain.authy.ui.fragment.main.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_addNewFragment"
+            app:destination="@id/addNewFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addAccountManuallyFragment"
+        android:name="com.husnain.authy.ui.fragment.main.addAccountManually.AddAccountManuallyFragment"
+        android:label="fragment_add_account_manually"
+        tools:layout="@layout/fragment_add_account_manually" >
+        <action
+            android:id="@+id/action_addAccountManuallyFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addNewFragment"
+        android:name="com.husnain.authy.ui.fragment.main.addNewAccount.AddNewFragment"
+        android:label="fragment_add_new"
+        tools:layout="@layout/fragment_add_new" >
+        <action
+            android:id="@+id/action_addNewFragment_to_addAccountManuallyFragment"
+            app:destination="@id/addAccountManuallyFragment" />
+    </fragment>
+</navigation>

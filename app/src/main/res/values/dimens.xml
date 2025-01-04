@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="card_shadow">0.6dp</dimen>
+    <dimen name="card_shadow">4dp</dimen>
     <dimen name="edt_height">60dp</dimen>
     <dimen name="btn_height_primary">60dp</dimen>
 </resources>

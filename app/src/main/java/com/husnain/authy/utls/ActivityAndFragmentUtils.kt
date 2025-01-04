@@ -1,5 +1,7 @@
 package com.husnain.authy.utls
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
@@ -56,6 +58,25 @@ fun Activity.startActivity(destinationActivity: Class<*>) {
     startActivity(intent)
 }
 
+fun View.showWithAnimation(duration: Long = 300) {
+    this.visibility = View.VISIBLE
+    this.alpha = 0f
+    this.animate()
+        .alpha(1f)
+        .setDuration(duration)
+        .setListener(null)
+}
+
+fun View.hideWithAnimation(duration: Long = 300) {
+    this.animate()
+        .alpha(0f)
+        .setDuration(duration)
+        .setListener(object : AnimatorListenerAdapter() {
+            override fun onAnimationEnd(animation: Animator) {
+                this@hideWithAnimation.visibility = View.GONE
+            }
+        })
+}
 fun Fragment.startActivity(destinationActivity: Class<*>) {
     val intent = Intent(requireActivity(), destinationActivity)
     startActivity(intent)

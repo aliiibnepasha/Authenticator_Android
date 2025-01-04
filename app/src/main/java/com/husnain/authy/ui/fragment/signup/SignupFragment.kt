@@ -8,8 +8,10 @@ import android.view.ViewGroup
 import com.husnain.authy.R
 import com.husnain.authy.databinding.FragmentSignupBinding
 import com.husnain.authy.preferences.PreferenceManager
+import com.husnain.authy.ui.activities.MainActivity
 import com.husnain.authy.utls.CustomToast.showCustomToast
 import com.husnain.authy.utls.navigate
+import com.husnain.authy.utls.startActivity
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -21,6 +23,7 @@ class SignupFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentSignupBinding.inflate(inflater, container, false)
+        startActivity(MainActivity::class.java)
         inIt()
         return binding.root
     }
@@ -41,8 +44,8 @@ class SignupFragment : Fragment() {
             navigate(R.id.action_signupFragment_to_signinFragment)
         }
         binding.btnCreateAccount.setOnClickListener {
-            if (validateFields()){
-                showCustomToast("Account Created Successfully")
+            if (!validateFields()){
+                startActivity(MainActivity::class.java)
             }
         }
         binding.googleButton.setOnClickListener {
@@ -58,33 +61,31 @@ class SignupFragment : Fragment() {
         val email = binding.edtEmail.text.toString().trim()
         val password = binding.edtPass.text.toString().trim()
 
-        if (name.isEmpty()) {
-            showCustomToast("Name cannot be empty")
-            return false
+        return when {
+            name.isEmpty() -> {
+                showCustomToast("Name cannot be empty")
+                false
+            }
+            email.isEmpty() -> {
+                showCustomToast("Email cannot be empty")
+                false
+            }
+            !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches() -> {
+                showCustomToast("Invalid email")
+                false
+            }
+            password.isEmpty() -> {
+                showCustomToast("Password cannot be empty")
+                false
+            }
+            password.length < 6 -> {
+                showCustomToast("Password must be at least 6 characters long")
+                false
+            }
+            else -> true
         }
-
-        if (email.isEmpty()) {
-            showCustomToast("Email cannot be empty")
-            return false
-        }
-
-        if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            showCustomToast("Invalid email")
-            return false
-        }
-
-        if (password.isEmpty()) {
-            showCustomToast("Password cannot be empty")
-            return false
-        }
-
-        if (password.length < 6) {
-            showCustomToast("Password must be at least 6 characters long")
-            return false
-        }
-
-        return true
     }
+
 
 
     override fun onDestroyView() {

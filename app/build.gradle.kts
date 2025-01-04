@@ -97,4 +97,7 @@ dependencies {
 
     //Dots indicator
     implementation("com.tbuonomo:dotsindicator:5.1.0")
+
+    //Qr code scanner
+    implementation("io.github.g00fy2.quickie:quickie-bundled:1.10.0")
 }
