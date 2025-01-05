@@ -81,6 +81,7 @@ class AddNewFragment : Fragment() {
                         val uri = content.rawValue
                         if (uri != null) {
                             if (uri.startsWith("otpauth://")) {
+                                Log.d("secret key data", uri)
                                 handleTOTPUri(uri)
                             } else {
                                 showCustomToast("Scanned content: $uri")
@@ -122,7 +123,6 @@ class AddNewFragment : Fragment() {
 
             if (secretKey != null && label != null) {
                 Log.d("secret key data","Secret: $secretKey\nLabel: $label")
-                showCustomToast("Secret: $secretKey\nLabel: $label")
                 vmHome.insertSecretData(EntityTotp(0,label,secretKey))
             } else {
                 showCustomToast("Something went wrong, please try again")

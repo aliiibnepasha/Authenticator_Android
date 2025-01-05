@@ -24,4 +24,11 @@
         <item name="android:background">?android:attr/selectableItemBackgroundBorderless</item>
         <item name="android:clickable">true</item>
     </style>
+
+    <style name="MySearchViewTheme" parent="@android:style/Theme.Holo">
+        .....
+        .....
+        <item name="android:textColorHint">#7C8BA0</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
 </resources>

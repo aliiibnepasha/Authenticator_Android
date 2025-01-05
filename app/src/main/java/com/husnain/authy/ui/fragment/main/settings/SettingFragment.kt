@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.husnain.authy.databinding.FragmentSettingBinding
+import com.husnain.authy.utls.popBack
 
 class SettingFragment : Fragment() {
     private var _binding: FragmentSettingBinding? = null
@@ -22,7 +23,9 @@ class SettingFragment : Fragment() {
     }
 
     private fun setOnClickListener() {
-
+        binding.imgBack.setOnClickListener {
+            popBack()
+        }
     }
 
     override fun onDestroyView() {

@@ -3,18 +3,22 @@ package com.husnain.authy.utls
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.app.Activity
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
 import android.view.View
+import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.IdRes
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.snackbar.Snackbar
 import com.husnain.authy.R
 
 fun View.visible() {
@@ -115,6 +119,21 @@ fun openAppSettings(activity: Activity) {
 }
 
 
+fun showSnackBar(view: View,str: String){
+    val snackbar = Snackbar.make(view, str, Snackbar.LENGTH_SHORT)
+    val snackbarView = snackbar.view
+    val params = snackbarView.layoutParams as ViewGroup.MarginLayoutParams
+    params.bottomMargin = 50 // Adjust this value for desired margin (in pixels)
+    snackbarView.layoutParams = params
+
+    snackbar.show()
+}
+
+fun Context.copyToClip(text: String){
+    val clipboard = this.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+    val clip = ClipData.newPlainText("Auth", text)
+    clipboard.setPrimaryClip(clip)
+}
 
 
 

@@ -11,6 +11,7 @@ import com.husnain.authy.R
 import com.husnain.authy.databinding.FragmentAppLockBinding
 import com.husnain.authy.preferences.PreferenceManager
 import com.husnain.authy.utls.CustomToast.showCustomToast
+import com.husnain.authy.utls.popBack
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -43,6 +44,10 @@ class AppLockFragment : Fragment() {
     }
 
     private fun setOnClickListener() {
+        binding.imgBack.setOnClickListener {
+            popBack()
+        }
+
         binding.switchSetPinLock.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 handleSwitchOn()

@@ -58,7 +58,9 @@ class AddAccountManuallyFragment : Fragment() {
             popBack()
         }
         binding.btnAddAccount.setOnClickListener {
-            vmHome.insertSecretData(EntityTotp(0,binding.edtAccountName.text.toString(),binding.edtPrivateKey.text.toString()))
+            if (validateAccountFields()){
+                vmHome.insertSecretData(EntityTotp(0,binding.edtAccountName.text.toString(),binding.edtPrivateKey.text.toString()))
+            }
         }
     }
 
@@ -88,15 +90,13 @@ class AddAccountManuallyFragment : Fragment() {
         return isValidBase32(secret) || isValidBase64(secret)
     }
 
-    // Validate Base32 format
     private fun isValidBase32(secret: String): Boolean {
-        val base32Regex = "^[A-Z2-7]*$".toRegex()  // Base32 encoding valid characters (A-Z, 2-7)
+        val base32Regex = "^[A-Z2-7]*$".toRegex()
         return secret.matches(base32Regex)
     }
 
-    // Validate Base64 format
     private fun isValidBase64(secret: String): Boolean {
-        val base64Regex = "^[A-Za-z0-9+/]*={0,2}$".toRegex()  // Base64 characters and optional padding
+        val base64Regex = "^[A-Za-z0-9+/]*={0,2}$".toRegex()
         return secret.matches(base64Regex)
     }
 

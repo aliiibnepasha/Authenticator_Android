@@ -27,6 +27,9 @@
         <action
             android:id="@+id/action_homeFragment_to_addNewFragment"
             app:destination="@id/addNewFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_searchFragment"
+            app:destination="@id/searchFragment" />
     </fragment>
     <fragment
         android:id="@+id/addAccountManuallyFragment"
@@ -63,4 +66,9 @@
         android:name="com.husnain.authy.ui.fragment.main.setPin.SetPinFragment"
         android:label="fragment_set_pin"
         tools:layout="@layout/fragment_set_pin" />
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.husnain.authy.ui.fragment.search.SearchFragment"
+        android:label="fragment_search"
+        tools:layout="@layout/fragment_search" />
 </navigation>

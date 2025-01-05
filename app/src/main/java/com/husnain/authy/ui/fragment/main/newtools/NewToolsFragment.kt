@@ -10,6 +10,7 @@ import com.husnain.authy.app.App
 import com.husnain.authy.databinding.FragmentNewToolsBinding
 import com.husnain.authy.preferences.PreferenceManager
 import com.husnain.authy.utls.navigate
+import com.husnain.authy.utls.popBack
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -35,6 +36,10 @@ class NewToolsFragment : Fragment() {
     }
 
     private fun setOnClickListener() {
+        binding.imgBack.setOnClickListener {
+            popBack()
+        }
+
         binding.lyAppLock.setOnClickListener {
             navigate(R.id.action_newToolsFragment_to_appLockFragment)
         }

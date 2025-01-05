@@ -1,28 +1,30 @@
 package com.husnain.authy.ui.fragment.main.home
 
-import android.content.ClipData
-import android.content.ClipboardManager
-import android.content.Context
+import android.annotation.SuppressLint
+import android.graphics.ColorSpace.Model
 import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
+import android.widget.Filter
 import androidx.recyclerview.widget.RecyclerView
 import com.husnain.authy.R
 import com.husnain.authy.data.ModelTotp
-import com.husnain.authy.data.room.EntityTotp
 import com.husnain.authy.databinding.ItemHomeTotpBinding
+import com.husnain.authy.utls.SearchFilter
 import com.husnain.authy.utls.TotpUtil
-import dev.turingcomplete.kotlinonetimepassword.TimeBasedOneTimePasswordGenerator
+import com.husnain.authy.utls.copyToClip
+import com.husnain.authy.utls.showSnackBar
 
-class AdapterHomeTotp(private val items: List<ModelTotp>,private val callBack:(ModelTotp) -> Unit) :
+class AdapterHomeTotp(private var items: List<ModelTotp>, private val callBack:(ModelTotp) -> Unit) :
     RecyclerView.Adapter<AdapterHomeTotp.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding =
             ItemHomeTotpBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
+
+    private var originalItems: List<ModelTotp> = ArrayList(items)
 
     override fun getItemCount(): Int {
         return items.size
@@ -36,6 +38,17 @@ class AdapterHomeTotp(private val items: List<ModelTotp>,private val callBack:(M
     override fun onViewRecycled(holder: ViewHolder) {
         super.onViewRecycled(holder)
         holder.stopUpdates()
+    }
+
+
+    fun getFilter(): Filter {
+        return SearchFilter(originalList = originalItems, adapter = this)
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun setItems(newItems: List<ModelTotp>) {
+        items = newItems
+        notifyDataSetChanged()
     }
 
     inner class ViewHolder(val binding: ItemHomeTotpBinding) :
@@ -52,7 +65,7 @@ class AdapterHomeTotp(private val items: List<ModelTotp>,private val callBack:(M
                 override fun run() {
                     try {
                         val totp = TotpUtil.generateTotp(data.secretKey)
-                        binding.tvTotp.text = totp
+                        binding.tvTotp.text = totp.chunked(3).joinToString(" ")
 
                         val remainingSeconds = TotpUtil.getRemainingSeconds()
                         binding.tvCounter.text = remainingSeconds.toString()
@@ -60,7 +73,7 @@ class AdapterHomeTotp(private val items: List<ModelTotp>,private val callBack:(M
                         updateHandler?.postDelayed(this, 1000L)
                     } catch (e: Exception) {
                         e.printStackTrace()
-                        binding.tvTotp.text = "Error"
+                        binding.tvTotp.text = itemView.context.getString(R.string.string_error)
                     }
                 }
             }
@@ -68,12 +81,9 @@ class AdapterHomeTotp(private val items: List<ModelTotp>,private val callBack:(M
             // Start TOTP updates
             updateHandler?.post(updateTotp)
 
-            // Handle copy action
             binding.imgCopy.setOnClickListener {
-                val clipboard = it.context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                val clip = ClipData.newPlainText("TOTP", binding.tvTotp.text)
-                clipboard.setPrimaryClip(clip)
-                Toast.makeText(it.context, "Otp copied to clipboard", Toast.LENGTH_SHORT).show()
+                it.context.copyToClip(binding.tvTotp.text.toString())
+                showSnackBar(binding.root, "Code copied to clipboard.")
             }
         }
 
@@ -81,6 +91,4 @@ class AdapterHomeTotp(private val items: List<ModelTotp>,private val callBack:(M
             updateHandler?.removeCallbacksAndMessages(null)
         }
     }
-
-
 }
