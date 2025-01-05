@@ -5,15 +5,24 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import com.husnain.authy.R
+import com.husnain.authy.data.room.EntityTotp
 import com.husnain.authy.databinding.FragmentAddAccountManuallyBinding
+import com.husnain.authy.ui.fragment.main.home.VmHome
 import com.husnain.authy.utls.CustomToast.showCustomToast
+import com.husnain.authy.utls.DataState
 import com.husnain.authy.utls.navigate
 import com.husnain.authy.utls.popBack
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class AddAccountManuallyFragment : Fragment() {
     private var _binding: FragmentAddAccountManuallyBinding? = null
     private val binding get() = _binding!!
+    private val vmHome:VmHome by viewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentAddAccountManuallyBinding.inflate(inflater, container, false)
@@ -23,6 +32,25 @@ class AddAccountManuallyFragment : Fragment() {
 
     private fun inIt() {
         setOnClickListener()
+        setUpObservers()
+    }
+
+    private fun setUpObservers() {
+        vmHome.insertState.observe(viewLifecycleOwner, Observer { state ->
+            when (state) {
+                is DataState.Loading -> {
+                }
+
+                is DataState.Success -> {
+                    showCustomToast("Data Saved Successfully")
+                    navigate(R.id.action_addAccountManuallyFragment_to_homeFragment)
+                }
+
+                is DataState.Error -> {
+                    showCustomToast("Error: ${state.message}")
+                }
+            }
+        })
     }
 
     private fun setOnClickListener() {
@@ -30,24 +58,25 @@ class AddAccountManuallyFragment : Fragment() {
             popBack()
         }
         binding.btnAddAccount.setOnClickListener {
-            navigate(R.id.action_addAccountManuallyFragment_to_homeFragment)
+            vmHome.insertSecretData(EntityTotp(0,binding.edtAccountName.text.toString(),binding.edtPrivateKey.text.toString()))
         }
     }
+
     private fun validateAccountFields(): Boolean {
         val accountName = binding.edtAccountName.text.toString().trim()
-        val privateKey = binding.edtPrivateKey.text.toString().trim()
+        val secretKey = binding.edtPrivateKey.text.toString().trim()
 
         if (accountName.isEmpty()) {
             showCustomToast("Account name cannot be empty")
             return false
         }
 
-        if (privateKey.isEmpty()) {
+        if (secretKey.isEmpty()) {
             showCustomToast("Private key cannot be empty")
             return false
         }
 
-        if (!isValidSecretKey(privateKey)) {
+        if (!isValidSecretKey(secretKey)) {
             showCustomToast("Invalid private key format")
             return false
         }

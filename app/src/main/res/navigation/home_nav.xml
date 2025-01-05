@@ -45,6 +45,9 @@
         <action
             android:id="@+id/action_addNewFragment_to_addAccountManuallyFragment"
             app:destination="@id/addAccountManuallyFragment" />
+        <action
+            android:id="@+id/action_addNewFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
     </fragment>
     <fragment
         android:id="@+id/appLockFragment"
