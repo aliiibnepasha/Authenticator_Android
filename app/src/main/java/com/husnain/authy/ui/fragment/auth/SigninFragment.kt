@@ -1,19 +1,29 @@
-package com.husnain.authy.ui.fragment.login
+package com.husnain.authy.ui.fragment.auth
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import com.husnain.authy.R
+import com.husnain.authy.data.ModelUser
 import com.husnain.authy.databinding.FragmentSigninBinding
+import com.husnain.authy.ui.activities.MainActivity
 import com.husnain.authy.utls.CustomToast.showCustomToast
+import com.husnain.authy.utls.DataState
+import com.husnain.authy.utls.getTextFromEdit
 import com.husnain.authy.utls.navigate
 import com.husnain.authy.utls.popBack
+import com.husnain.authy.utls.startActivity
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SigninFragment : Fragment() {
     private var _binding: FragmentSigninBinding? = null
     private val binding get() = _binding!!
+    private val vmAuth: VmAuth by viewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentSigninBinding.inflate(inflater, container, false)
@@ -23,6 +33,7 @@ class SigninFragment : Fragment() {
 
     private fun inIt() {
         setOnClickListener()
+        setUpObserver()
     }
 
     private fun setOnClickListener() {
@@ -34,15 +45,42 @@ class SigninFragment : Fragment() {
         }
         binding.btnLogin.setOnClickListener {
             if (validateFields()){
-                showCustomToast("Loged in successfully")
+                requestLogin()
             }
         }
         binding.googleButton.setOnClickListener {
 
         }
-        binding.facebookButton.setOnClickListener {
+    }
 
-        }
+    private fun setUpObserver() {
+        vmAuth.loginState.observe(viewLifecycleOwner, Observer { state ->
+            when (state) {
+                is DataState.Loading -> {
+                    showLoader()
+                }
+
+                is DataState.Success -> {
+                    stopLoader()
+                    startActivity(MainActivity::class.java)
+                    requireActivity().finish()
+                }
+
+                is DataState.Error -> {
+                    stopLoader()
+                    showCustomToast(state.message)
+                }
+            }
+        })
+    }
+
+    private fun requestLogin() {
+        vmAuth.loginWithEmailPass(
+            ModelUser(
+            binding.edtEmail.getTextFromEdit(),
+            binding.edtPass.getTextFromEdit(),
+        )
+        )
     }
 
     private fun validateFields(): Boolean {
@@ -70,6 +108,15 @@ class SigninFragment : Fragment() {
         }
 
         return true
+    }
+
+
+    private fun showLoader(){
+        binding.loadingView.start(viewToHideIf = binding.tvLogin)
+    }
+
+    private fun stopLoader(){
+        binding.loadingView.stop(binding.tvLogin)
     }
 
     override fun onDestroyView() {

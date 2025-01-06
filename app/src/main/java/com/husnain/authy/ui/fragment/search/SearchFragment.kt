@@ -67,7 +67,9 @@ class SearchFragment : Fragment() {
 
                 is DataState.Success -> {
                     val data = state.data
-                    setupAdapter(data)
+                    if (data != null) {
+                        setupAdapter(data)
+                    }
                 }
 
                 is DataState.Error -> {

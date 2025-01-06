@@ -1,4 +1,4 @@
-package com.husnain.authy.ui.fragment.signup
+package com.husnain.authy.ui.fragment.auth
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,19 +7,33 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
+import com.google.firebase.auth.FirebaseAuth
 import com.husnain.authy.R
+import com.husnain.authy.data.ModelUser
 import com.husnain.authy.databinding.FragmentSignupBinding
 import com.husnain.authy.preferences.PreferenceManager
 import com.husnain.authy.ui.activities.MainActivity
 import com.husnain.authy.utls.Constants
 import com.husnain.authy.utls.CustomToast.showCustomToast
+import com.husnain.authy.utls.DataState
+import com.husnain.authy.utls.GoogleSigninUtils
+import com.husnain.authy.utls.LoadingView
+import com.husnain.authy.utls.getTextFromEdit
+import com.husnain.authy.utls.gone
 import com.husnain.authy.utls.navigate
 import com.husnain.authy.utls.startActivity
+import com.husnain.authy.utls.visible
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -27,10 +41,15 @@ class SignupFragment : Fragment() {
     private var _binding: FragmentSignupBinding? = null
     private val binding get() = _binding!!
     @Inject lateinit var preferenceManager: PreferenceManager
+    @Inject lateinit var auth: FirebaseAuth
+    private val vmAuth: VmAuth by viewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentSignupBinding.inflate(inflater, container, false)
-//        startActivity(MainActivity::class.java)
+        val currentUser = auth.currentUser
+        if (currentUser != null) {
+            startActivity(MainActivity::class.java)
+        }
         inIt()
         return binding.root
     }
@@ -39,7 +58,23 @@ class SignupFragment : Fragment() {
         checkForPin()
         checkForBiometricLogin()
         checkForOnBoarding()
+        setUpObserver()
         setOnClickListener()
+
+    }
+
+    private fun setOnClickListener() {
+        binding.tvSignin.setOnClickListener {
+            navigate(R.id.action_signupFragment_to_signinFragment)
+        }
+        binding.btnCreateAccount.setOnClickListener {
+            if (validateFields()){
+                requestCreateAccount()
+            }
+        }
+        binding.googleButton.setOnClickListener {
+            GoogleSigninUtils.doGoogleSingin(requireActivity(),lifecycleScope)
+        }
     }
 
     private fun checkForPin() {
@@ -57,21 +92,52 @@ class SignupFragment : Fragment() {
         }
     }
 
-    private fun setOnClickListener() {
-        binding.tvSignin.setOnClickListener {
-            navigate(R.id.action_signupFragment_to_signinFragment)
-        }
-        binding.btnCreateAccount.setOnClickListener {
-            if (!validateFields()){
-                startActivity(MainActivity::class.java)
+    private fun setUpObserver() {
+        vmAuth.signUpState.observe(viewLifecycleOwner, Observer { state ->
+            when (state) {
+                is DataState.Loading -> {
+                    showLoader()
+                }
+
+                is DataState.Success -> {
+                    stopLoader()
+                    startActivity(MainActivity::class.java)
+                    requireActivity().finish()
+                }
+
+                is DataState.Error -> {
+                    stopLoader()
+                    showCustomToast(state.message)
+                }
             }
-        }
-        binding.googleButton.setOnClickListener {
+        })
 
-        }
-        binding.facebookButton.setOnClickListener {
+        GoogleSigninUtils.signUpStatusWithGoogle.observe(viewLifecycleOwner, Observer { state ->
+            when (state) {
+                is DataState.Loading -> {
+                    showLoader()
+                }
 
-        }
+                is DataState.Success -> {
+                    stopLoader()
+                    startActivity(MainActivity::class.java)
+                    requireActivity().finish()
+                }
+
+                is DataState.Error -> {
+                    stopLoader()
+                    showCustomToast(state.message)
+                }
+            }
+        })
+    }
+
+    private fun requestCreateAccount() {
+        vmAuth.signUpWithEmailPass(ModelUser(
+            binding.edtEmail.getTextFromEdit(),
+            binding.edtPass.getTextFromEdit(),
+            binding.edtName.getTextFromEdit()
+        ))
     }
 
     private fun validateFields(): Boolean {
@@ -107,17 +173,15 @@ class SignupFragment : Fragment() {
 
     private fun checkForBiometricLogin() {
         if (preferenceManager.isBiometricLockEnabled()) {
-            // Ensure no fragment transactions are in progress before showing biometric prompt
             if (!requireActivity().supportFragmentManager.isStateSaved) {
                 showBiometricPrompt(
                     activity = requireActivity(),
                     onSuccess = {
-                        // You can do the navigation after the biometric authentication succeeds
                         startActivity(Intent(requireActivity(), MainActivity::class.java))
                         requireActivity().finish()
                     },
                     onFailure = {
-                        // Handle failure if needed
+                        showCustomToast("Something went wrong!")
                     }
                 )
             }
@@ -161,6 +225,14 @@ class SignupFragment : Fragment() {
         biometricPrompt.authenticate(promptInfo)
     }
 
+
+    private fun showLoader(){
+        binding.loadingView.start(viewToHideIf = binding.tvCreateAccount)
+    }
+
+    private fun stopLoader(){
+        binding.loadingView.stop(binding.tvCreateAccount)
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()

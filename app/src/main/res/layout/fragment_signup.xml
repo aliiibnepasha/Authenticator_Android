@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/img_colored_bg"
     android:fillViewport="true"
-    tools:context=".ui.fragment.signup.SignupFragment">
+    tools:context=".ui.fragment.auth.SignupFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -57,11 +57,12 @@
             android:id="@+id/materialCardView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_20sdp"
             android:layout_weight="1"
+            android:visibility="gone"
             app:cardCornerRadius="14dp"
             app:cardElevation="@dimen/card_shadow"
-            android:layout_marginTop="@dimen/_20sdp"
-            android:layout_marginStart="@dimen/_15sdp"
             app:layout_constraintEnd_toStartOf="@+id/cardView3"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
@@ -81,14 +82,14 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardView3"
-            android:layout_width="0dp"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:layout_marginEnd="@dimen/_15sdp"
             android:layout_weight="1"
             app:cardCornerRadius="14dp"
-            android:layout_marginEnd="@dimen/_15sdp"
             app:cardElevation="@dimen/card_shadow"
-            android:layout_marginTop="@dimen/_20sdp"
-            android:layout_marginStart="@dimen/_15sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/materialCardView"
@@ -113,11 +114,11 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_15sdp"
             android:gravity="center"
-            android:paddingHorizontal="@dimen/_15sdp"
             android:orientation="horizontal"
+            android:paddingHorizontal="@dimen/_15sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/materialCardView">
+            app:layout_constraintTop_toBottomOf="@+id/cardView3">
 
             <!-- Left Line -->
             <View
@@ -155,19 +156,19 @@
             app:cardElevation="@dimen/card_shadow"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/or_text_layout"
-            >
+            app:layout_constraintTop_toBottomOf="@+id/or_text_layout">
 
             <EditText
                 android:id="@+id/edtName"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/bg_edt"
-                android:paddingHorizontal="@dimen/_15sdp"
                 android:fontFamily="@font/poppins_regular"
                 android:hint="Name"
+                android:paddingHorizontal="@dimen/_15sdp"
                 android:textColor="@color/black" />
         </com.google.android.material.card.MaterialCardView>
+
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cardView1"
             android:layout_width="0dp"
@@ -185,10 +186,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/bg_edt"
-                android:paddingHorizontal="@dimen/_15sdp"
                 android:fontFamily="@font/poppins_regular"
                 android:hint="Email"
                 android:inputType="textEmailAddress"
+                android:paddingHorizontal="@dimen/_15sdp"
                 android:textColor="@color/black" />
         </com.google.android.material.card.MaterialCardView>
 
@@ -209,10 +210,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/bg_edt"
-                android:paddingHorizontal="@dimen/_15sdp"
                 android:fontFamily="@font/poppins_regular"
                 android:hint="Password"
                 android:inputType="textPassword"
+                android:paddingHorizontal="@dimen/_15sdp"
                 android:textColor="@color/black" />
         </com.google.android.material.card.MaterialCardView>
 
@@ -231,26 +232,38 @@
             app:layout_constraintTop_toBottomOf="@+id/cardView2" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/button_constraint"
+            android:id="@+id/btnCreateAccount"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/btn_height_primary"
             android:layout_marginHorizontal="@dimen/_15sdp"
             android:layout_marginTop="16dp"
+            android:background="@drawable/bg_gradiant_button"
             app:layout_constraintTop_toBottomOf="@+id/terms_privacy_text">
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnCreateAccount"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/btn_height_primary"
-                android:background="@drawable/bg_gradiant_button"
+            <com.husnain.authy.utls.LoadingView
+                android:id="@+id/loadingView"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:visibility="gone"
+                app:indicatorColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvCreateAccount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_medium"
-                android:text="Create Account"
+                android:text="Craate Account"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
@@ -258,18 +271,18 @@
             android:id="@+id/appCompatTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Do you have account?"
-            android:fontFamily="@font/poppins_regular"
             android:layout_marginTop="@dimen/_15sdp"
-            app:layout_constraintStart_toStartOf="@+id/button_constraint"
-            app:layout_constraintTop_toBottomOf="@+id/button_constraint" />
+            android:fontFamily="@font/poppins_regular"
+            android:text="Do you have account?"
+            app:layout_constraintStart_toStartOf="@+id/btnCreateAccount"
+            app:layout_constraintTop_toBottomOf="@+id/btnCreateAccount" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvSignin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="  Sign In"
             android:fontFamily="@font/poppins_regular"
+            android:text="  Sign In"
             android:textColor="@color/colorPrimary"
             app:layout_constraintBottom_toBottomOf="@+id/appCompatTextView"
             app:layout_constraintStart_toEndOf="@+id/appCompatTextView"

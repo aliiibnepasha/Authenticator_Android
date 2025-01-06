@@ -2,6 +2,8 @@ package com.husnain.authy.preferences
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.google.gson.Gson
+import com.husnain.authy.data.ModelUser
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
@@ -13,8 +15,10 @@ class PreferenceManager @Inject constructor(@ApplicationContext private val cont
         private const val KEY_ALLOW_SCREEN_SHOTS = "key_allow_screen_shots"
         private const val KEY_PIN = "keyPin"
         private const val KEY_BIOMETRIC_LOCK = "biometric_lock"
+        private const val KEY_USER = "key_user"
     }
 
+    private val gson = Gson()
 
     private val myPref: SharedPreferences by lazy {
         context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
@@ -61,4 +65,13 @@ class PreferenceManager @Inject constructor(@ApplicationContext private val cont
         return myPref.getBoolean(KEY_BIOMETRIC_LOCK, false)
     }
 
+    fun saveUserData(user: ModelUser) {
+        val json = gson.toJson(user)
+        myPref.edit().putString(KEY_USER, json).apply()
+    }
+
+    fun getUserData(): ModelUser? {
+        val json = myPref.getString(KEY_USER, null)
+        return gson.fromJson(json, ModelUser::class.java)
+    }
 }

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/img_colored_bg"
     android:fillViewport="true"
-    tools:context=".ui.fragment.login.SigninFragment">
+    tools:context=".ui.fragment.auth.SigninFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -60,6 +60,7 @@
             android:layout_weight="1"
             app:cardCornerRadius="14dp"
             app:cardElevation="@dimen/card_shadow"
+            android:visibility="gone"
             android:layout_marginTop="@dimen/_20sdp"
             android:layout_marginStart="@dimen/_15sdp"
             app:layout_constraintEnd_toStartOf="@+id/cardView3"
@@ -81,7 +82,7 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardView3"
-            android:layout_width="0dp"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             app:cardCornerRadius="14dp"
@@ -116,7 +117,7 @@
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/materialCardView">
+            app:layout_constraintTop_toBottomOf="@+id/cardView3">
 
             <!-- Left Line -->
             <View
@@ -208,20 +209,31 @@
             app:layout_constraintTop_toBottomOf="@+id/cardView2" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/button_constraint"
+            android:id="@+id/btnLogin"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/btn_height_primary"
             android:layout_marginTop="16dp"
+            android:layout_marginHorizontal="24dp"
+            android:background="@drawable/bg_gradiant_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvForgotPassword">
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnLogin"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/btn_height_primary"
-                android:layout_marginHorizontal="@dimen/_15sdp"
-                android:background="@drawable/bg_gradiant_button"
+            <com.husnain.authy.utls.LoadingView
+                android:id="@+id/loadingView"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:visibility="gone"
+                app:indicatorColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvLogin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_medium"
                 android:text="Log In"
                 android:textAllCaps="false"
@@ -240,7 +252,7 @@
             android:layout_marginTop="@dimen/_14sdp"
             android:text="Don’t have account?"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/button_constraint" />
+            app:layout_constraintTop_toBottomOf="@+id/btnLogin" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvSignup"

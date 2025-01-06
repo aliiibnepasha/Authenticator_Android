@@ -12,6 +12,7 @@ import android.os.Bundle
 import android.provider.Settings
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.IdRes
@@ -135,5 +136,9 @@ fun Context.copyToClip(text: String){
     clipboard.setPrimaryClip(clip)
 }
 
+
+fun EditText.getTextFromEdit() : String{
+    return  this.text.toString()
+}
 
 

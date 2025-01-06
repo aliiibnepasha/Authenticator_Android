@@ -42,7 +42,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/constraintLayout2"
+                android:id="@+id/lyGetPremium"
                 android:layout_width="match_parent"
                 android:layout_height="82dp"
                 android:layout_marginHorizontal="24dp"
@@ -97,8 +97,8 @@
                 android:text="General"
                 android:textColor="#7C8BA0"
                 android:textSize="15sp"
-                app:layout_constraintStart_toStartOf="@+id/constraintLayout2"
-                app:layout_constraintTop_toBottomOf="@+id/constraintLayout2" />
+                app:layout_constraintStart_toStartOf="@+id/lyGetPremium"
+                app:layout_constraintTop_toBottomOf="@+id/lyGetPremium" />
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardView"
