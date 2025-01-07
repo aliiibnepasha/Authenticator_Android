@@ -5,20 +5,23 @@ import android.app.Application
 import android.content.Context
 import android.os.Bundle
 import android.view.WindowManager
+import com.akexorcist.localizationactivity.ui.LocalizationApplication
 import com.husnain.authy.preferences.PreferenceManager
 import dagger.hilt.android.HiltAndroidApp
+import java.util.Locale
 import javax.inject.Inject
 
 @HiltAndroidApp
-class App : Application() {
+class App : LocalizationApplication() {
+
     private val activityList: MutableList<Activity> = mutableListOf()
     var isScreenshotRestricted: Boolean = false
     @Inject lateinit var preferenceManager: PreferenceManager
 
+    override fun getDefaultLanguage(context: Context): Locale = Locale.ENGLISH
     override fun onCreate() {
         super.onCreate()
         setupActivityListener()
-
         isScreenshotRestricted = preferenceManager.isAllowScreenShots()
     }
 
@@ -60,4 +63,5 @@ class App : Application() {
             }
         }
     }
+
 }

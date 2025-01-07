@@ -1,5 +1,6 @@
 package com.husnain.authy.ui.fragment.auth
 
+import android.app.Activity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.husnain.authy.data.ModelUser
@@ -15,6 +16,7 @@ class VmAuth @Inject constructor(
     val loginState = repository.loginStatus
     val signUpState = repository.signUpStatus
     val logoutState = repository.logoutState
+    val googleLoginState = repository.googleLoginStatus
 
     fun loginWithEmailPass(user: ModelUser) {
         viewModelScope.launch {
@@ -32,5 +34,9 @@ class VmAuth @Inject constructor(
         viewModelScope.launch {
             repository.logout()
         }
+    }
+
+    fun continueWithGoogle(context: Activity){
+        repository.continueWithGoogle(viewModelScope,context)
     }
 }

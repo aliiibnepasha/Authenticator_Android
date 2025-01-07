@@ -9,7 +9,11 @@
         android:id="@+id/settingFragment"
         android:name="com.husnain.authy.ui.fragment.main.settings.SettingFragment"
         android:label="fragment_setting"
-        tools:layout="@layout/fragment_setting" />
+        tools:layout="@layout/fragment_setting" >
+        <action
+            android:id="@+id/action_settingFragment_to_localizeFragment"
+            app:destination="@id/localizeFragment" />
+    </fragment>
     <fragment
         android:id="@+id/newToolsFragment"
         android:name="com.husnain.authy.ui.fragment.main.newtools.NewToolsFragment"
@@ -71,4 +75,9 @@
         android:name="com.husnain.authy.ui.fragment.search.SearchFragment"
         android:label="fragment_search"
         tools:layout="@layout/fragment_search" />
+    <fragment
+        android:id="@+id/localizeFragment"
+        android:name="com.husnain.authy.ui.fragment.main.localization.LocalizeFragment"
+        android:label="fragment_localize"
+        tools:layout="@layout/fragment_localize" />
 </navigation>

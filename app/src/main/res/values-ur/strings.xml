@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">آثی</string>
+    <string name="hello_blank_fragment">ہیلو خالی فریگمنٹ</string>
+    <string name="string_error">غلطی</string>
+    <string name="string_sign_up">سائن اپ</string>
+    <string name="string_signup_desc">یہ 1960 کی دہائی میں Letraset شیٹس کی رہائی کے ساتھ مشہور ہوا تھا جس میں Lorem Ipsum شامل تھا۔</string>
+    <string name="string_google">گوگل</string>
+    <string name="string_or">یا</string>
+    <string name="string_name">نام</string>
+    <string name="string_email">ای میل</string>
+    <string name="string_password">پاسورڈ</string>
+    <string name="string_create_account">اکاؤنٹ بنائیں</string>
+    <string name="string_do_you_have_account">کیا آپ کے پاس اکاؤنٹ ہے؟</string>
+    <string name="string_sign_in">لاگ ان</string>
+    <string name="string_signin_desc">یہ 1960 کی دہائی میں Letraset شیٹس کی رہائی کے ساتھ مشہور ہوا تھا جس میں Lorem Ipsum شامل تھا۔</string>
+    <string name="string_forgot_password">پاسورڈ بھول گئے؟</string>
+    <string name="string_log_in">لاگ ان</string>
+    <string name="string_don_t_have_account">کیا آپ کے پاس اکاؤنٹ نہیں ہے؟</string>
+
+    <!-- Home -->
+    <string name="string_forget_password2">پاسورڈ بھول گئے</string>
+    <string name="string_continue">جاری رکھیں</string>
+    <string name="string_authenticator">تصدیق کنندہ</string>
+    <string name="string_scan_the_2fa_qr_code">2FA QR کوڈ اسکین کریں</string>
+    <string name="string_add_account_manually">اکاؤنٹ دستی طور پر شامل کریں</string>
+    <string name="string_add_account">اکاؤنٹ شامل کریں</string>
+    <string name="string_add_acount_desc">جس اکاؤنٹ کو آپ شامل کرنا چاہتے ہیں اس کی پرائیویٹ کی درج کریں۔</string>
+    <string name="string_account_name">اکاؤنٹ کا نام</string>
+    <string name="string_enter_private_key">پرائیویٹ کی درج کریں</string>
+    <string name="string_add">شامل کریں</string>
+    <string name="string_localize_languages">زبانوں کو مقامی بنائیں</string>
+    <string name="string_new_tools">نئے ٹولز</string>
+    <string name="string_app_lock">ایپ لاک</string>
+    <string name="string_allow_screenshots">اسکرین شاٹس کی اجازت دیں</string>
+    <string name="string_manage_and_generate_passwords">پاسورڈز کو منظم اور جنریٹ کریں</string>
+    <string name="string_apploack_desc">اپنی تصدیق کنندہ ایپ کو محفوظ کرنے کے لئے پن سیٹ کریں</string>
+    <string name="string_pin_lock">پن لاک</string>
+    <string name="string_biometric_lock">بایومیٹرک لاک</string>
+    <string name="string_relock_time">ری لاک کا وقت</string>
+    <string name="string_set_pin">پن سیٹ کریں</string>
+    <string name="string_set_your_pin">اپنا پن سیٹ کریں</string>
+    <string name="string_setting">سیٹنگ</string>
+    <string name="string_get_premium">پریمیئم حاصل کریں</string>
+    <string name="string_unlimited_access_to_all_features">تمام خصوصیات تک لامحدود رسائی</string>
+    <string name="string_localize_languages_setting">زبانوں کی مقامی سیٹنگ</string>
+    <string name="string_import_google_authenticator">گوگل تصدیق کنندہ درآمد کریں</string>
+    <string name="string_delete_account">اکاؤنٹ حذف کریں</string>
+    <string name="string_auto_fill_passwords">پاسورڈز کا خودکار فل</string>
+    <string name="string_import_and_export_passwords">پاسورڈز کو درآمد اور برآمد کریں</string>
+    <string name="string_rate_us">ہمیں درجہ دیں</string>
+    <string name="string_share_our_app">ہماری ایپ شیئر کریں</string>
+    <string name="string_terms_amp_condition"><![CDATA[شرائط و ضوابط]]></string>
+    <string name="string_privacy_policy">پرائیویسی پالیسی</string>
+    <string name="string_general">عام</string>
+    <string name="string_backup">بیك اپ</string>
+    <string name="string_security">سیکیورٹی</string>
+    <string name="string_sync">ہم آہنگی اور کلاؤڈ بیک اپ</string>
+</resources>

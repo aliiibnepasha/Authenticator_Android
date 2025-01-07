@@ -1,6 +1,7 @@
 package com.husnain.authy.repositories
 
-import android.graphics.ColorSpace.Model
+import android.app.Activity
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.FirebaseAuth
@@ -10,6 +11,8 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.husnain.authy.data.ModelUser
 import com.husnain.authy.preferences.PreferenceManager
 import com.husnain.authy.utls.DataState
+import com.husnain.authy.utls.GoogleSigninUtils
+import kotlinx.coroutines.CoroutineScope
 import javax.inject.Inject
 
 class AuthRepository @Inject constructor(
@@ -19,6 +22,9 @@ class AuthRepository @Inject constructor(
 ) {
     private val _signUpStatus = MutableLiveData<DataState<Nothing>>()
     val signUpStatus: LiveData<DataState<Nothing>> = _signUpStatus
+
+    private val _googleLoginStatus = MutableLiveData<DataState<Nothing>>()
+    val googleLoginStatus: LiveData<DataState<Nothing>> = _googleLoginStatus
 
     private val _loginStatus = MutableLiveData<DataState<Nothing>>()
     val loginStatus: LiveData<DataState<Nothing>> = _loginStatus
@@ -69,7 +75,6 @@ class AuthRepository @Inject constructor(
             }
     }
 
-
     fun logout() {
         _logoutState.postValue(DataState.Loading())
         try {
@@ -78,5 +83,9 @@ class AuthRepository @Inject constructor(
         } catch (exception: Exception) {
             _logoutState.postValue(DataState.Error("Logout failed"))
         }
+    }
+
+    fun continueWithGoogle(scope: CoroutineScope,context: Activity) {
+        GoogleSigninUtils.doGoogleSignIn(context, scope, _googleLoginStatus)
     }
 }

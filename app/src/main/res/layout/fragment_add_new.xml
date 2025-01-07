@@ -9,10 +9,10 @@
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/imgBack"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="27dp"
+        android:layout_height="27dp"
         android:layout_marginStart="24dp"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/appCompatTextView2"
         app:srcCompat="@drawable/ic_back" />
 
@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="25dp"
         android:fontFamily="@font/poppins_bold"
-        android:text="Authenticator"
+        android:text="@string/string_authenticator"
         android:layout_marginEnd="10dp"
         android:textColor="@color/black"
         android:textSize="@dimen/_16ssp"
@@ -74,7 +74,7 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Scan the 2FA QR Code"
+            android:text="@string/string_scan_the_2fa_qr_code"
             android:fontFamily="@font/poppins_medium"
             android:layout_marginTop="48dp"
             android:textColor="@color/color_text_gray"
@@ -84,7 +84,7 @@
             android:id="@+id/textOr"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="OR"
+            android:text="@string/string_or"
             android:fontFamily="@font/poppins_regular"
             android:layout_marginTop="12dp"
             android:textColor="@color/color_text_gray"
@@ -97,7 +97,7 @@
             android:background="@drawable/bg_gradiant_button"
             android:fontFamily="@font/poppins_medium"
             android:layout_marginTop="12dp"
-            android:text="Add account manually"
+            android:text="@string/string_add_account_manually"
             android:textAllCaps="false"
             android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"

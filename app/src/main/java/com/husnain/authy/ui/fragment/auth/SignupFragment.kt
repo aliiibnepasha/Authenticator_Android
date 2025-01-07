@@ -49,6 +49,7 @@ class SignupFragment : Fragment() {
         val currentUser = auth.currentUser
         if (currentUser != null) {
             startActivity(MainActivity::class.java)
+            requireActivity().finish()
         }
         inIt()
         return binding.root
@@ -60,7 +61,6 @@ class SignupFragment : Fragment() {
         checkForOnBoarding()
         setUpObserver()
         setOnClickListener()
-
     }
 
     private fun setOnClickListener() {
@@ -73,7 +73,7 @@ class SignupFragment : Fragment() {
             }
         }
         binding.googleButton.setOnClickListener {
-            GoogleSigninUtils.doGoogleSingin(requireActivity(),lifecycleScope)
+            vmAuth.continueWithGoogle(requireActivity())
         }
     }
 
@@ -112,7 +112,7 @@ class SignupFragment : Fragment() {
             }
         })
 
-        GoogleSigninUtils.signUpStatusWithGoogle.observe(viewLifecycleOwner, Observer { state ->
+        vmAuth.googleLoginState.observe(viewLifecycleOwner, Observer { state ->
             when (state) {
                 is DataState.Loading -> {
                     showLoader()

@@ -12,6 +12,7 @@ import com.husnain.authy.R
 import com.husnain.authy.data.ModelTotp
 import com.husnain.authy.data.room.EntityTotp
 import com.husnain.authy.databinding.FragmentHomeBinding
+import com.husnain.authy.ui.activities.MainActivity
 import com.husnain.authy.utls.DataState
 import com.husnain.authy.utls.gone
 import com.husnain.authy.utls.navigate
@@ -94,6 +95,10 @@ class HomeFragment : Fragment() {
 
         binding.imgSearch.setOnClickListener {
             navigate(R.id.action_homeFragment_to_searchFragment)
+        }
+
+        binding.imgPremium.setOnClickListener {
+
         }
     }
 

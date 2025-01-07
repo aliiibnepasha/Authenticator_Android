@@ -49,12 +49,31 @@ class SigninFragment : Fragment() {
             }
         }
         binding.googleButton.setOnClickListener {
-
+            vmAuth.continueWithGoogle(requireActivity())
         }
     }
 
     private fun setUpObserver() {
         vmAuth.loginState.observe(viewLifecycleOwner, Observer { state ->
+            when (state) {
+                is DataState.Loading -> {
+                    showLoader()
+                }
+
+                is DataState.Success -> {
+                    stopLoader()
+                    startActivity(MainActivity::class.java)
+                    requireActivity().finish()
+                }
+
+                is DataState.Error -> {
+                    stopLoader()
+                    showCustomToast(state.message)
+                }
+            }
+        })
+
+        vmAuth.googleLoginState.observe(viewLifecycleOwner, Observer { state ->
             when (state) {
                 is DataState.Loading -> {
                     showLoader()

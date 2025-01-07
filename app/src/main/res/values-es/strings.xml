@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Authy</string>
+    <string name="hello_blank_fragment">Hola fragmento en blanco</string>
+    <string name="string_error">Error</string>
+    <string name="string_sign_up">Registrarse</string>
+    <string name="string_signup_desc">Se popularizó en la década de 1960 con el lanzamiento de hojas de Letraset que contenían Lorem Ipsum.</string>
+    <string name="string_google">Google</string>
+    <string name="string_or">O</string>
+    <string name="string_name">Nombre</string>
+    <string name="string_email">Correo electrónico</string>
+    <string name="string_password">Contraseña</string>
+    <string name="string_create_account">Crear cuenta</string>
+    <string name="string_do_you_have_account">¿Tienes una cuenta?</string>
+    <string name="string_sign_in">Iniciar sesión</string>
+    <string name="string_signin_desc">Se popularizó en la década de 1960 con el lanzamiento de hojas de Letraset que contenían Lorem Ipsum.</string>
+    <string name="string_forgot_password">¿Olvidaste tu contraseña?</string>
+    <string name="string_log_in">Iniciar sesión</string>
+    <string name="string_don_t_have_account">¿No tienes una cuenta?</string>
+
+    <!-- Home -->
+    <string name="string_forget_password2">Olvidar contraseña</string>
+    <string name="string_continue">Continuar</string>
+    <string name="string_authenticator">Autenticador</string>
+    <string name="string_scan_the_2fa_qr_code">Escanea el código QR 2FA</string>
+    <string name="string_add_account_manually">Agregar cuenta manualmente</string>
+    <string name="string_add_account">Agregar cuenta</string>
+    <string name="string_add_acount_desc">Ingresa la clave privada de la cuenta que deseas agregar.</string>
+    <string name="string_account_name">Nombre de la cuenta</string>
+    <string name="string_enter_private_key">Ingresa la clave privada</string>
+    <string name="string_add">Agregar</string>
+    <string name="string_localize_languages">Localizar idiomas</string>
+    <string name="string_new_tools">Nuevas herramientas</string>
+    <string name="string_app_lock">Bloqueo de la aplicación</string>
+    <string name="string_allow_screenshots">Permitir capturas de pantalla</string>
+    <string name="string_manage_and_generate_passwords">Gestionar y generar contraseñas</string>
+    <string name="string_apploack_desc">Establece un PIN para proteger tu aplicación de autenticación</string>
+    <string name="string_pin_lock">Bloqueo con PIN</string>
+    <string name="string_biometric_lock">Bloqueo biométrico</string>
+    <string name="string_relock_time">Tiempo de re-bloqueo</string>
+    <string name="string_set_pin">Establecer PIN</string>
+    <string name="string_set_your_pin">Establece tu PIN</string>
+    <string name="string_setting">Configuración</string>
+    <string name="string_get_premium">Obtener Premium</string>
+    <string name="string_unlimited_access_to_all_features">Acceso ilimitado a todas las funciones</string>
+    <string name="string_localize_languages_setting">Configurar idiomas</string>
+    <string name="string_import_google_authenticator">Importar autenticador de Google</string>
+    <string name="string_delete_account">Eliminar cuenta</string>
+    <string name="string_auto_fill_passwords">Autocompletar contraseñas</string>
+    <string name="string_import_and_export_passwords">Importar y exportar contraseñas</string>
+    <string name="string_rate_us">Califícanos</string>
+    <string name="string_share_our_app">Comparte nuestra aplicación</string>
+    <string name="string_terms_amp_condition"><![CDATA[Términos y condiciones]]></string>
+    <string name="string_privacy_policy">Política de privacidad</string>
+    <!-- Spanish -->
+    <string name="string_general">General</string>
+    <string name="string_backup">Copia de seguridad</string>
+    <string name="string_security">Seguridad</string>
+    <string name="string_sync">Sincronización y copia de seguridad</string>
+
+
+</resources>

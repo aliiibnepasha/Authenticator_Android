@@ -1,6 +1,7 @@
 package com.husnain.authy.utls
 
 import android.content.Context
+import android.util.Log
 import androidx.credentials.CredentialOption
 import androidx.credentials.CustomCredential
 import androidx.credentials.GetCredentialRequest
@@ -18,14 +19,13 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 
 object GoogleSigninUtils {
-    private val _signUpStatusWithGoogle = MutableLiveData<DataState<Nothing>>()
-    val signUpStatusWithGoogle: LiveData<DataState<Nothing>> = _signUpStatusWithGoogle
 
-    fun doGoogleSingin(
+    fun doGoogleSignIn(
         context: Context,
         scope: CoroutineScope,
+        liveData: MutableLiveData<DataState<Nothing>>,
     ) {
-        _signUpStatusWithGoogle.postValue(DataState.Loading())
+        liveData.postValue(DataState.Loading())
         val credentialManager = androidx.credentials.CredentialManager.create(context)
         val request = GetCredentialRequest.Builder()
             .addCredentialOption(getCredentialOptions())
@@ -43,8 +43,9 @@ object GoogleSigninUtils {
 
                             val user = Firebase.auth.signInWithCredential(authCredentials).await().user
                             user?.let {
+                                Log.d("google user data", "${it.displayName}\n ${it.email}")
                                     if (it.isAnonymous.not()){
-                                        _signUpStatusWithGoogle.value = DataState.Success()
+                                        liveData.value = DataState.Success()
                                     }
                             }
                         }
@@ -54,10 +55,10 @@ object GoogleSigninUtils {
                     }
                 }
             } catch (e: NoCredentialException) {
-                _signUpStatusWithGoogle.value = DataState.Error("You have no google account setup on device.")
+                liveData.value = DataState.Error("You have no google account setup on device.")
                 e.printStackTrace()
             } catch (e: GetCredentialException) {
-                _signUpStatusWithGoogle.value = DataState.Error(e.localizedMessage)
+                liveData.value = DataState.Error(e.localizedMessage)
                 e.printStackTrace()
             }
         }

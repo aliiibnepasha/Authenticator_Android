@@ -1,19 +1,18 @@
-package com.husnain.authy.ui.fragment
+package com.husnain.authy.ui.fragment.extra
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.husnain.authy.R
-import com.husnain.authy.databinding.FragmentOtpBinding
+import com.husnain.authy.databinding.FragmentResetPasswordBinding
 
-class OtpFragment : Fragment() {
-    private var _binding: FragmentOtpBinding? = null
+class ResetPasswordFragment : Fragment() {
+    private var _binding: FragmentResetPasswordBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        _binding = FragmentOtpBinding.inflate(inflater, container, false)
+        _binding = FragmentResetPasswordBinding.inflate(inflater, container, false)
         inIt()
         return binding.root
     }

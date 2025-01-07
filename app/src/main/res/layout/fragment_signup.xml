@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:fontFamily="@font/poppins_bold"
-            android:text="Sign Up"
+            android:text="@string/string_sign_up"
             android:textColor="@color/black"
             android:textSize="32sp"
             android:textStyle="bold"
@@ -45,7 +45,7 @@
             android:layout_marginEnd="32dp"
             android:fontFamily="@font/poppins_regular"
             android:gravity="center"
-            android:text="It was popularised in the 1960s with the release of Letraset sheetscontaining Lorem Ipsum."
+            android:text="@string/string_signup_desc"
             android:textColor="@color/color_text_gray"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -103,7 +103,7 @@
                 android:drawableLeft="@drawable/ic_google"
                 android:fontFamily="@font/poppins_medium"
                 android:padding="14dp"
-                android:text="Google"
+                android:text="@string/string_google"
                 android:textColor="@color/black" />
         </androidx.cardview.widget.CardView>
 
@@ -134,7 +134,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_10sdp"
                 android:fontFamily="@font/poppins_medium"
-                android:text="Or"
+                android:text="@string/string_or"
                 android:textColor="@color/black"
                 android:textSize="16sp" />
 
@@ -164,7 +164,8 @@
                 android:layout_height="match_parent"
                 android:background="@drawable/bg_edt"
                 android:fontFamily="@font/poppins_regular"
-                android:hint="Name"
+                android:hint="@string/string_name"
+                android:textAlignment="viewStart"
                 android:paddingHorizontal="@dimen/_15sdp"
                 android:textColor="@color/black" />
         </com.google.android.material.card.MaterialCardView>
@@ -187,7 +188,8 @@
                 android:layout_height="match_parent"
                 android:background="@drawable/bg_edt"
                 android:fontFamily="@font/poppins_regular"
-                android:hint="Email"
+                android:hint="@string/string_email"
+                android:textAlignment="viewStart"
                 android:inputType="textEmailAddress"
                 android:paddingHorizontal="@dimen/_15sdp"
                 android:textColor="@color/black" />
@@ -211,7 +213,8 @@
                 android:layout_height="match_parent"
                 android:background="@drawable/bg_edt"
                 android:fontFamily="@font/poppins_regular"
-                android:hint="Password"
+                android:hint="@string/string_password"
+                android:textAlignment="viewStart"
                 android:inputType="textPassword"
                 android:paddingHorizontal="@dimen/_15sdp"
                 android:textColor="@color/black" />
@@ -256,7 +259,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_medium"
-                android:text="Craate Account"
+                android:text="@string/string_create_account"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -273,7 +276,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_15sdp"
             android:fontFamily="@font/poppins_regular"
-            android:text="Do you have account?"
+            android:text="@string/string_do_you_have_account"
             app:layout_constraintStart_toStartOf="@+id/btnCreateAccount"
             app:layout_constraintTop_toBottomOf="@+id/btnCreateAccount" />
 
@@ -282,7 +285,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_regular"
-            android:text="  Sign In"
+            android:text="@string/string_sign_in"
+            android:paddingStart="@dimen/_2sdp"
             android:textColor="@color/colorPrimary"
             app:layout_constraintBottom_toBottomOf="@+id/appCompatTextView"
             app:layout_constraintStart_toEndOf="@+id/appCompatTextView"

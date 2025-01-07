@@ -1,6 +1,60 @@
 <resources>
+    //Login Signup
     <string name="app_name">Authy</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="string_error">Error</string>
+    <string name="string_sign_up">Sign Up</string>
+    <string name="string_signup_desc">It was popularised in the 1960s with the release of Letraset sheetscontaining Lorem Ipsum.</string>
+    <string name="string_google">Google</string>
+    <string name="string_or">Or</string>
+    <string name="string_name">Name</string>
+    <string name="string_email">Email</string>
+    <string name="string_password">Password</string>
+    <string name="string_create_account">Create Account</string>
+    <string name="string_do_you_have_account">Do you have account?</string>
+    <string name="string_sign_in"> Sign In</string>
+    <string name="string_signin_desc">It was popularised in the 1960s with the release of Letraset sheetscontaining Lorem Ipsum.</string>
+    <string name="string_forgot_password">Forgot Password?</string>
+    <string name="string_log_in">Log In</string>
+    <string name="string_don_t_have_account">Don’t have account?</string>
+
+    //Home
+    <string name="string_forget_password2">Forget Password</string>
+    <string name="string_continue">Continue</string>
+    <string name="string_authenticator">Authenticator</string>
+    <string name="string_scan_the_2fa_qr_code">Scan the 2FA QR Code</string>
+    <string name="string_add_account_manually">Add account manually</string>
+    <string name="string_add_account">Add account</string>
+    <string name="string_add_acount_desc">Enter the private key of the account you want to add.</string>
+    <string name="string_account_name">Account name</string>
+    <string name="string_enter_private_key">Enter private key</string>
+    <string name="string_add">Add</string>
+    <string name="string_localize_languages">Localize languages</string>
+    <string name="string_new_tools">New Tools</string>
+    <string name="string_app_lock">App lock</string>
+    <string name="string_allow_screenshots">Allow screenshots</string>
+    <string name="string_manage_and_generate_passwords">Manage and generate passwords</string>
+    <string name="string_apploack_desc">Set a pin to protect your authenticator app</string>
+    <string name="string_pin_lock">Pin lock</string>
+    <string name="string_biometric_lock">Biometric lock</string>
+    <string name="string_relock_time">ReLock time</string>
+    <string name="string_set_pin">Set pin</string>
+    <string name="string_set_your_pin">Set your pin</string>
+    <string name="string_setting">Setting</string>
+    <string name="string_get_premium">Get Premium</string>
+    <string name="string_unlimited_access_to_all_features">Unlimited access to all features</string>
+    <string name="string_localize_languages_setting">Localize languages</string>
+    <string name="string_import_google_authenticator">Import google authenticator</string>
+    <string name="string_delete_account">Delete Account</string>
+    <string name="string_auto_fill_passwords">Auto fill passwords</string>
+    <string name="string_import_and_export_passwords">Import and export passwords</string>
+    <string name="string_rate_us">Rate us</string>
+    <string name="string_share_our_app">share our app</string>
+    <string name="string_terms_amp_condition"><![CDATA[Terms & condition]]></string>
+    <string name="string_privacy_policy">Privacy policy</string>
+    <string name="string_general">General</string>
+    <string name="string_backup">Backup</string>
+    <string name="string_security">Security</string>
+    <string name="string_sync">Sync and cloud backup</string>
+
 </resources>

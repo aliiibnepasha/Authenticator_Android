@@ -7,12 +7,14 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import com.husnain.authy.R
 import com.husnain.authy.databinding.FragmentSettingBinding
 import com.husnain.authy.ui.activities.AuthActivity
 import com.husnain.authy.ui.activities.MainActivity
 import com.husnain.authy.ui.fragment.auth.VmAuth
 import com.husnain.authy.utls.CustomToast.showCustomToast
 import com.husnain.authy.utls.DataState
+import com.husnain.authy.utls.navigate
 import com.husnain.authy.utls.popBack
 import com.husnain.authy.utls.startActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -45,6 +47,9 @@ class SettingFragment : Fragment() {
         }
         binding.lyGetPremium.setOnClickListener {
             vmAuth.logout()
+        }
+        binding.lyLocalizeLanguages.setOnClickListener {
+            navigate(R.id.action_settingFragment_to_localizeFragment)
         }
     }
 

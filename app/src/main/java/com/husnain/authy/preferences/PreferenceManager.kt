@@ -14,6 +14,7 @@ class PreferenceManager @Inject constructor(@ApplicationContext private val cont
         private const val KEY_ONBOARDING_FINISHED = "key_onboarding_finished"
         private const val KEY_ALLOW_SCREEN_SHOTS = "key_allow_screen_shots"
         private const val KEY_PIN = "keyPin"
+        private const val KEY_LANG = "kayLang"
         private const val KEY_BIOMETRIC_LOCK = "biometric_lock"
         private const val KEY_USER = "key_user"
     }
@@ -55,6 +56,17 @@ class PreferenceManager @Inject constructor(@ApplicationContext private val cont
 
     fun getPin(): String? {
         return myPref.getString(KEY_PIN, "")
+    }
+
+    fun saveLang(lang: String) {
+        myPref.edit().apply {
+            putString(KEY_LANG, lang)
+            apply()
+        }
+    }
+
+    fun getLang(): String? {
+        return myPref.getString(KEY_LANG, "")
     }
 
     fun saveBiometricLock(isEnabled: Boolean) {

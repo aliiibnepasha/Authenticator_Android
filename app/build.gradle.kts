@@ -13,7 +13,7 @@ android {
 
     defaultConfig {
         applicationId = "com.husnain.authy"
-        minSdk = 24
+        minSdk = 26
         //noinspection EditedTargetSdkVersion,OldTargetApi
         targetSdk = 35
         versionCode = 1
@@ -116,4 +116,7 @@ dependencies {
     //Totp
     implementation("dev.turingcomplete:kotlin-onetimepassword:2.4.1")
 
+    implementation("com.akexorcist:localization:1.2.11")
+
+    implementation("androidx.autofill:autofill:1.1.0")
 }

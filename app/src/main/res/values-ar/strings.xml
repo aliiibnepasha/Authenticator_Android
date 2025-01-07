@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    //Login Signup
+    <string name="app_name">أوثي</string>
+    <string name="hello_blank_fragment">مرحباً بك في الفراغ</string>
+    <string name="string_error">خطأ</string>
+    <string name="string_sign_up">إنشاء حساب</string>
+    <string name="string_signup_desc">اشتهر في الستينيات مع إصدار أوراق ليتراسيت التي تحتوي على نص لوريم إيبسوم.</string>
+    <string name="string_google">جوجل</string>
+    <string name="string_or">أو</string>
+    <string name="string_name">الاسم</string>
+    <string name="string_email">البريد الإلكتروني</string>
+    <string name="string_password">كلمة المرور</string>
+    <string name="string_create_account">إنشاء حساب</string>
+    <string name="string_do_you_have_account">هل لديك حساب؟</string>
+    <string name="string_sign_in">تسجيل الدخول</string>
+    <string name="string_signin_desc">اشتهر في الستينيات مع إصدار أوراق ليتراسيت التي تحتوي على نص لوريم إيبسوم.</string>
+    <string name="string_forgot_password">هل نسيت كلمة المرور؟</string>
+    <string name="string_log_in">تسجيل الدخول</string>
+    <string name="string_don_t_have_account">ليس لديك حساب؟</string>
+
+    //Home
+    <string name="string_forget_password2">نسيت كلمة المرور</string>
+    <string name="string_continue">متابعة</string>
+    <string name="string_authenticator">المصادق</string>
+    <string name="string_scan_the_2fa_qr_code">مسح رمز الاستجابة السريعة 2FA</string>
+    <string name="string_add_account_manually">إضافة حساب يدويًا</string>
+    <string name="string_add_account">إضافة حساب</string>
+    <string name="string_add_acount_desc">أدخل المفتاح الخاص بالحساب الذي تريد إضافته.</string>
+    <string name="string_account_name">اسم الحساب</string>
+    <string name="string_enter_private_key">أدخل المفتاح الخاص</string>
+    <string name="string_add">إضافة</string>
+    <string name="string_localize_languages">تخصيص اللغات</string>
+    <string name="string_new_tools">أدوات جديدة</string>
+    <string name="string_app_lock">قفل التطبيق</string>
+    <string name="string_allow_screenshots">السماح بالتقاط الشاشة</string>
+    <string name="string_manage_and_generate_passwords">إدارة وإنشاء كلمات المرور</string>
+    <string name="string_apploack_desc">قم بتعيين رمز PIN لحماية تطبيق المصادقة الخاص بك</string>
+    <string name="string_pin_lock">قفل PIN</string>
+    <string name="string_biometric_lock">قفل بيومتري</string>
+    <string name="string_relock_time">مدة إعادة القفل</string>
+    <string name="string_set_pin">تعيين رمز PIN</string>
+    <string name="string_set_your_pin">قم بتعيين رمز PIN الخاص بك</string>
+    <string name="string_setting">الإعدادات</string>
+    <string name="string_get_premium">الحصول على النسخة المميزة</string>
+    <string name="string_unlimited_access_to_all_features">وصول غير محدود لجميع الميزات</string>
+    <string name="string_localize_languages_setting">إعداد تخصيص اللغات</string>
+    <string name="string_import_google_authenticator">استيراد مصادقة جوجل</string>
+    <string name="string_delete_account">حذف الحساب</string>
+    <string name="string_auto_fill_passwords">الملء التلقائي لكلمات المرور</string>
+    <string name="string_import_and_export_passwords">استيراد وتصدير كلمات المرور</string>
+    <string name="string_rate_us">قيّمنا</string>
+    <string name="string_share_our_app">شارك تطبيقنا</string>
+    <string name="string_terms_amp_condition"><![CDATA[الشروط والأحكام]]></string>
+    <string name="string_privacy_policy">سياسة الخصوصية</string>
+    <string name="string_general">عام</string>
+    <string name="string_backup">نسخة احتياطية</string>
+    <string name="string_security">الأمان</string>
+    <string name="string_sync">المزامنة والنسخ الاحتياطي السحابي</string>
+</resources>
