@@ -51,6 +51,11 @@ class SettingFragment : Fragment() {
         binding.lyLocalizeLanguages.setOnClickListener {
             navigate(R.id.action_settingFragment_to_localizeFragment)
         }
+        binding.lyDeleteAccount.setOnClickListener {
+            showDeleteAccountDialog {
+                vmAuth.deleteAccount()
+            }
+        }
     }
 
     private fun setUpObserver(){
@@ -69,6 +74,32 @@ class SettingFragment : Fragment() {
                 }
             }
         })
+
+        vmAuth.deleteAccountState.observe(viewLifecycleOwner, Observer { state ->
+            when (state) {
+                is DataState.Loading -> {
+                }
+
+                is DataState.Success -> {
+                    startActivity(AuthActivity::class.java)
+                    requireActivity().finish()
+                }
+
+                is DataState.Error -> {
+                    showCustomToast(state.message)
+                }
+            }
+        })
+    }
+
+    //dialog
+    fun showDeleteAccountDialog(onConfirm: () -> Unit) {
+        val builder = android.app.AlertDialog.Builder(context)
+        builder.setTitle("Delete Account")
+        builder.setMessage("Are you sure you want to delete your account? This action cannot be undone.")
+        builder.setPositiveButton("Yes") { _, _ -> onConfirm() }
+        builder.setNegativeButton("No") { dialog, _ -> dialog.dismiss() }
+        builder.create().show()
     }
 
     override fun onDestroyView() {

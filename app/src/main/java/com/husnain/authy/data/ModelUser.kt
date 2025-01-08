@@ -4,6 +4,7 @@ data class ModelUser(
     val userEmail: String,
     val userPassword: String,
     val userName: String = "",
+    val userId: String = ""
 ) {
-    constructor() : this("", "", "")
+    constructor() : this("", "", "", "")
 }

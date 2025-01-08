@@ -7,7 +7,6 @@ import androidx.credentials.CustomCredential
 import androidx.credentials.GetCredentialRequest
 import androidx.credentials.exceptions.GetCredentialException
 import androidx.credentials.exceptions.NoCredentialException
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
@@ -24,6 +23,7 @@ object GoogleSigninUtils {
         context: Context,
         scope: CoroutineScope,
         liveData: MutableLiveData<DataState<Nothing>>,
+        onSuccess: (name: String, email: String) -> Unit
     ) {
         liveData.postValue(DataState.Loading())
         val credentialManager = androidx.credentials.CredentialManager.create(context)
@@ -33,24 +33,28 @@ object GoogleSigninUtils {
 
         scope.launch {
             try {
-                val result = credentialManager.getCredential(context,request )
-                when(result.credential){
-                    is CustomCredential ->{
-                        if (result.credential.type == GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL){
-                            val googleIdTokenCredential = GoogleIdTokenCredential.createFrom(result.credential.data)
+                val result = credentialManager.getCredential(context, request)
+                when (result.credential) {
+                    is CustomCredential -> {
+                        if (result.credential.type == GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL) {
+                            val googleIdTokenCredential =
+                                GoogleIdTokenCredential.createFrom(result.credential.data)
                             val googleTokenId = googleIdTokenCredential.idToken
-                            val authCredentials = GoogleAuthProvider.getCredential(googleTokenId,null)
+                            val authCredentials =
+                                GoogleAuthProvider.getCredential(googleTokenId, null)
 
-                            val user = Firebase.auth.signInWithCredential(authCredentials).await().user
+                            val user =
+                                Firebase.auth.signInWithCredential(authCredentials).await().user
                             user?.let {
                                 Log.d("google user data", "${it.displayName}\n ${it.email}")
-                                    if (it.isAnonymous.not()){
-                                        liveData.value = DataState.Success()
-                                    }
+                                if (it.displayName != null && it.email != null) {
+                                    onSuccess.invoke(it.displayName!!, it.email!!)
+                                }
                             }
                         }
                     }
-                    else ->{
+
+                    else -> {
 
                     }
                 }
@@ -68,7 +72,7 @@ object GoogleSigninUtils {
         return GetGoogleIdOption.Builder()
             .setFilterByAuthorizedAccounts(false)
             .setAutoSelectEnabled(false)
-            .setServerClientId("159368296018-1puim8g04qetrqk8dhng1q6vdb84u3a0.apps.googleusercontent.com")
+            .setServerClientId("159368296018-949v3embra8933ur60r7u7fn6qkpv8hb.apps.googleusercontent.com")
             .build()
     }
 }
