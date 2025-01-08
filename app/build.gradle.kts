@@ -5,6 +5,7 @@ plugins {
     id("com.google.dagger.hilt.android")
     id("kotlin-parcelize")
     id ("com.google.gms.google-services")
+    id("com.google.protobuf")
 }
 
 android {
@@ -54,6 +55,7 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
+    implementation(libs.firebase.crashlytics.buildtools)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -116,7 +118,26 @@ dependencies {
     //Totp
     implementation("dev.turingcomplete:kotlin-onetimepassword:2.4.1")
 
+    //Localization
     implementation("com.akexorcist:localization:1.2.11")
 
-    implementation("androidx.autofill:autofill:1.1.0")
+    implementation("com.journeyapps:zxing-android-embedded:4.3.0")
+
+    implementation("com.google.protobuf:protobuf-javalite:3.21.12")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.9.10")
+}
+
+protobuf {
+    protoc {
+        artifact = "com.google.protobuf:protoc:3.21.12"
+    }
+    generateProtoTasks {
+        all().forEach { task ->
+            task.builtins {
+                create("java") {
+                    option("lite") // Generates lightweight classes
+                }
+            }
+        }
+    }
 }

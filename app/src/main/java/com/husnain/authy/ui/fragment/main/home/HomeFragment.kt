@@ -8,16 +8,18 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import com.google.zxing.qrcode.QRCodeReader
 import com.husnain.authy.R
 import com.husnain.authy.data.ModelTotp
 import com.husnain.authy.data.room.EntityTotp
 import com.husnain.authy.databinding.FragmentHomeBinding
-import com.husnain.authy.ui.activities.MainActivity
 import com.husnain.authy.utls.DataState
+import com.husnain.authy.utls.OtpMigration
 import com.husnain.authy.utls.gone
 import com.husnain.authy.utls.navigate
 import com.husnain.authy.utls.visible
 import dagger.hilt.android.AndroidEntryPoint
+
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
