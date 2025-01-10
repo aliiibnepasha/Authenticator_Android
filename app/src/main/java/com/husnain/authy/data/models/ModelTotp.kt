@@ -1,4 +1,4 @@
-package com.husnain.authy.data
+package com.husnain.authy.data.models
 
 import com.husnain.authy.R
 

@@ -2,8 +2,8 @@ package com.husnain.authy.repositories
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.husnain.authy.data.room.DaoTotp
-import com.husnain.authy.data.room.EntityTotp
+import com.husnain.authy.data.room.daos.DaoTotp
+import com.husnain.authy.data.room.tables.EntityTotp
 import com.husnain.authy.utls.DataState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

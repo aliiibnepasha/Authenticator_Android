@@ -7,33 +7,25 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.lifecycleScope
 import com.google.firebase.auth.FirebaseAuth
 import com.husnain.authy.R
-import com.husnain.authy.data.ModelUser
+import com.husnain.authy.data.models.ModelUser
 import com.husnain.authy.databinding.FragmentSignupBinding
 import com.husnain.authy.preferences.PreferenceManager
 import com.husnain.authy.ui.activities.MainActivity
 import com.husnain.authy.utls.Constants
 import com.husnain.authy.utls.CustomToast.showCustomToast
 import com.husnain.authy.utls.DataState
-import com.husnain.authy.utls.GoogleSigninUtils
-import com.husnain.authy.utls.LoadingView
 import com.husnain.authy.utls.getTextFromEdit
-import com.husnain.authy.utls.gone
 import com.husnain.authy.utls.navigate
 import com.husnain.authy.utls.startActivity
-import com.husnain.authy.utls.visible
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -133,11 +125,13 @@ class SignupFragment : Fragment() {
     }
 
     private fun requestCreateAccount() {
-        vmAuth.signUpWithEmailPass(ModelUser(
+        vmAuth.signUpWithEmailPass(
+            ModelUser(
             binding.edtEmail.getTextFromEdit(),
             binding.edtPass.getTextFromEdit(),
             binding.edtName.getTextFromEdit()
-        ))
+        )
+        )
     }
 
     private fun validateFields(): Boolean {

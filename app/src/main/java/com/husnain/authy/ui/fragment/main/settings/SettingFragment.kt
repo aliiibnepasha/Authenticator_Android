@@ -1,21 +1,29 @@
 package com.husnain.authy.ui.fragment.main.settings
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.ActivityResultLauncher
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.husnain.authy.R
 import com.husnain.authy.databinding.FragmentSettingBinding
 import com.husnain.authy.ui.activities.AuthActivity
-import com.husnain.authy.ui.activities.MainActivity
 import com.husnain.authy.ui.fragment.auth.VmAuth
+import com.husnain.authy.ui.fragment.main.home.VmHome
 import com.husnain.authy.utls.CustomToast.showCustomToast
 import com.husnain.authy.utls.DataState
+import com.husnain.authy.utls.decodeQRCode
+import com.husnain.authy.utls.handleTOTPURI
 import com.husnain.authy.utls.navigate
+import com.husnain.authy.utls.openGallery
 import com.husnain.authy.utls.popBack
+import com.husnain.authy.utls.setupGalleryPicker
+import com.husnain.authy.utls.setupQrCodeScanner
+import com.husnain.authy.utls.showBottomSheetDialog
 import com.husnain.authy.utls.startActivity
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -24,7 +32,9 @@ class SettingFragment : Fragment() {
     private var _binding: FragmentSettingBinding? = null
     private val binding get() = _binding!!
     private val vmAuth: VmAuth by viewModels()
-
+    private val vmHome: VmHome by viewModels()
+    private lateinit var scanQrCodeLauncher: ActivityResultLauncher<Nothing?>
+    private lateinit var galleryPickerLauncher: ActivityResultLauncher<Intent>
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,6 +49,8 @@ class SettingFragment : Fragment() {
     private fun inIt() {
         setOnClickListener()
         setUpObserver()
+        handleDataFromGallery()
+        handleDataFromCamera()
     }
 
     private fun setOnClickListener() {
@@ -46,7 +58,7 @@ class SettingFragment : Fragment() {
             popBack()
         }
         binding.lyGetPremium.setOnClickListener {
-            vmAuth.logout()
+
         }
         binding.lyLocalizeLanguages.setOnClickListener {
             navigate(R.id.action_settingFragment_to_localizeFragment)
@@ -56,9 +68,22 @@ class SettingFragment : Fragment() {
                 vmAuth.deleteAccount()
             }
         }
+        binding.btnLogout.setOnClickListener {
+            vmAuth.logout()
+        }
+        binding.lyImportGoogleAuthData.setOnClickListener {
+            showBottomSheetDialog(
+                onGalleryClick = {
+                    openGallery(galleryPickerLauncher)
+                },
+                onCameraClick = {
+                    scanQrCodeLauncher.launch(null)
+                }
+            )
+        }
     }
 
-    private fun setUpObserver(){
+    private fun setUpObserver() {
         vmAuth.logoutState.observe(viewLifecycleOwner, Observer { state ->
             when (state) {
                 is DataState.Loading -> {
@@ -90,10 +115,68 @@ class SettingFragment : Fragment() {
                 }
             }
         })
+
+        vmHome.insertState.observe(viewLifecycleOwner, Observer { state ->
+            when (state) {
+                is DataState.Loading -> {
+                }
+
+                is DataState.Success -> {
+                    navigate(R.id.action_settingFragment_to_homeFragment)
+                }
+
+                is DataState.Error -> {
+                    showCustomToast("Error: ${state.message}")
+                }
+            }
+        })
     }
 
+    private fun handleDataFromCamera() {
+        scanQrCodeLauncher = setupQrCodeScanner(
+            onSuccess = { qrContent ->
+                processTOTPURI(qrContent)
+            },
+            onNot2FAQR = {
+                showCustomToast("Scanned QR is not a 2FA QR")
+            },
+            onMissingPermission = {
+                showCustomToast("Missing permission to scan QR codes.")
+            },
+            onError = { errorMessage ->
+                showCustomToast("Error occurred: $errorMessage")
+            }
+        )
+    }
+
+    private fun handleDataFromGallery() {
+        galleryPickerLauncher = setupGalleryPicker { uri ->
+            requireContext().decodeQRCode(uri,
+                onSuccess = { qrCodeContent ->
+                    processTOTPURI(qrCodeContent)
+                },
+                onError = { error ->
+                    showCustomToast("Error decoding QR code: ${error.localizedMessage}")
+                }
+            )
+        }
+    }
+
+    private fun processTOTPURI(qrContent: String) {
+        handleTOTPURI(
+            uri = qrContent,
+            onInsertSecret = { entity ->
+                vmHome.insertSecretData(entity)
+            },
+            onError = { error ->
+                showCustomToast(error)
+            },
+        )
+    }
+
+
     //dialog
-    fun showDeleteAccountDialog(onConfirm: () -> Unit) {
+    private fun showDeleteAccountDialog(onConfirm: () -> Unit) {
         val builder = android.app.AlertDialog.Builder(context)
         builder.setTitle("Delete Account")
         builder.setMessage("Are you sure you want to delete your account? This action cannot be undone.")

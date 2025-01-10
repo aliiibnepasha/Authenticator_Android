@@ -13,6 +13,12 @@
         <action
             android:id="@+id/action_settingFragment_to_localizeFragment"
             app:destination="@id/localizeFragment" />
+        <action
+            android:id="@+id/action_settingFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+        <action
+            android:id="@+id/action_settingFragment_to_backUpFragment"
+            app:destination="@id/backUpFragment" />
     </fragment>
     <fragment
         android:id="@+id/newToolsFragment"
@@ -34,6 +40,9 @@
         <action
             android:id="@+id/action_homeFragment_to_searchFragment"
             app:destination="@id/searchFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_subscriptionFragment"
+            app:destination="@id/subscriptionFragment" />
     </fragment>
     <fragment
         android:id="@+id/addAccountManuallyFragment"
@@ -72,7 +81,7 @@
         tools:layout="@layout/fragment_set_pin" />
     <fragment
         android:id="@+id/searchFragment"
-        android:name="com.husnain.authy.ui.fragment.search.SearchFragment"
+        android:name="com.husnain.authy.ui.fragment.main.search.SearchFragment"
         android:label="fragment_search"
         tools:layout="@layout/fragment_search" />
     <fragment
@@ -80,4 +89,14 @@
         android:name="com.husnain.authy.ui.fragment.main.localization.LocalizeFragment"
         android:label="fragment_localize"
         tools:layout="@layout/fragment_localize" />
+    <fragment
+        android:id="@+id/subscriptionFragment"
+        android:name="com.husnain.authy.ui.fragment.main.subscription.SubscriptionFragment"
+        android:label="fragment_subscription"
+        tools:layout="@layout/fragment_subscription" />
+    <fragment
+        android:id="@+id/backUpFragment"
+        android:name="com.husnain.authy.ui.fragment.main.backup.BackUpFragment"
+        android:label="fragment_back_up"
+        tools:layout="@layout/fragment_back_up" />
 </navigation>

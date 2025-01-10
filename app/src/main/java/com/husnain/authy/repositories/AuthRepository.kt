@@ -8,8 +8,7 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.SetOptions
-import com.husnain.authy.data.ModelUser
+import com.husnain.authy.data.models.ModelUser
 import com.husnain.authy.preferences.PreferenceManager
 import com.husnain.authy.utls.DataState
 import com.husnain.authy.utls.GoogleSigninUtils

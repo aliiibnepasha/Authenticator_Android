@@ -3,7 +3,7 @@ package com.husnain.authy.ui.fragment.auth
 import android.app.Activity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.husnain.authy.data.ModelUser
+import com.husnain.authy.data.models.ModelUser
 import com.husnain.authy.repositories.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch

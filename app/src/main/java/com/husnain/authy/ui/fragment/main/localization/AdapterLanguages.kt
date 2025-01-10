@@ -1,14 +1,13 @@
 package com.husnain.authy.ui.fragment.main.localization
 
 import android.graphics.Color
-import android.graphics.ColorSpace.Model
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.husnain.authy.data.ModelLanguage
+import com.husnain.authy.data.models.ModelLanguage
 import com.husnain.authy.databinding.ItemLanguageTextBinding
 
-class AdapterLanguages(private val items: List<ModelLanguage>,private val callBack:(ModelLanguage) -> Unit) :
+class AdapterLanguages(private val items: List<ModelLanguage>, private val callBack:(ModelLanguage) -> Unit) :
     RecyclerView.Adapter<AdapterLanguages.ViewHolder>() {
 
     private var selectedLang: String? = null

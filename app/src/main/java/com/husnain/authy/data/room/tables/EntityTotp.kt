@@ -1,4 +1,4 @@
-package com.husnain.authy.data.room
+package com.husnain.authy.data.room.tables
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

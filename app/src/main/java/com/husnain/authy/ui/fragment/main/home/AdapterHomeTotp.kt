@@ -1,7 +1,6 @@
 package com.husnain.authy.ui.fragment.main.home
 
 import android.annotation.SuppressLint
-import android.graphics.ColorSpace.Model
 import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
@@ -9,7 +8,7 @@ import android.view.ViewGroup
 import android.widget.Filter
 import androidx.recyclerview.widget.RecyclerView
 import com.husnain.authy.R
-import com.husnain.authy.data.ModelTotp
+import com.husnain.authy.data.models.ModelTotp
 import com.husnain.authy.databinding.ItemHomeTotpBinding
 import com.husnain.authy.utls.SearchFilter
 import com.husnain.authy.utls.TotpUtil

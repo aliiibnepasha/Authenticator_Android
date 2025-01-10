@@ -3,7 +3,7 @@ package com.husnain.authy.preferences
 import android.content.Context
 import android.content.SharedPreferences
 import com.google.gson.Gson
-import com.husnain.authy.data.ModelUser
+import com.husnain.authy.data.models.ModelUser
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 

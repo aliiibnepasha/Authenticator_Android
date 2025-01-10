@@ -9,8 +9,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
@@ -22,7 +20,7 @@ import com.google.zxing.RGBLuminanceSource
 import com.google.zxing.common.HybridBinarizer
 import com.google.zxing.qrcode.QRCodeReader
 import com.husnain.authy.R
-import com.husnain.authy.data.room.EntityTotp
+import com.husnain.authy.data.room.tables.EntityTotp
 import com.husnain.authy.databinding.BottomSheetLayoutBinding
 import com.husnain.authy.databinding.FragmentAddNewBinding
 import com.husnain.authy.ui.fragment.main.home.VmHome
@@ -32,7 +30,6 @@ import com.husnain.authy.utls.OtpMigration
 import com.husnain.authy.utls.navigate
 import com.husnain.authy.utls.popBack
 import dagger.hilt.android.AndroidEntryPoint
-import dagger.hilt.android.HiltAndroidApp
 import io.github.g00fy2.quickie.QRResult
 import io.github.g00fy2.quickie.ScanQRCode
 import io.github.g00fy2.quickie.content.QRContent
@@ -140,6 +137,7 @@ class AddNewFragment : Fragment() {
             }
         }
     }
+
     private fun handleResult(result: QRResult) {
         when (result) {
             is QRResult.QRSuccess -> {
@@ -165,8 +163,7 @@ class AddNewFragment : Fragment() {
             }
 
             is QRResult.QRError -> {
-                val errorMessage =
-                    "${result.exception.javaClass.simpleName}: ${result.exception.localizedMessage}"
+                val errorMessage = "${result.exception.javaClass.simpleName}: ${result.exception.localizedMessage}"
                 showCustomToast("Error occurred: $errorMessage")
             }
         }

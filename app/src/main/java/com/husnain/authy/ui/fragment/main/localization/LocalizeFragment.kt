@@ -1,20 +1,17 @@
 package com.husnain.authy.ui.fragment.main.localization
 
-import android.graphics.ColorSpace.Model
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.husnain.authy.data.ModelLanguage
+import com.husnain.authy.data.models.ModelLanguage
 import com.husnain.authy.databinding.FragmentLocalizeBinding
 import com.husnain.authy.preferences.PreferenceManager
 import com.husnain.authy.ui.activities.MainActivity
 import com.husnain.authy.utls.popBack
 import com.husnain.authy.utls.startActivity
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.Locale
 import javax.inject.Inject
 
 @AndroidEntryPoint

@@ -1,10 +1,10 @@
-package com.husnain.authy.data.room
+package com.husnain.authy.data.room.daos
 
-import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import com.husnain.authy.data.room.tables.EntityTotp
 
 @Dao
 interface DaoTotp {
@@ -27,4 +27,6 @@ interface DaoTotp {
 
     @Query("SELECT * FROM table_totp")
     suspend fun getAllTotpData(): List<EntityTotp>
+
+
 }

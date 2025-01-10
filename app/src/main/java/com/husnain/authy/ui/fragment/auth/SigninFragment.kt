@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.husnain.authy.R
-import com.husnain.authy.data.ModelUser
+import com.husnain.authy.data.models.ModelUser
 import com.husnain.authy.databinding.FragmentSigninBinding
 import com.husnain.authy.ui.activities.MainActivity
 import com.husnain.authy.utls.CustomToast.showCustomToast

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/img_colored_bg"
-    tools:context=".ui.fragment.search.SearchFragment">
+    tools:context=".ui.fragment.main.search.SearchFragment">
 
 
     <androidx.appcompat.widget.AppCompatImageView

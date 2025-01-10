@@ -2,8 +2,9 @@ package com.husnain.authy.di
 
 import android.content.Context
 import androidx.room.Room
-import com.husnain.authy.data.room.DaoTotp
-import com.husnain.authy.data.room.TotpDatabase
+import com.husnain.authy.data.room.daos.DaoRecentlyDeleted
+import com.husnain.authy.data.room.daos.DaoTotp
+import com.husnain.authy.data.room.database.TotpDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -27,5 +28,10 @@ object RoomModule {
     @Provides
     fun provideDaoTotp(database: TotpDatabase): DaoTotp {
         return database.daoTotp()
+    }
+
+    @Provides
+    fun provideDaoRecentlyDeleted(database: TotpDatabase): DaoRecentlyDeleted {
+        return database.daoRecentlyDeleted()
     }
 }

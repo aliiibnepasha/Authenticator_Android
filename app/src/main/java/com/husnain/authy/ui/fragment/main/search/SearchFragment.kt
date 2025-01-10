@@ -1,4 +1,4 @@
-package com.husnain.authy.ui.fragment.search
+package com.husnain.authy.ui.fragment.main.search
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -9,16 +9,13 @@ import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import com.husnain.authy.R
-import com.husnain.authy.data.ModelTotp
-import com.husnain.authy.data.room.EntityTotp
+import com.husnain.authy.data.models.ModelTotp
+import com.husnain.authy.data.room.tables.EntityTotp
 import com.husnain.authy.databinding.FragmentSearchBinding
 import com.husnain.authy.ui.fragment.main.home.AdapterHomeTotp
 import com.husnain.authy.ui.fragment.main.home.VmHome
 import com.husnain.authy.utls.DataState
-import com.husnain.authy.utls.gone
 import com.husnain.authy.utls.popBack
-import com.husnain.authy.utls.visible
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

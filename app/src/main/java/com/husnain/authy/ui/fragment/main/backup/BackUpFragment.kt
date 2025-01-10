@@ -1,18 +1,19 @@
-package com.husnain.authy.ui.fragment.resetPassword
+package com.husnain.authy.ui.fragment.main.backup
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.husnain.authy.databinding.FragmentForgotPasswordBinding
+import com.husnain.authy.R
+import com.husnain.authy.databinding.FragmentBackUpBinding
 
-class ForgotPasswordFragment : Fragment() {
-    private var _binding: FragmentForgotPasswordBinding? = null
+class BackUpFragment : Fragment() {
+    private var _binding: FragmentBackUpBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        _binding = FragmentForgotPasswordBinding.inflate(inflater, container, false)
+        _binding = FragmentBackUpBinding.inflate(inflater, container, false)
         inIt()
         return binding.root
     }

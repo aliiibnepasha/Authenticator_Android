@@ -31,7 +31,7 @@
     </fragment>
     <fragment
         android:id="@+id/forgotPasswordFragment"
-        android:name="com.husnain.authy.ui.fragment.resetPassword.ForgotPasswordFragment"
+        android:name="com.husnain.authy.ui.fragment.auth.resetPassword.ForgotPasswordFragment"
         android:label="fragment_forgot_password"
         tools:layout="@layout/fragment_forgot_password" />
     <fragment
