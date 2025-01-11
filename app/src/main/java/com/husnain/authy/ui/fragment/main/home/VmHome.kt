@@ -14,12 +14,13 @@ class VmHome @Inject constructor(
 ): ViewModel(){
     val totpListState = repository.totpListState
     val insertState = repository.insertState
+    val deleteState = repository.deleteState
 
     init {
         fetchAllTotp()
     }
 
-    private fun fetchAllTotp() {
+    fun fetchAllTotp() {
         viewModelScope.launch {
             repository.fetchAllTotp()
         }
@@ -31,4 +32,9 @@ class VmHome @Inject constructor(
         }
     }
 
+    fun deleteTotp(secret: String) {
+        viewModelScope.launch {
+            repository.deleteTotp(secret)
+        }
+    }
 }

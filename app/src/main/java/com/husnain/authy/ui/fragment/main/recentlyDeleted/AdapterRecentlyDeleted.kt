@@ -1,31 +1,28 @@
-package com.husnain.authy.ui.fragment.main.home
+package com.husnain.authy.ui.fragment.main.recentlyDeleted
 
-import android.annotation.SuppressLint
 import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Filter
 import androidx.recyclerview.widget.RecyclerView
 import com.husnain.authy.R
 import com.husnain.authy.data.models.ModelTotp
-import com.husnain.authy.databinding.ItemHomeTotpBinding
-import com.husnain.authy.utls.SearchFilter
+import com.husnain.authy.data.room.tables.RecentlyDeleted
+import com.husnain.authy.databinding.ItemRecentlyDeletedBinding
 import com.husnain.authy.utls.TotpUtil
-import com.husnain.authy.utls.copyToClip
-import com.husnain.authy.utls.showSnackBar
 
-class AdapterHomeTotp(private var items: List<ModelTotp>) :
-    RecyclerView.Adapter<AdapterHomeTotp.ViewHolder>() {
-    private var longClickCallBack: (ModelTotp) -> Unit = {}
+class AdapterRecentlyDeleted(
+    private var items: List<RecentlyDeleted>,
+) :
+    RecyclerView.Adapter<AdapterRecentlyDeleted.ViewHolder>() {
+    private var callBack: (RecentlyDeleted) -> Unit = {}
+    private var selectedPosition = -1;
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding =
-            ItemHomeTotpBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = ItemRecentlyDeletedBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
 
-    private var originalItems: List<ModelTotp> = ArrayList(items)
 
     override fun getItemCount(): Int {
         return items.size
@@ -41,38 +38,39 @@ class AdapterHomeTotp(private var items: List<ModelTotp>) :
         holder.stopUpdates()
     }
 
-    fun getFilter(): Filter {
-        return SearchFilter(originalList = originalItems, adapter = this)
+    fun setOnClickListener(callback: (RecentlyDeleted) -> Unit) {
+        this.callBack = callback
     }
 
-    @SuppressLint("NotifyDataSetChanged")
-    fun setItems(newItems: List<ModelTotp>) {
-        items = newItems
-        notifyDataSetChanged()
-    }
-
-    fun setOnLongClickListener(callback: (ModelTotp) -> Unit) {
-        longClickCallBack = callback
-    }
-
-    inner class ViewHolder(val binding: ItemHomeTotpBinding) :
+    inner class ViewHolder(val binding: ItemRecentlyDeletedBinding) :
         RecyclerView.ViewHolder(binding.root) {
         private var updateHandler: Handler? = null
 
-        fun bind(data: ModelTotp) {
+        fun bind(data: RecentlyDeleted) {
             binding.imgLogo.setImageResource(R.drawable.img_baby_brain)
-            binding.tvServiceName.text = data.serviceName
+            binding.tvServiceName.text = data.name
 
-            binding.root.setOnLongClickListener {
-                longClickCallBack.invoke(data)
-                true
+            if (bindingAdapterPosition == selectedPosition) {
+                binding.imgRadioButton.setImageResource(R.drawable.ic_radio_selected)
+            } else {
+                binding.imgRadioButton.setImageResource(R.drawable.ic_radio_unselected)
+            }
+
+            binding.root.setOnClickListener {
+                val previousSelectedPosition = selectedPosition
+                selectedPosition = bindingAdapterPosition
+
+                notifyItemChanged(previousSelectedPosition)
+                notifyItemChanged(selectedPosition)
+
+                callBack.invoke(data)
             }
 
             updateHandler = Handler(Looper.getMainLooper())
             val updateTotp = object : Runnable {
                 override fun run() {
                     try {
-                        val totp = TotpUtil.generateTotp(data.secretKey)
+                        val totp = TotpUtil.generateTotp(data.secret)
                         binding.tvTotp.text = totp.chunked(3).joinToString(" ")
 
                         val remainingSeconds = TotpUtil.getRemainingSeconds()
@@ -88,11 +86,6 @@ class AdapterHomeTotp(private var items: List<ModelTotp>) :
 
             // Start TOTP updates
             updateHandler?.post(updateTotp)
-
-            binding.imgCopy.setOnClickListener {
-                it.context.copyToClip(binding.tvTotp.text.toString())
-                showSnackBar(binding.root, "Code copied to clipboard.")
-            }
         }
 
         fun stopUpdates() {

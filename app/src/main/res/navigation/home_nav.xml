@@ -19,6 +19,9 @@
         <action
             android:id="@+id/action_settingFragment_to_backUpFragment"
             app:destination="@id/backUpFragment" />
+        <action
+            android:id="@+id/action_settingFragment_to_recentlyDeletedFragment"
+            app:destination="@id/recentlyDeletedFragment" />
     </fragment>
     <fragment
         android:id="@+id/newToolsFragment"
@@ -99,4 +102,9 @@
         android:name="com.husnain.authy.ui.fragment.main.backup.BackUpFragment"
         android:label="fragment_back_up"
         tools:layout="@layout/fragment_back_up" />
+    <fragment
+        android:id="@+id/recentlyDeletedFragment"
+        android:name="com.husnain.authy.ui.fragment.main.recentlyDeleted.RecentlyDeletedFragment"
+        android:label="fragment_recently_deleted"
+        tools:layout="@layout/fragment_recently_deleted" />
 </navigation>

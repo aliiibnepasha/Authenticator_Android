@@ -49,16 +49,16 @@
             android:textColor="@color/color_text_gray"
             android:textSize="@dimen/_10ssp"
             app:layout_constraintBottom_toBottomOf="@+id/imgLogo"
-            app:layout_constraintEnd_toStartOf="@+id/imgCopy"
+            app:layout_constraintEnd_toStartOf="@+id/imgRadioButton"
             app:layout_constraintStart_toStartOf="@+id/tvTotp"
             app:layout_constraintTop_toBottomOf="@+id/tvTotp" />
 
         <ImageView
-            android:id="@+id/imgCopy"
+            android:id="@+id/imgRadioButton"
             android:layout_width="@dimen/_20sdp"
             android:layout_height="@dimen/_20sdp"
             android:layout_marginEnd="@dimen/_10sdp"
-            android:src="@drawable/ic_copy"
+            android:src="@drawable/ic_cirlce_un_selected"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

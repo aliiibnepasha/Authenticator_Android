@@ -28,5 +28,6 @@ interface DaoTotp {
     @Query("SELECT * FROM table_totp")
     suspend fun getAllTotpData(): List<EntityTotp>
 
-
+    @Query("DELETE FROM table_totp WHERE secretKey = :secret")
+    suspend fun deleteTotpById(secret: String)
 }

@@ -165,4 +165,10 @@ fun Fragment.showBottomSheetDialog(txtPrimaryButton: String,onPrimaryClick:() ->
     bottomSheetDialog.show()
 }
 
+enum class OperationType {
+    RESTORE,
+    DELETE,
+    RESTORE_ALL
+}
+
 

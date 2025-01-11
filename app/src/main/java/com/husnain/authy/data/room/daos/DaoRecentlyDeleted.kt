@@ -17,7 +17,7 @@ interface DaoRecentlyDeleted {
     suspend fun insertOrReplaceRecentlyDeletedData(data: RecentlyDeleted) {
         val existingData = getRecentlyDeletedBySecretKey(data.secret)
         if (existingData != null) {
-            if (existingData != data) {
+            if (data.secret != existingData.secret) {
                 insertRecentlyDeletedData(data)
             }
         } else {
@@ -27,4 +27,10 @@ interface DaoRecentlyDeleted {
 
     @Query("SELECT * FROM table_recently_deleted")
     suspend fun getAllRecentlyDeletedData(): List<RecentlyDeleted>
+
+    @Query("DELETE FROM table_recently_deleted WHERE secret = :secret")
+    suspend fun deleteRecentBySecret(secret: String)
+
+    @Query("DELETE FROM table_recently_deleted")
+    suspend fun clearAllRecentlyDeletedTable()
 }

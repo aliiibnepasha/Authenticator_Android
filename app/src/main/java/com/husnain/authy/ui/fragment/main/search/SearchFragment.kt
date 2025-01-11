@@ -84,9 +84,7 @@ class SearchFragment : Fragment() {
                 ModelTotp(it.secretKey, it.serviceName)
             }
 
-            adapter = AdapterHomeTotp(dataList) {
-
-            }
+            adapter = AdapterHomeTotp(dataList)
             binding.rvTotp.adapter = adapter
         }
     }

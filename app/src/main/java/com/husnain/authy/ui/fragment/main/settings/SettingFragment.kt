@@ -71,6 +71,9 @@ class SettingFragment : Fragment() {
                 vmAuth.deleteAccount()
             }
         }
+        binding.lyRecentlyDeleted.setOnClickListener {
+            navigate(R.id.action_settingFragment_to_recentlyDeletedFragment)
+        }
         binding.btnLogout.setOnClickListener {
             showBottomSheetDialog("Logout",onPrimaryClick = {
                 vmAuth.logout()
