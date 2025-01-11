@@ -76,17 +76,17 @@ class SigninFragment : Fragment() {
         vmAuth.googleLoginState.observe(viewLifecycleOwner, Observer { state ->
             when (state) {
                 is DataState.Loading -> {
-                    showLoader()
+                    showLoaderForGoogle()
                 }
 
                 is DataState.Success -> {
-                    stopLoader()
+                    stopLoaderForGoogle()
                     startActivity(MainActivity::class.java)
                     requireActivity().finish()
                 }
 
                 is DataState.Error -> {
-                    stopLoader()
+                    stopLoaderForGoogle()
                     showCustomToast(state.message)
                 }
             }
@@ -137,6 +137,16 @@ class SigninFragment : Fragment() {
     private fun stopLoader(){
         binding.loadingView.stop(binding.tvLogin)
     }
+
+
+    private fun showLoaderForGoogle(){
+        binding.loadingViewGoogle.start(viewToHideIf = binding.tvGoogle)
+    }
+
+    private fun stopLoaderForGoogle(){
+        binding.loadingViewGoogle.stop(binding.tvGoogle)
+    }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

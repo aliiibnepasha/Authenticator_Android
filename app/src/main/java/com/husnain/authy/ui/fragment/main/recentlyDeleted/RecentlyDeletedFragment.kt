@@ -76,7 +76,7 @@ class RecentlyDeletedFragment : Fragment() {
         }
 
         binding.btnDeleteAll.setOnClickListener {
-
+            vmRecentlyDeleted.restoreOrDelete(null, OperationType.DELETE_ALL)
         }
     }
 

@@ -74,6 +74,11 @@ class RecentlyDeletedRepository @Inject constructor(
                     daoRecentlyDeleted.clearAllRecentlyDeletedTable()
                     _restoreState.postValue(DataState.Success(Unit))
                 }
+
+                OperationType.DELETE_ALL -> {
+                    daoRecentlyDeleted.clearAllRecentlyDeletedTable()
+                    _restoreState.postValue(DataState.Success(Unit))
+                }
             }
         } catch (e: Exception) {
             _restoreState.postValue(DataState.Error("Failed to perform the operation"))

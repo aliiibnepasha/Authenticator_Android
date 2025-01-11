@@ -168,7 +168,8 @@ fun Fragment.showBottomSheetDialog(txtPrimaryButton: String,onPrimaryClick:() ->
 enum class OperationType {
     RESTORE,
     DELETE,
-    RESTORE_ALL
+    RESTORE_ALL,
+    DELETE_ALL
 }
 
 
