@@ -10,6 +10,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
@@ -19,8 +20,11 @@ import androidx.annotation.IdRes
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.snackbar.Snackbar
 import com.husnain.authy.R
+import com.husnain.authy.databinding.BottomSheetDeleteTotpBinding
+import com.husnain.authy.databinding.BottomSheetLayoutBinding
 
 fun View.visible() {
     visibility = View.VISIBLE
@@ -139,6 +143,26 @@ fun Context.copyToClip(text: String){
 
 fun EditText.getTextFromEdit() : String{
     return  this.text.toString()
+}
+
+//Bottom Sheet
+fun Fragment.showBottomSheetDialog(txtPrimaryButton: String,onPrimaryClick:() -> Unit) {
+    val bottomSheetDialog = BottomSheetDialog(requireContext(), R.style.BottomSheetDialogTheme)
+    val binding = BottomSheetDeleteTotpBinding.inflate(LayoutInflater.from(requireContext()))
+    bottomSheetDialog.setContentView(binding.root)
+
+    binding.tvTop.text = txtPrimaryButton
+
+    binding.lyTopText.setOnClickListener {
+        onPrimaryClick.invoke()
+        bottomSheetDialog.dismiss()
+    }
+
+    binding.lyCancel.setOnClickListener {
+        bottomSheetDialog.dismiss()
+    }
+
+    bottomSheetDialog.show()
 }
 
 

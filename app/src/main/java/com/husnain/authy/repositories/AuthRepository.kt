@@ -103,21 +103,25 @@ class AuthRepository @Inject constructor(
             userDocRef.get()
                 .addOnSuccessListener { document ->
                     if (document.exists()) {
+                        _googleLoginStatus.value = DataState.Success()
                         _signUpStatus.value = DataState.Success()
                     } else {
                         // Document doesn't exist, so insert the user data
                         userDocRef.set(user)
                             .addOnSuccessListener {
+                                _googleLoginStatus.value = DataState.Success()
                                 _signUpStatus.value = DataState.Success()
                                 preferenceManager.saveUserData(user)
                             }
                             .addOnFailureListener {
                                 _signUpStatus.value = DataState.Error(it.message!!)
+                                _googleLoginStatus.value = DataState.Error(it.message!!)
                             }
                     }
                 }
                 .addOnFailureListener {
                     _signUpStatus.value = DataState.Error(it.message!!)
+                    _googleLoginStatus.value = DataState.Error(it.message!!)
                 }
         }
     }

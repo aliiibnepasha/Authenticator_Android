@@ -9,7 +9,10 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.husnain.authy.R
+import com.husnain.authy.databinding.BottomSheetDeleteTotpBinding
+import com.husnain.authy.databinding.BottomSheetLayoutBinding
 import com.husnain.authy.databinding.FragmentSettingBinding
 import com.husnain.authy.ui.activities.AuthActivity
 import com.husnain.authy.ui.fragment.auth.VmAuth
@@ -69,7 +72,9 @@ class SettingFragment : Fragment() {
             }
         }
         binding.btnLogout.setOnClickListener {
-            vmAuth.logout()
+            showBottomSheetDialog("Logout",onPrimaryClick = {
+                vmAuth.logout()
+            })
         }
         binding.lyImportGoogleAuthData.setOnClickListener {
             showBottomSheetDialog(

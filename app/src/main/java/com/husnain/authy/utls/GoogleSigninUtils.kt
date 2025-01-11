@@ -40,11 +40,9 @@ object GoogleSigninUtils {
                             val googleIdTokenCredential =
                                 GoogleIdTokenCredential.createFrom(result.credential.data)
                             val googleTokenId = googleIdTokenCredential.idToken
-                            val authCredentials =
-                                GoogleAuthProvider.getCredential(googleTokenId, null)
+                            val authCredentials = GoogleAuthProvider.getCredential(googleTokenId, null)
 
-                            val user =
-                                Firebase.auth.signInWithCredential(authCredentials).await().user
+                            val user = Firebase.auth.signInWithCredential(authCredentials).await().user
                             user?.let {
                                 Log.d("google user data", "${it.displayName}\n ${it.email}")
                                 if (it.displayName != null && it.email != null) {

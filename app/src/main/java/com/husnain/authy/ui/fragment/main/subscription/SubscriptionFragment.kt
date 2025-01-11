@@ -27,9 +27,9 @@ class SubscriptionFragment : Fragment() {
 
     private fun setUpAdapter() {
         val subscriptionDataList = listOf(
-            ModelSubscription("Weak","Most Popular",7.7),
-            ModelSubscription("Weak","Most Popular",7.7),
-            ModelSubscription("Weak","Most Popular",7.7),
+            ModelSubscription("weekly","Most Popular",7.99),
+            ModelSubscription("Monthly","Most Popular",49.9),
+            ModelSubscription("Annually","Most Popular",199.99),
         )
         val adapter = AdapterSubscription(subscriptionDataList){
 
