@@ -10,6 +10,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import com.husnain.authy.data.models.ModelUser
 import com.husnain.authy.preferences.PreferenceManager
+import com.husnain.authy.utls.Constants
 import com.husnain.authy.utls.DataState
 import com.husnain.authy.utls.GoogleSigninUtils
 import kotlinx.coroutines.CoroutineScope
@@ -156,6 +157,7 @@ class AuthRepository @Inject constructor(
         _logoutState.postValue(DataState.Loading())
         try {
             auth.signOut()
+            Constants.isComingFromLogout = true
             _logoutState.postValue(DataState.Success())
         } catch (exception: Exception) {
             _logoutState.postValue(DataState.Error("Logout failed"))

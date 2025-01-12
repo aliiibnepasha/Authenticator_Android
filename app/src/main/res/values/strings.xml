@@ -1,4 +1,7 @@
 <resources>
+    //Ad unit id's
+    <string name="ad_banner_test_ud" translatable="false">ca-app-pub-3940256099942544/9214589741</string>
+    <string name="admob_app_id" translatable="false"> ca-app-pub-3940256099942544~3347511713</string>
     //Login Signup
     <string name="app_name">Authy</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>

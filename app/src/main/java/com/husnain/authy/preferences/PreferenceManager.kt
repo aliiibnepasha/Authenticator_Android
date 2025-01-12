@@ -17,6 +17,7 @@ class PreferenceManager @Inject constructor(@ApplicationContext private val cont
         private const val KEY_LANG = "kayLang"
         private const val KEY_BIOMETRIC_LOCK = "biometric_lock"
         private const val KEY_USER = "key_user"
+        private const val KEY_IS_LOGED_IN = "key_is_loged_in"
     }
 
     private val gson = Gson()
@@ -85,5 +86,13 @@ class PreferenceManager @Inject constructor(@ApplicationContext private val cont
     fun getUserData(): ModelUser? {
         val json = myPref.getString(KEY_USER, null)
         return gson.fromJson(json, ModelUser::class.java)
+    }
+
+    fun saveLogedIn(logedIn: Boolean) {
+        myPref.edit().putBoolean(KEY_IS_LOGED_IN, logedIn).apply()
+    }
+
+    fun isLogedIn(): Boolean {
+        return myPref.getBoolean(KEY_IS_LOGED_IN, false)
     }
 }

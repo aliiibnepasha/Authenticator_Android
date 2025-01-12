@@ -25,11 +25,12 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.getByName("debug")
         }
     }
     buildFeatures {
@@ -121,8 +122,20 @@ dependencies {
     //Localization
     implementation("com.akexorcist:localization:1.2.11")
 
+    //Qr
     implementation("com.journeyapps:zxing-android-embedded:4.3.0")
 
+    //Admob
+    implementation("com.google.android.gms:play-services-ads:23.6.0")
+
+    //shimmer
+    implementation("com.facebook.shimmer:shimmer:0.5.0")
+
+    //billing
+    val billing_version = "7.1.1"
+    implementation("com.android.billingclient:billing:$billing_version")
+
+    //To read google authenticator data
     implementation("com.google.protobuf:protobuf-javalite:3.21.12")
     implementation("org.jetbrains.kotlin:kotlin-stdlib:1.9.10")
 }
