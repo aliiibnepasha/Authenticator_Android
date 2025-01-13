@@ -7,17 +7,17 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:159368296018:android:a082d8da1f5baa12fd918b",
+        "mobilesdk_app_id": "1:159368296018:android:3660035d5eba4c0bfd918b",
         "android_client_info": {
-          "package_name": "com.husnain.authy"
+          "package_name": "com.theswiftvision.authenticator"
         }
       },
       "oauth_client": [
         {
-          "client_id": "159368296018-871ko071u6v0q17844m0sbnhr9gvehk9.apps.googleusercontent.com",
+          "client_id": "159368296018-6hjo1ee9a1951o0cqs8ab901pihc7o6p.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.husnain.authy",
+            "package_name": "com.theswiftvision.authenticator",
             "certificate_hash": "4940a2bc52f8fa3163017f3847a18bd3f12a91da"
           }
         },
@@ -35,7 +35,7 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "159368296018-949v3embra8933ur60r7u7fn6qkpv8hb.apps.googleusercontent.com",
+              "client_id": "159368296018-1puim8g04qetrqk8dhng1q6vdb84u3a0.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

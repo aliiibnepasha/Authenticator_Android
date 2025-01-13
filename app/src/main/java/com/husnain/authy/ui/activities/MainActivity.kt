@@ -95,7 +95,7 @@ class MainActivity : LocalizationActivity() {
             override fun onAdFailedToLoad(adError: LoadAdError) {
                 binding.adShimmer.stopShimmer()
                 binding.adShimmer.gone()
-//                binding.mainBannerAdView.gone()
+                binding.mainBannerAdView.gone()
                 Log.e(Constants.TAG, "Ad failed to load: ${adError.message}")
             }
         }
