@@ -3,4 +3,6 @@
     <dimen name="card_shadow">4dp</dimen>
     <dimen name="edt_height">60dp</dimen>
     <dimen name="btn_height_primary">60dp</dimen>
+    <dimen name="default_corner_radius">4dp</dimen>
+    <dimen name="default_shadow_radius">4dp</dimen>
 </resources>

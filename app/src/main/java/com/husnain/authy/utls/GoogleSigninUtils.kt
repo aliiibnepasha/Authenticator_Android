@@ -13,6 +13,7 @@ import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.firebase.Firebase
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.auth
+import com.husnain.authy.R
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
@@ -28,7 +29,7 @@ object GoogleSigninUtils {
         liveData.postValue(DataState.Loading())
         val credentialManager = androidx.credentials.CredentialManager.create(context)
         val request = GetCredentialRequest.Builder()
-            .addCredentialOption(getCredentialOptions())
+            .addCredentialOption(getCredentialOptions(context))
             .build()
 
         scope.launch {
@@ -60,17 +61,18 @@ object GoogleSigninUtils {
                 liveData.value = DataState.Error("You have no google account setup on device.")
                 e.printStackTrace()
             } catch (e: GetCredentialException) {
+                Log.e("CredentialException", "General error: ${e.localizedMessage}")
                 liveData.value = DataState.Error(e.localizedMessage)
                 e.printStackTrace()
             }
         }
     }
 
-    private fun getCredentialOptions(): CredentialOption {
+    private fun getCredentialOptions(context: Context): CredentialOption {
         return GetGoogleIdOption.Builder()
             .setFilterByAuthorizedAccounts(false)
             .setAutoSelectEnabled(false)
-            .setServerClientId("159368296018-949v3embra8933ur60r7u7fn6qkpv8hb.apps.googleusercontent.com")
+            .setServerClientId("159368296018-lpqj9cau29j1ftptoeni09i9ihk89m1f.apps.googleusercontent.com")
             .build()
     }
 }

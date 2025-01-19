@@ -1,0 +1,25 @@
+
+¬
+;
+android*http://schemas.android.com/apk/res/androidBmenu*¾
+µitem">
+*http://schemas.android.com/apk/res/androidtitleHome(áƒ„"‚
+*http://schemas.android.com/apk/res/androidicon@drawable/icon_home_selector"(‚€„2'
+%‹‚ ødrawable/icon_home_selector0"h
+*http://schemas.android.com/apk/res/androidid@id/homeFragment"(Ğ„2
+Ø‚¨øid/homeFragment0 *Õ
+Ìitem"C
+*http://schemas.android.com/apk/res/androidtitle	New tools(áƒ„"Œ
+*http://schemas.android.com/apk/res/androidicon!@drawable/icon_new_tools_selector"
+(‚€„2,
+*Œ‚ ø drawable/icon_new_tools_selector0"p
+*http://schemas.android.com/apk/res/androidid@id/newToolsFragment"
+(Ğ„2
+êƒ¨øid/newToolsFragment0
+%*Í
+Äitem"A
+*http://schemas.android.com/apk/res/androidtitleSetting(áƒ„"ˆ
+*http://schemas.android.com/apk/res/androidicon@drawable/icon_setting_selector"(‚€„2*
+(‚ ødrawable/icon_setting_selector0"n
+*http://schemas.android.com/apk/res/androidid@id/settingFragment"(Ğ„2
+Û„¨øid/settingFragment0#B

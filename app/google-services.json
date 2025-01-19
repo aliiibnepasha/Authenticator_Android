@@ -14,11 +14,19 @@
       },
       "oauth_client": [
         {
-          "client_id": "159368296018-6hjo1ee9a1951o0cqs8ab901pihc7o6p.apps.googleusercontent.com",
+          "client_id": "159368296018-8q72ahe93671bh5g79krm6n0aah9262a.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.theswiftvision.authenticator",
             "certificate_hash": "4940a2bc52f8fa3163017f3847a18bd3f12a91da"
+          }
+        },
+        {
+          "client_id": "159368296018-vhh2ompmq65o12a5f20mkas01539luga.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.theswiftvision.authenticator",
+            "certificate_hash": "45149457cd638f13b7d6573bca9a0c8f71fb4c62"
           }
         },
         {
@@ -35,7 +43,7 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "159368296018-1puim8g04qetrqk8dhng1q6vdb84u3a0.apps.googleusercontent.com",
+              "client_id": "159368296018-949v3embra8933ur60r7u7fn6qkpv8hb.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

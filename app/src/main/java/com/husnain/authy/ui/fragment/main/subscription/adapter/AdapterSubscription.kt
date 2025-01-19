@@ -7,7 +7,7 @@ import com.husnain.authy.R
 import com.husnain.authy.data.models.ModelSubscription
 import com.husnain.authy.databinding.ItemSubscriptionBinding
 
-class AdapterSubscription(private val items: List<ModelSubscription>,private val onItemSelected: (ModelSubscription) -> Unit) :
+class AdapterSubscription(private var items: List<ModelSubscription>,private val onItemSelected: (ModelSubscription) -> Unit) :
     RecyclerView.Adapter<AdapterSubscription.ViewHolder>() {
     private var selectedPosition = -1
 
@@ -20,6 +20,11 @@ class AdapterSubscription(private val items: List<ModelSubscription>,private val
         return items.size
     }
 
+    fun updateData(newData: List<ModelSubscription>) {
+        items = newData
+        notifyDataSetChanged()
+    }
+
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val data = items[position]
         holder.bind(data)
@@ -27,7 +32,7 @@ class AdapterSubscription(private val items: List<ModelSubscription>,private val
     inner class ViewHolder(val binding: ItemSubscriptionBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(data: ModelSubscription){
             binding.tvDuration.text = data.duration.uppercase()
-            binding.tvPrice.text = "$${data.price}"
+            binding.tvPrice.text = data.price
             binding.tvLabel.text = data.label.uppercase()
             binding.tvDuration2.text = "/${data.duration.uppercase()}"
 

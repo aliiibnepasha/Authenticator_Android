@@ -25,6 +25,9 @@ import com.google.android.material.snackbar.Snackbar
 import com.husnain.authy.R
 import com.husnain.authy.databinding.BottomSheetDeleteTotpBinding
 import com.husnain.authy.databinding.BottomSheetLayoutBinding
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 
 fun View.visible() {
     visibility = View.VISIBLE
@@ -165,11 +168,30 @@ fun Fragment.showBottomSheetDialog(txtPrimaryButton: String,onPrimaryClick:() ->
     bottomSheetDialog.show()
 }
 
+fun formattedSubscriptionEndDate(subscriptionType: SubscriptionType): String {
+    val calendar = Calendar.getInstance()
+
+    // Add the appropriate amount of time to the current date
+    when (subscriptionType) {
+        SubscriptionType.ONE_WEEK -> calendar.add(Calendar.WEEK_OF_YEAR, 1)
+        SubscriptionType.ONE_MONTH -> calendar.add(Calendar.MONTH, 1)
+    }
+
+    // Format the end date
+    val dateFormat = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
+    return dateFormat.format(calendar.time)
+}
+
 enum class OperationType {
     RESTORE,
     DELETE,
     RESTORE_ALL,
     DELETE_ALL
+}
+
+enum class SubscriptionType {
+    ONE_WEEK,
+    ONE_MONTH,
 }
 
 

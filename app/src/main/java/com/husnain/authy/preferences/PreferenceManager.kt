@@ -3,8 +3,10 @@ package com.husnain.authy.preferences
 import android.content.Context
 import android.content.SharedPreferences
 import com.google.gson.Gson
+import com.husnain.authy.data.models.ModelPurchase
 import com.husnain.authy.data.models.ModelUser
 import dagger.hilt.android.qualifiers.ApplicationContext
+import java.util.Date
 import javax.inject.Inject
 
 class PreferenceManager @Inject constructor(@ApplicationContext private val context: Context) {
@@ -17,7 +19,8 @@ class PreferenceManager @Inject constructor(@ApplicationContext private val cont
         private const val KEY_LANG = "kayLang"
         private const val KEY_BIOMETRIC_LOCK = "biometric_lock"
         private const val KEY_USER = "key_user"
-        private const val KEY_IS_LOGED_IN = "key_is_loged_in"
+        private const val KEY_IS_SUBSCRIPTION_ACTIVE = "keyIsSubscriptionActive"
+        private const val KEY_SUBSCRIPTION_END_DATE = "keySubscriptionEndDate"
     }
 
     private val gson = Gson()
@@ -88,11 +91,12 @@ class PreferenceManager @Inject constructor(@ApplicationContext private val cont
         return gson.fromJson(json, ModelUser::class.java)
     }
 
-    fun saveLogedIn(logedIn: Boolean) {
-        myPref.edit().putBoolean(KEY_IS_LOGED_IN, logedIn).apply()
+    fun saveSubscriptionActive(logedIn: Boolean) {
+        myPref.edit().putBoolean(KEY_IS_SUBSCRIPTION_ACTIVE, logedIn).apply()
     }
 
-    fun isLogedIn(): Boolean {
-        return myPref.getBoolean(KEY_IS_LOGED_IN, false)
+    fun isSubscriptionActive(): Boolean {
+        return myPref.getBoolean(KEY_IS_SUBSCRIPTION_ACTIVE, false)
     }
+
 }

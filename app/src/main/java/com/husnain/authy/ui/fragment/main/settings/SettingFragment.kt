@@ -71,6 +71,9 @@ class SettingFragment : Fragment() {
                 vmAuth.deleteAccount()
             }
         }
+        binding.lyBackupAndSync.setOnClickListener {
+            navigate(R.id.action_settingFragment_to_backUpFragment)
+        }
         binding.lyRecentlyDeleted.setOnClickListener {
             navigate(R.id.action_settingFragment_to_recentlyDeletedFragment)
         }

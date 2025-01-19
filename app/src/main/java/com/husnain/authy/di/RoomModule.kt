@@ -5,6 +5,7 @@ import androidx.room.Room
 import com.husnain.authy.data.room.daos.DaoRecentlyDeleted
 import com.husnain.authy.data.room.daos.DaoTotp
 import com.husnain.authy.data.room.database.TotpDatabase
+import com.husnain.authy.workers.SyncJobService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

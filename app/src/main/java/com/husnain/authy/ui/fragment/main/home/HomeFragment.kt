@@ -1,5 +1,7 @@
 package com.husnain.authy.ui.fragment.main.home
 
+import android.Manifest
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +18,7 @@ import com.husnain.authy.databinding.FragmentHomeBinding
 import com.husnain.authy.ui.fragment.main.recentlyDeleted.VmRecentlyDeleted
 import com.husnain.authy.utls.CustomToast.showCustomToast
 import com.husnain.authy.utls.DataState
+import com.husnain.authy.utls.PermissionUtils
 import com.husnain.authy.utls.gone
 import com.husnain.authy.utls.navigate
 import com.husnain.authy.utls.showBottomSheetDialog
@@ -46,6 +49,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun inIt() {
+        askPermissions()
         setOnClickListener()
         setUpObservers()
     }
@@ -68,6 +72,16 @@ class HomeFragment : Fragment() {
         }
     }
 
+
+    private fun askPermissions() {
+        val permissions = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            arrayOf(Manifest.permission.POST_NOTIFICATIONS)
+        } else {
+            return
+        }
+        val isPermissionGranted = PermissionUtils.handlePermissions(requireActivity(), permissions, 1)
+        if (isPermissionGranted) return
+    }
 
     private fun setUpObservers() {
         vmHome.totpListState.observe(viewLifecycleOwner, Observer { state ->
