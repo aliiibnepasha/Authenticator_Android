@@ -2,6 +2,7 @@ package com.husnain.authy.utls
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.ClipData
 import android.content.ClipboardManager
@@ -11,12 +12,15 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.IdRes
+import androidx.biometric.BiometricManager
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
@@ -168,18 +172,30 @@ fun Fragment.showBottomSheetDialog(txtPrimaryButton: String,onPrimaryClick:() ->
     bottomSheetDialog.show()
 }
 
-fun formattedSubscriptionEndDate(subscriptionType: SubscriptionType): String {
-    val calendar = Calendar.getInstance()
-
-    // Add the appropriate amount of time to the current date
-    when (subscriptionType) {
-        SubscriptionType.ONE_WEEK -> calendar.add(Calendar.WEEK_OF_YEAR, 1)
-        SubscriptionType.ONE_MONTH -> calendar.add(Calendar.MONTH, 1)
+@SuppressLint("ClickableViewAccessibility")
+fun Fragment.setupKeyboardDismissListener(view: View) {
+    view.setOnTouchListener { _, event ->
+        if (event.action == MotionEvent.ACTION_DOWN) {
+            hideKeyboard()
+        }
+        false
     }
+}
 
-    // Format the end date
-    val dateFormat = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
-    return dateFormat.format(calendar.time)
+fun Fragment.hideKeyboard() {
+    val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    val currentFocus = activity?.currentFocus
+    if (currentFocus != null) {
+        imm.hideSoftInputFromWindow(currentFocus.windowToken, 0)
+    }
+}
+
+fun Fragment.isBiometricSupported(): Boolean {
+    val biometricManager = BiometricManager.from(requireContext())
+    return when (biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG)) {
+        BiometricManager.BIOMETRIC_SUCCESS -> true
+        else -> false
+    }
 }
 
 enum class OperationType {

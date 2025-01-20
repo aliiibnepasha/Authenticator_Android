@@ -1,31 +1,44 @@
 package com.husnain.authy.ui.fragment.main.subscription
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import com.android.billingclient.api.*
+import com.android.billingclient.api.BillingClient
+import com.android.billingclient.api.BillingClientStateListener
+import com.android.billingclient.api.BillingFlowParams
+import com.android.billingclient.api.BillingResult
+import com.android.billingclient.api.ProductDetails
+import com.android.billingclient.api.Purchase
+import com.android.billingclient.api.PurchasesUpdatedListener
+import com.android.billingclient.api.QueryProductDetailsParams
+import com.android.billingclient.api.queryProductDetails
 import com.husnain.authy.data.models.ModelSubscription
 import com.husnain.authy.databinding.FragmentSubscriptionBinding
 import com.husnain.authy.preferences.PreferenceManager
+import com.husnain.authy.ui.activities.AuthActivity
 import com.husnain.authy.ui.fragment.main.subscription.adapter.AdapterSubscription
+import com.husnain.authy.utls.Constants
 import com.husnain.authy.utls.CustomToast.showCustomToast
+import com.husnain.authy.utls.popBack
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
+
 @AndroidEntryPoint
 class SubscriptionFragment : Fragment() {
 
     private var _binding: FragmentSubscriptionBinding? = null
     private val binding get() = _binding!!
-    @Inject lateinit var preferenceManager: PreferenceManager
+    @Inject
+    lateinit var preferenceManager: PreferenceManager
 
     private lateinit var billingClient: BillingClient
     private lateinit var adapter: AdapterSubscription
@@ -88,11 +101,17 @@ class SubscriptionFragment : Fragment() {
                 result.productDetailsList?.forEach { productDetails ->
                     productDetailsMap[productDetails.productId] = productDetails
 
-                    val price = productDetails.subscriptionOfferDetails?.firstOrNull()?.pricingPhases?.pricingPhaseList?.firstOrNull()?.formattedPrice
+                    val price =
+                        productDetails.subscriptionOfferDetails?.firstOrNull()?.pricingPhases?.pricingPhaseList?.firstOrNull()?.formattedPrice
                     val title = productDetails.name
 
                     updatedSubscriptionDataList.add(
-                        ModelSubscription("Weakly","Most popular",price!!,productDetails.productId)
+                        ModelSubscription(
+                            "Weakly",
+                            "Most popular",
+                            price!!,
+                            productDetails.productId
+                        )
                     )
                 }
                 withContext(Dispatchers.Main) { adapter.updateData(updatedSubscriptionDataList) }
@@ -105,11 +124,22 @@ class SubscriptionFragment : Fragment() {
     }
 
     private fun setOnClickListener() {
+        binding.imgBack.setOnClickListener {
+            popBack()
+        }
         binding.btnCheckout.setOnClickListener {
-            if (::selectedProductId.isInitialized && selectedProductId.isNotEmpty()) {
-                initiateSubscribe(selectedProductId)
+            if (preferenceManager.isGuestUser()) {
+                Constants.isComingToAuthFromGuest = true
+                val intent = Intent(requireActivity(), AuthActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+                requireActivity().startActivity(intent)
+
             } else {
-                showCustomToast("Please select at least one")
+                if (::selectedProductId.isInitialized && selectedProductId.isNotEmpty()) {
+                    initiateSubscribe(selectedProductId)
+                } else {
+                    showCustomToast("Please select at least one")
+                }
             }
         }
     }

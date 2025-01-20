@@ -11,7 +11,10 @@ import com.husnain.authy.R
 import com.husnain.authy.databinding.FragmentAppLockBinding
 import com.husnain.authy.preferences.PreferenceManager
 import com.husnain.authy.utls.CustomToast.showCustomToast
+import com.husnain.authy.utls.gone
+import com.husnain.authy.utls.isBiometricSupported
 import com.husnain.authy.utls.popBack
+import com.husnain.authy.utls.visible
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -19,7 +22,8 @@ import javax.inject.Inject
 class AppLockFragment : Fragment() {
     private var _binding: FragmentAppLockBinding? = null
     private val binding get() = _binding!!
-    @Inject lateinit var preferenceManager: PreferenceManager
+    @Inject
+    lateinit var preferenceManager: PreferenceManager
     private var isNavigatingToSetPin = false
 
 
@@ -41,6 +45,7 @@ class AppLockFragment : Fragment() {
     private fun inItUi() {
         binding.switchSetPinLock.isChecked = !preferenceManager.getPin().isNullOrEmpty()
         binding.switchBiometricLocak.isChecked = preferenceManager.isBiometricLockEnabled()
+        binding.cardViewBiometricLock.apply { if (isBiometricSupported()) visible() else gone() }
     }
 
     private fun setOnClickListener() {

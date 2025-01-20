@@ -20,6 +20,7 @@ import com.husnain.authy.ui.activities.MainActivity
 import com.husnain.authy.utls.Constants
 import com.husnain.authy.utls.CustomToast.showCustomToast
 import com.husnain.authy.utls.navigate
+import com.husnain.authy.utls.startActivity
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -50,31 +51,42 @@ class SplashFragment : Fragment() {
             Constants.isComingFromLogout = false
             navigate(R.id.action_splashFragment_to_signupFragment)
         } else {
-            handleUser()
+            if (!preferenceManager.isOnboardingFinished()) {
+                navigate(R.id.action_splashFragment_to_onboardingFragment)
+            } else {
+                handleUser()
+            }
+
         }
     }
 
     private fun handleUser() {
+        if (isGuestUser()) return
+
         when {
-            preferenceManager.isBiometricLockEnabled() -> {
-                checkForBiometricLogin()
-            }
+            preferenceManager.isBiometricLockEnabled() -> checkForBiometricLogin()
+            !preferenceManager.getPin().isNullOrEmpty() -> navigateToPinSetup()
+            else -> delayAndNavigate()
+        }
+    }
 
-            !preferenceManager.getPin().isNullOrEmpty() -> {
-                navigateToPinSetup()
-            }
+    private fun isGuestUser(): Boolean {
+        return if (preferenceManager.isGuestUser()) {
+            binding.root.postDelayed({
+                startActivity(MainActivity::class.java)
+            }, 500)
 
-            else -> {
-                delayAndNavigate()
-            }
+            true
+        } else {
+            false
         }
     }
 
     private fun delayAndNavigate() {
         binding.root.postDelayed({
-            if (isUserLogedIn()){
+            if (isUserLogedIn()) {
                 goToMainActivity()
-            }else{
+            } else {
                 navigate(R.id.action_splashFragment_to_signupFragment)
             }
         }, 500)
@@ -143,11 +155,11 @@ class SplashFragment : Fragment() {
         biometricPrompt.authenticate(promptInfo)
     }
 
-    private fun isUserLogedIn():Boolean{
+    private fun isUserLogedIn(): Boolean {
         return auth.currentUser != null
     }
 
-    private fun goToMainActivity(){
+    private fun goToMainActivity() {
         startActivity(Intent(requireActivity(), MainActivity::class.java))
         requireActivity().finish()
     }

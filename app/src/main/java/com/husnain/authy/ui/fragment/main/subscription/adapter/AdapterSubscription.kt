@@ -7,12 +7,22 @@ import com.husnain.authy.R
 import com.husnain.authy.data.models.ModelSubscription
 import com.husnain.authy.databinding.ItemSubscriptionBinding
 
-class AdapterSubscription(private var items: List<ModelSubscription>,private val onItemSelected: (ModelSubscription) -> Unit) :
-    RecyclerView.Adapter<AdapterSubscription.ViewHolder>() {
-    private var selectedPosition = -1
+class AdapterSubscription(
+    private var items: List<ModelSubscription>,
+    private val onItemSelected: (ModelSubscription) -> Unit
+) : RecyclerView.Adapter<AdapterSubscription.ViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int):ViewHolder {
-        val binding = ItemSubscriptionBinding.inflate(LayoutInflater.from(parent.context),parent,false)
+    private var selectedPosition = 0 // Preselect the first item
+
+    init {
+        // Invoke the callback with the first item's data
+        if (items.isNotEmpty()) {
+            onItemSelected.invoke(items[selectedPosition])
+        }
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val binding = ItemSubscriptionBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
 
@@ -29,13 +39,15 @@ class AdapterSubscription(private var items: List<ModelSubscription>,private val
         val data = items[position]
         holder.bind(data)
     }
+
     inner class ViewHolder(val binding: ItemSubscriptionBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(data: ModelSubscription){
+        fun bind(data: ModelSubscription) {
             binding.tvDuration.text = data.duration.uppercase()
             binding.tvPrice.text = data.price
             binding.tvLabel.text = data.label.uppercase()
             binding.tvDuration2.text = "/${data.duration.uppercase()}"
 
+            // Highlight the selected item
             if (bindingAdapterPosition == selectedPosition) {
                 binding.imgCircle.setImageResource(R.drawable.ic_circle_selected)
                 binding.lySubscription.setBackgroundResource(R.drawable.bg_subscription_ly_with_stroke)
@@ -55,5 +67,4 @@ class AdapterSubscription(private var items: List<ModelSubscription>,private val
             }
         }
     }
-
 }

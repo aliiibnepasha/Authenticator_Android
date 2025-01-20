@@ -5,4 +5,5 @@ object Constants {
     const val SYNC_CHANNEL_ID = "syncChannel"
     const val TAG = "LOG_AUTHY"
     var isComingFromLogout = false
+    var isComingToAuthFromGuest = false
 }

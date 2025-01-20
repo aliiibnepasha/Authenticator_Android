@@ -22,6 +22,9 @@
         <action
             android:id="@+id/action_settingFragment_to_recentlyDeletedFragment"
             app:destination="@id/recentlyDeletedFragment" />
+        <action
+            android:id="@+id/action_settingFragment_to_subscriptionFragment"
+            app:destination="@id/subscriptionFragment" />
     </fragment>
     <fragment
         android:id="@+id/newToolsFragment"

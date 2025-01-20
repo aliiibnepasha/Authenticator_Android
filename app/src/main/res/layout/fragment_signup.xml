@@ -29,7 +29,7 @@
             android:layout_marginTop="16dp"
             android:fontFamily="@font/poppins_semibold"
             android:text="@string/string_sign_up"
-            android:textColor="@color/black"
+            android:textColor="@color/colorPrimary"
             android:textSize="32sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -193,6 +193,7 @@
                 android:background="@drawable/bg_edt"
                 android:fontFamily="@font/poppins_regular"
                 android:hint="@string/string_name"
+                android:textSize="16sp"
                 android:textAlignment="viewStart"
                 android:paddingHorizontal="@dimen/_15sdp"
                 android:textColor="@color/black" />
@@ -217,6 +218,7 @@
                 android:background="@drawable/bg_edt"
                 android:fontFamily="@font/poppins_regular"
                 android:hint="@string/string_email"
+                android:textSize="16sp"
                 android:textAlignment="viewStart"
                 android:inputType="textEmailAddress"
                 android:paddingHorizontal="@dimen/_15sdp"
@@ -243,6 +245,7 @@
                 android:fontFamily="@font/poppins_regular"
                 android:hint="@string/string_password"
                 android:textAlignment="viewStart"
+                android:textSize="16sp"
                 android:inputType="textPassword"
                 android:paddingHorizontal="@dimen/_15sdp"
                 android:textColor="@color/black" />
@@ -290,6 +293,7 @@
                 android:text="@string/string_create_account"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
+                android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -305,6 +309,7 @@
             android:layout_marginTop="@dimen/_15sdp"
             android:fontFamily="@font/poppins_regular"
             android:text="@string/string_do_you_have_account"
+            android:textSize="14sp"
             app:layout_constraintStart_toStartOf="@+id/btnCreateAccount"
             app:layout_constraintTop_toBottomOf="@+id/btnCreateAccount" />
 
@@ -314,6 +319,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_regular"
             android:text="@string/string_sign_in"
+            android:textSize="14sp"
             android:paddingStart="@dimen/_2sdp"
             android:textColor="@color/colorPrimary"
             app:layout_constraintBottom_toBottomOf="@+id/appCompatTextView"

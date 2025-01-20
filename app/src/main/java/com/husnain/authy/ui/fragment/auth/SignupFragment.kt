@@ -25,6 +25,7 @@ import com.husnain.authy.utls.CustomToast.showCustomToast
 import com.husnain.authy.utls.DataState
 import com.husnain.authy.utls.getTextFromEdit
 import com.husnain.authy.utls.navigate
+import com.husnain.authy.utls.setupKeyboardDismissListener
 import com.husnain.authy.utls.startActivity
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -49,6 +50,11 @@ class SignupFragment : Fragment() {
         _binding = FragmentSignupBinding.inflate(inflater, container, false)
         inIt()
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setupKeyboardDismissListener(view)
     }
 
     private fun inIt() {

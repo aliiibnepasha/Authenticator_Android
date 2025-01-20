@@ -1,20 +1,32 @@
 package com.husnain.authy.ui.fragment.auth.resetPassword
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import com.google.firebase.auth.FirebaseAuth
 import com.husnain.authy.databinding.FragmentForgotPasswordBinding
+import com.husnain.authy.utls.CustomToast.showCustomToast
+import com.husnain.authy.utls.setupKeyboardDismissListener
 
 class ForgotPasswordFragment : Fragment() {
     private var _binding: FragmentForgotPasswordBinding? = null
     private val binding get() = _binding!!
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         _binding = FragmentForgotPasswordBinding.inflate(inflater, container, false)
         inIt()
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setupKeyboardDismissListener(view)
     }
 
     private fun inIt() {
@@ -22,7 +34,53 @@ class ForgotPasswordFragment : Fragment() {
     }
 
     private fun setOnClickListener() {
+        binding.continueButton.setOnClickListener {
+            if (isValidInput()) {
+                showLoader()
+                sendPasswordResetEmail(binding.emailEditText.text.toString().trim())
+            }
+        }
+    }
 
+    private fun sendPasswordResetEmail(email: String) {
+        FirebaseAuth.getInstance().sendPasswordResetEmail(email)
+            .addOnCompleteListener { task ->
+                stopLoader()
+                if (task.isSuccessful) {
+                    binding.emailEditText.setText("")
+                    showCustomToast("Password reset email sent successfully")
+                } else {
+                    showCustomToast("Failed to send password reset email.Please try again")
+                }
+            }
+    }
+
+
+    private fun isValidInput(): Boolean {
+        val email = binding.emailEditText.text.toString().trim()
+
+        return when {
+            email.isEmpty() -> {
+                showCustomToast("Email field cannot be empty")
+                false
+            }
+
+            !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches() -> {
+                showCustomToast("Please enter a valid email address")
+                false
+            }
+
+            else -> true
+        }
+    }
+
+
+    private fun showLoader() {
+        binding.loadingView.start(viewToHideIf = binding.tvContinue)
+    }
+
+    private fun stopLoader() {
+        binding.loadingView.stop(binding.tvContinue)
     }
 
     override fun onDestroyView() {

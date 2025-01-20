@@ -55,7 +55,7 @@
     <!-- Spanish -->
     <string name="string_general">General</string>
     <string name="string_backup">Copia de seguridad</string>
-    <string name="string_security">Seguridad</string>
+    <string name="string_security">Información y compartir</string>
     <string name="string_sync">Sincronización y copia de seguridad</string>
 
 

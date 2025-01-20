@@ -21,6 +21,7 @@ class PreferenceManager @Inject constructor(@ApplicationContext private val cont
         private const val KEY_USER = "key_user"
         private const val KEY_IS_SUBSCRIPTION_ACTIVE = "keyIsSubscriptionActive"
         private const val KEY_SUBSCRIPTION_END_DATE = "keySubscriptionEndDate"
+        private const val kEY_GUEST_USER = "keyGuestUser"
     }
 
     private val gson = Gson()
@@ -99,4 +100,11 @@ class PreferenceManager @Inject constructor(@ApplicationContext private val cont
         return myPref.getBoolean(KEY_IS_SUBSCRIPTION_ACTIVE, false)
     }
 
+    fun saveGuestUser(isGuest: Boolean) {
+        myPref.edit().putBoolean(kEY_GUEST_USER, isGuest).apply()
+    }
+
+    fun isGuestUser(): Boolean {
+        return myPref.getBoolean(kEY_GUEST_USER, true)
+    }
 }

@@ -16,6 +16,7 @@ import com.husnain.authy.ui.fragment.main.home.AdapterHomeTotp
 import com.husnain.authy.ui.fragment.main.home.VmHome
 import com.husnain.authy.utls.DataState
 import com.husnain.authy.utls.popBack
+import com.husnain.authy.utls.setupKeyboardDismissListener
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -29,6 +30,11 @@ class SearchFragment : Fragment() {
         _binding = FragmentSearchBinding.inflate(inflater, container, false)
         inIt()
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setupKeyboardDismissListener(view)
     }
 
     private fun inIt() {
@@ -50,7 +56,9 @@ class SearchFragment : Fragment() {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                adapter.getFilter().filter(newText)
+                if (::adapter.isInitialized && adapter.itemCount > 0) {
+                    adapter.getFilter().filter(newText)
+                }
                 return true
             }
         })

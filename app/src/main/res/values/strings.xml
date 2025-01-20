@@ -58,7 +58,7 @@
     <string name="string_privacy_policy">Privacy policy</string>
     <string name="string_general">General</string>
     <string name="string_backup">Backup</string>
-    <string name="string_security">Security</string>
+    <string name="string_security">Info &amp; Share</string>
     <string name="string_sync">Sync and cloud backup</string>
     <string name="string_google_cloud_server_client_id" translatable="false">159368296018-vhh2ompmq65o12a5f20mkas01539luga.apps.googleusercontent.com</string>
 

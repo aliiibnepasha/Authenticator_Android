@@ -55,6 +55,6 @@
     <string name="string_privacy_policy">سياسة الخصوصية</string>
     <string name="string_general">عام</string>
     <string name="string_backup">نسخة احتياطية</string>
-    <string name="string_security">الأمان</string>
+    <string name="string_security">المعلومات والمشاركة</string>
     <string name="string_sync">المزامنة والنسخ الاحتياطي السحابي</string>
 </resources>

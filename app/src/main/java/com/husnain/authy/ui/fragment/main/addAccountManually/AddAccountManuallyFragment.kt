@@ -15,6 +15,7 @@ import com.husnain.authy.utls.CustomToast.showCustomToast
 import com.husnain.authy.utls.DataState
 import com.husnain.authy.utls.navigate
 import com.husnain.authy.utls.popBack
+import com.husnain.authy.utls.setupKeyboardDismissListener
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -27,6 +28,11 @@ class AddAccountManuallyFragment : Fragment() {
         _binding = FragmentAddAccountManuallyBinding.inflate(inflater, container, false)
         inIt()
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setupKeyboardDismissListener(view)
     }
 
     private fun inIt() {

@@ -273,7 +273,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="17dp"
-                        android:layout_marginStart="15dp"
+                        android:layout_marginHorizontal="15dp"
                         android:layout_marginTop="17dp">
 
                         <androidx.appcompat.widget.AppCompatImageView
@@ -286,6 +286,7 @@
                             app:srcCompat="@drawable/ic_sysnc_cloud" />
 
                         <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/appCompatTextView11"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="15dp"
@@ -296,6 +297,14 @@
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toEndOf="@+id/appCompatImageView7"
                             app:layout_constraintTop_toTopOf="parent" />
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:srcCompat="@drawable/ic_primium" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                 </LinearLayout>

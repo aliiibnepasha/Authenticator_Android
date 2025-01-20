@@ -16,6 +16,7 @@ import com.husnain.authy.utls.DataState
 import com.husnain.authy.utls.getTextFromEdit
 import com.husnain.authy.utls.navigate
 import com.husnain.authy.utls.popBack
+import com.husnain.authy.utls.setupKeyboardDismissListener
 import com.husnain.authy.utls.startActivity
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -29,6 +30,11 @@ class SigninFragment : Fragment() {
         _binding = FragmentSigninBinding.inflate(inflater, container, false)
         inIt()
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setupKeyboardDismissListener(view)
     }
 
     private fun inIt() {

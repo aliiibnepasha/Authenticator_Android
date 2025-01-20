@@ -14,12 +14,14 @@ import com.husnain.authy.R
 import com.husnain.authy.databinding.BottomSheetDeleteTotpBinding
 import com.husnain.authy.databinding.BottomSheetLayoutBinding
 import com.husnain.authy.databinding.FragmentSettingBinding
+import com.husnain.authy.preferences.PreferenceManager
 import com.husnain.authy.ui.activities.AuthActivity
 import com.husnain.authy.ui.fragment.auth.VmAuth
 import com.husnain.authy.ui.fragment.main.home.VmHome
 import com.husnain.authy.utls.CustomToast.showCustomToast
 import com.husnain.authy.utls.DataState
 import com.husnain.authy.utls.decodeQRCode
+import com.husnain.authy.utls.gone
 import com.husnain.authy.utls.handleTOTPURI
 import com.husnain.authy.utls.navigate
 import com.husnain.authy.utls.openGallery
@@ -28,7 +30,9 @@ import com.husnain.authy.utls.setupGalleryPicker
 import com.husnain.authy.utls.setupQrCodeScanner
 import com.husnain.authy.utls.showBottomSheetDialog
 import com.husnain.authy.utls.startActivity
+import com.husnain.authy.utls.visible
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class SettingFragment : Fragment() {
@@ -36,6 +40,7 @@ class SettingFragment : Fragment() {
     private val binding get() = _binding!!
     private val vmAuth: VmAuth by viewModels()
     private val vmHome: VmHome by viewModels()
+    @Inject lateinit var preferenceManager: PreferenceManager
     private lateinit var scanQrCodeLauncher: ActivityResultLauncher<Nothing?>
     private lateinit var galleryPickerLauncher: ActivityResultLauncher<Intent>
 
@@ -50,10 +55,19 @@ class SettingFragment : Fragment() {
     }
 
     private fun inIt() {
+        inItUi()
         setOnClickListener()
         setUpObserver()
         handleDataFromGallery()
         handleDataFromCamera()
+    }
+
+    private fun inItUi() {
+        if (preferenceManager.isGuestUser()){
+            binding.btnLogout.gone()
+        }else{
+            binding.btnLogout.visible()
+        }
     }
 
     private fun setOnClickListener() {
@@ -62,6 +76,9 @@ class SettingFragment : Fragment() {
         }
         binding.lyGetPremium.setOnClickListener {
 
+        }
+        binding.lyGetPremium.setOnClickListener {
+            navigate(R.id.action_settingFragment_to_subscriptionFragment)
         }
         binding.lyLocalizeLanguages.setOnClickListener {
             navigate(R.id.action_settingFragment_to_localizeFragment)
@@ -72,7 +89,11 @@ class SettingFragment : Fragment() {
             }
         }
         binding.lyBackupAndSync.setOnClickListener {
-            navigate(R.id.action_settingFragment_to_backUpFragment)
+            if (!preferenceManager.isSubscriptionActive()){
+                navigate(R.id.action_settingFragment_to_subscriptionFragment)
+            }else{
+                navigate(R.id.action_settingFragment_to_backUpFragment)
+            }
         }
         binding.lyRecentlyDeleted.setOnClickListener {
             navigate(R.id.action_settingFragment_to_recentlyDeletedFragment)

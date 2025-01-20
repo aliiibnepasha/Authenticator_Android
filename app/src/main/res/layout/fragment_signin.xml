@@ -29,7 +29,7 @@
             android:layout_marginTop="16dp"
             android:fontFamily="@font/poppins_semibold"
             android:text="@string/string_sign_in"
-            android:textColor="@color/black"
+            android:textColor="@color/colorPrimary"
             android:textSize="32sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -192,6 +192,7 @@
                 android:background="@drawable/bg_edt"
                 android:fontFamily="@font/poppins_regular"
                 android:hint="@string/string_email"
+                android:textSize="16sp"
                 android:inputType="textEmailAddress"
                 android:paddingHorizontal="@dimen/_15sdp"
                 android:textAlignment="viewStart"
@@ -218,6 +219,7 @@
                 android:background="@drawable/bg_edt"
                 android:fontFamily="@font/poppins_regular"
                 android:hint="@string/string_password"
+                android:textSize="16sp"
                 android:inputType="textPassword"
                 android:paddingHorizontal="@dimen/_15sdp"
                 android:textAlignment="viewStart"
@@ -268,6 +270,7 @@
                 android:text="@string/string_log_in"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
+                android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -281,6 +284,7 @@
             android:layout_marginStart="@dimen/_15sdp"
             android:layout_marginTop="@dimen/_14sdp"
             android:text="@string/string_don_t_have_account"
+            android:textSize="14sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btnLogin" />
 
@@ -291,6 +295,7 @@
             android:layout_marginStart="@dimen/_3sdp"
             android:text="@string/string_sign_up"
             android:textColor="@color/colorPrimary"
+            android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="@+id/appCompatTextView"
             app:layout_constraintStart_toEndOf="@+id/appCompatTextView"
             app:layout_constraintTop_toTopOf="@+id/appCompatTextView" />
