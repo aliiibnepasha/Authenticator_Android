@@ -1,9 +1,13 @@
 package com.husnain.authy.ui.fragment.main.applock
 
 import android.os.Bundle
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
+import androidx.appcompat.widget.PopupMenu
 import androidx.biometric.BiometricManager
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -11,6 +15,7 @@ import com.husnain.authy.R
 import com.husnain.authy.databinding.FragmentAppLockBinding
 import com.husnain.authy.preferences.PreferenceManager
 import com.husnain.authy.utls.CustomToast.showCustomToast
+import com.husnain.authy.utls.DelayOption
 import com.husnain.authy.utls.gone
 import com.husnain.authy.utls.isBiometricSupported
 import com.husnain.authy.utls.popBack
@@ -22,9 +27,10 @@ import javax.inject.Inject
 class AppLockFragment : Fragment() {
     private var _binding: FragmentAppLockBinding? = null
     private val binding get() = _binding!!
-    @Inject
-    lateinit var preferenceManager: PreferenceManager
+    @Inject lateinit var preferenceManager: PreferenceManager
+    private val delayOptions = DelayOption.entries.toTypedArray()
     private var isNavigatingToSetPin = false
+    private lateinit var autoCompleteTextView: AutoCompleteTextView
 
 
     override fun onCreateView(
@@ -37,12 +43,16 @@ class AppLockFragment : Fragment() {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+    }
     private fun inIt() {
         inItUi()
         setOnClickListener()
     }
 
     private fun inItUi() {
+        binding.autoCompleteTextView.text = preferenceManager.getDelayOption().getDisplayText(requireContext())
         binding.switchSetPinLock.isChecked = !preferenceManager.getPin().isNullOrEmpty()
         binding.switchBiometricLocak.isChecked = preferenceManager.isBiometricLockEnabled()
         binding.cardViewBiometricLock.apply { if (isBiometricSupported()) visible() else gone() }
@@ -51,6 +61,10 @@ class AppLockFragment : Fragment() {
     private fun setOnClickListener() {
         binding.imgBack.setOnClickListener {
             popBack()
+        }
+
+        binding.dropdownLayout.setOnClickListener {
+            showCustomDropdownMenu(it)
         }
 
         binding.switchSetPinLock.setOnCheckedChangeListener { _, isChecked ->
@@ -132,6 +146,7 @@ class AppLockFragment : Fragment() {
         preferenceManager.savePin("")
     }
 
+
     override fun onResume() {
         super.onResume()
         binding.switchSetPinLock.isChecked = !preferenceManager.getPin().isNullOrEmpty()
@@ -139,6 +154,22 @@ class AppLockFragment : Fragment() {
         isNavigatingToSetPin = false
     }
 
+    private fun showCustomDropdownMenu(view: View) {
+        val popupMenu = PopupMenu(requireContext(), view)
+        val menu = popupMenu.menu
+        delayOptions.forEachIndexed { index, option ->
+            menu.add(0, index, 0, option.getDisplayText(requireContext()))
+        }
+
+        popupMenu.gravity = Gravity.END;
+        popupMenu.show()
+        popupMenu.setOnMenuItemClickListener { item ->
+            preferenceManager.saveDelayOption(delayOptions[item.itemId])
+            preferenceManager.saveLastAppOpenTime()
+            binding.autoCompleteTextView.text = delayOptions[item.itemId].getDisplayText(requireContext())
+            true
+        }
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()

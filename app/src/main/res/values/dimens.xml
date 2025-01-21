@@ -5,4 +5,5 @@
     <dimen name="btn_height_primary">60dp</dimen>
     <dimen name="default_corner_radius">4dp</dimen>
     <dimen name="default_shadow_radius">4dp</dimen>
+    <dimen name="margin_end_24dp">24dp</dimen>
 </resources>

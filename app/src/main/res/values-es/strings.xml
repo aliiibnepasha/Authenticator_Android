@@ -37,7 +37,7 @@
     <string name="string_apploack_desc">Establece un PIN para proteger tu aplicación de autenticación</string>
     <string name="string_pin_lock">Bloqueo con PIN</string>
     <string name="string_biometric_lock">Bloqueo biométrico</string>
-    <string name="string_relock_time">Tiempo de re-bloqueo</string>
+    <string name="string_relock_time">Rebloqueo</string>
     <string name="string_set_pin">Establecer PIN</string>
     <string name="string_set_your_pin">Establece tu PIN</string>
     <string name="string_setting">Configuración</string>
@@ -56,7 +56,57 @@
     <string name="string_general">General</string>
     <string name="string_backup">Copia de seguridad</string>
     <string name="string_security">Información y compartir</string>
-    <string name="string_sync">Sincronización y copia de seguridad</string>
-
-
+    <string name="string_sync">Sincroniza y Respaldo</string>
+    //new
+    <string name="stringenter_pin">Introduce el PIN</string>
+    <string name="string_enter_your_pin">Introduce tu PIN</string>
+    <string name="string_bottom_home">Inicio</string>
+    <string name="string_bottom_new_tools">Nuevas herramientas</string>
+    <string name="string_bottom_setting">Configuración</string>
+    <string name="delay_immediately">Inmediatamente</string>
+    <string name="delay_after_15s">Después de 15s</string>
+    <string name="delay_after_30s">Después de 30s</string>
+    <string name="delay_after_50s">Después de 50s</string>
+    <string name="delay_after_1m">Después de 1m</string>
+    <string name="delay_never">Nunca</string>
+    <string name="string_logout">Cerrar sesión</string>
+    <string name="string_recently_deleted">Eliminado recientemente</string>
+    <string name="string_sync_now">Sincronizar ahora</string>
+    <string name="string_subscription">Suscripción</string>
+    <string name="string_upgrade_to_pro">Actualizar a Pro</string>
+    <string name="string_secure_all_your_accounts">Asegura todas tus cuentas</string>
+    <string name="string_fast_amp_easy_setup">Configuración rápida y fácil</string>
+    <string name="string_auto_backup_amp_sync">Copia de seguridad y sincronización automáticas</string>
+    <string name="string_auto_renewel_cancel_anytime">Renovación automática. Cancelar en cualquier momento</string>
+    <string name="string_cancel">Cancelar</string>
+    <string name="string_camera">Cámara</string>
+    <string name="string_gallery">Galería</string>
+    <string name="string_no_data_found">No se encontraron datos</string>
+    <string name="string_delete_all">Eliminar todo</string>
+    <string name="string_restore_all">Restaurar todo</string>
+    <string name="string_permanently_delete">Eliminar permanentemente</string>
+    <string name="string_restore">Restaurar</string>
+    <string name="string_lets_add_your_first_account">Vamos a agregar tu primera cuenta</string>
+    <string name="string_add_your_account">+ Agregar tu cuenta</string>
+    <string name="string_add_new_account">+ Agregar nueva cuenta</string>
+    <string name="string_search_accounts">Buscar cuentas</string>
+    <string name="string_no">No</string>
+    <string name="string_yes">Sí</string>
+    <string name="string_account_dlt_confimation_text">¿Estás seguro de que deseas eliminar tu cuenta?</string>
+    <string name="string_continue_to_checkout">Continuar con la compra</string>
+    //new2
+    <string name="string_delete">Eliminar</string>
+    <string name="string_deleted_successfully">Eliminado con éxito</string>
+    <string name="string_something_went_wrong_please_try_again">Algo falló, inténtelo de nuevo.</string>
+    <string name="string_missing_permission_to_scan_qr_codes">Falta permiso para escanear QR.</string>
+    <string name="string_scanned_qr_is_not_a_2fa_qr">El QR escaneado no es 2FA.</string>
+    <string name="string_no_user_is_currently_logged_in">Ningún usuario conectado.</string>
+    <string name="string_user_already_exists">El usuario ya existe.</string>
+    <string name="string_authentication_failed">Error de autenticación.</string>
+    <string name="string_user_already_exists_with_same_email">Ya existe un usuario con el mismo correo.</string>
+    <string name="string_wrong_credentials">Credenciales incorrectas.</string>
+    <string name="string_repo_authentication_failed">Error de autenticación.</string>
+    <string name="string_singup_desc2">Protege tu mundo digital fácilmente. ¡Regístrate ahora!</string>
+    <string name="string_signin_desc2">¡Bienvenido! Accede a tu bóveda segura.</string>
+    <string name="string_forgot_password_new">Olvidé mi contraseña</string>
 </resources>

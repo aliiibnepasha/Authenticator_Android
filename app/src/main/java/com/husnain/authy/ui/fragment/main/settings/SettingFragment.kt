@@ -27,8 +27,9 @@ import com.husnain.authy.utls.navigate
 import com.husnain.authy.utls.openGallery
 import com.husnain.authy.utls.popBack
 import com.husnain.authy.utls.setupGalleryPicker
-import com.husnain.authy.utls.setupQrCodeScanner
+//import com.husnain.authy.utls.setupQrCodeScanner
 import com.husnain.authy.utls.showBottomSheetDialog
+import com.husnain.authy.utls.showDeleteAccountConfirmationBottomSheet
 import com.husnain.authy.utls.startActivity
 import com.husnain.authy.utls.visible
 import dagger.hilt.android.AndroidEntryPoint
@@ -84,22 +85,26 @@ class SettingFragment : Fragment() {
             navigate(R.id.action_settingFragment_to_localizeFragment)
         }
         binding.lyDeleteAccount.setOnClickListener {
-            showDeleteAccountDialog {
+            showDeleteAccountConfirmationBottomSheet {
                 vmAuth.deleteAccount()
             }
         }
         binding.lyBackupAndSync.setOnClickListener {
-            if (!preferenceManager.isSubscriptionActive()){
-                navigate(R.id.action_settingFragment_to_subscriptionFragment)
+            if (!preferenceManager.isGuestUser()){
+                if (!preferenceManager.isSubscriptionActive()){
+                    navigate(R.id.action_settingFragment_to_subscriptionFragment)
+                }else{
+                    navigate(R.id.action_settingFragment_to_backUpFragment)
+                }
             }else{
-                navigate(R.id.action_settingFragment_to_backUpFragment)
+                navigate(R.id.action_settingFragment_to_subscriptionFragment)
             }
         }
         binding.lyRecentlyDeleted.setOnClickListener {
             navigate(R.id.action_settingFragment_to_recentlyDeletedFragment)
         }
         binding.btnLogout.setOnClickListener {
-            showBottomSheetDialog("Logout",onPrimaryClick = {
+            showBottomSheetDialog(resources.getString(R.string.string_logout),onPrimaryClick = {
                 vmAuth.logout()
             })
         }
@@ -122,8 +127,7 @@ class SettingFragment : Fragment() {
                 }
 
                 is DataState.Success -> {
-                    startActivity(AuthActivity::class.java)
-                    requireActivity().finish()
+                    popBack()
                 }
 
                 is DataState.Error -> {
@@ -138,8 +142,7 @@ class SettingFragment : Fragment() {
                 }
 
                 is DataState.Success -> {
-                    startActivity(AuthActivity::class.java)
-                    requireActivity().finish()
+                    popBack()
                 }
 
                 is DataState.Error -> {
@@ -165,20 +168,20 @@ class SettingFragment : Fragment() {
     }
 
     private fun handleDataFromCamera() {
-        scanQrCodeLauncher = setupQrCodeScanner(
-            onSuccess = { qrContent ->
-                processTOTPURI(qrContent)
-            },
-            onNot2FAQR = {
-                showCustomToast("Scanned QR is not a 2FA QR")
-            },
-            onMissingPermission = {
-                showCustomToast("Missing permission to scan QR codes.")
-            },
-            onError = { errorMessage ->
-                showCustomToast("Error occurred: $errorMessage")
-            }
-        )
+//        scanQrCodeLauncher = setupQrCodeScanner(
+//            onSuccess = { qrContent ->
+//                processTOTPURI(qrContent)
+//            },
+//            onNot2FAQR = {
+//                showCustomToast("Scanned QR is not a 2FA QR")
+//            },
+//            onMissingPermission = {
+//                showCustomToast("Missing permission to scan QR codes.")
+//            },
+//            onError = { errorMessage ->
+//                showCustomToast("Error occurred: $errorMessage")
+//            }
+//        )
     }
 
     private fun handleDataFromGallery() {
@@ -207,16 +210,11 @@ class SettingFragment : Fragment() {
     }
 
 
-    //dialog
-    private fun showDeleteAccountDialog(onConfirm: () -> Unit) {
-        val builder = android.app.AlertDialog.Builder(context)
-        builder.setTitle("Delete Account")
-        builder.setMessage("Are you sure you want to delete your account? This action cannot be undone.")
-        builder.setPositiveButton("Yes") { _, _ -> onConfirm() }
-        builder.setNegativeButton("No") { dialog, _ -> dialog.dismiss() }
-        builder.create().show()
+    override fun onPause() {
+        super.onPause()
+        vmAuth.deleteAccountState.removeObservers(viewLifecycleOwner)
+        vmAuth.logoutState.removeObservers(viewLifecycleOwner)
     }
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

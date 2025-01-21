@@ -1,5 +1,6 @@
 package com.husnain.authy.ui.fragment.auth
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -68,8 +69,7 @@ class SigninFragment : Fragment() {
 
                 is DataState.Success -> {
                     stopLoader()
-                    startActivity(MainActivity::class.java)
-                    requireActivity().finish()
+                    startMainActivityFromGuestToLogin()
                 }
 
                 is DataState.Error -> {
@@ -87,8 +87,7 @@ class SigninFragment : Fragment() {
 
                 is DataState.Success -> {
                     stopLoaderForGoogle()
-                    startActivity(MainActivity::class.java)
-                    requireActivity().finish()
+                    startMainActivityFromGuestToLogin()
                 }
 
                 is DataState.Error -> {
@@ -135,6 +134,12 @@ class SigninFragment : Fragment() {
         return true
     }
 
+    private fun startMainActivityFromGuestToLogin(){
+        val intent = Intent(requireActivity(), MainActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+        startActivity(intent)
+        requireActivity().finish()
+    }
 
     private fun showLoader(){
         binding.loadingView.start(viewToHideIf = binding.tvLogin)

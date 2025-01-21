@@ -25,6 +25,7 @@ import com.husnain.authy.ui.fragment.main.subscription.adapter.AdapterSubscripti
 import com.husnain.authy.utls.Constants
 import com.husnain.authy.utls.CustomToast.showCustomToast
 import com.husnain.authy.utls.popBack
+import com.husnain.authy.utls.startActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -130,10 +131,8 @@ class SubscriptionFragment : Fragment() {
         binding.btnCheckout.setOnClickListener {
             if (preferenceManager.isGuestUser()) {
                 Constants.isComingToAuthFromGuest = true
-                val intent = Intent(requireActivity(), AuthActivity::class.java)
-                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
-                requireActivity().startActivity(intent)
-
+                val intent = Intent(requireContext(), AuthActivity::class.java)
+                startActivity(intent)
             } else {
                 if (::selectedProductId.isInitialized && selectedProductId.isNotEmpty()) {
                     initiateSubscribe(selectedProductId)

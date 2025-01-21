@@ -21,6 +21,7 @@ import com.husnain.authy.utls.startActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.util.Locale
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -42,6 +43,10 @@ class SetPinFragment : Fragment() {
     ): View {
         _binding = FragmentSetPinBinding.inflate(inflater, container, false)
         isFromSignupToPin = arguments?.getBoolean(Constants.SIGNUPTOPIN_KEY, false) ?: false
+        val locale = Locale("ar")  // Change "ar" for Arabic or "en" for English
+        val config = resources.configuration
+        config.setLocale(locale)
+        requireActivity().createConfigurationContext(config)
         inIt()
         return binding.root
     }
@@ -54,11 +59,11 @@ class SetPinFragment : Fragment() {
 
     private fun inItUi() {
         if (isFromSignupToPin) {
-            binding.tvToolBarTitle.text = "Enter pin"
-            binding.tvSetPinTitle.text = "Enter your pin"
+            binding.tvToolBarTitle.text = getString(R.string.stringenter_pin)
+            binding.tvSetPinTitle.text = getString(R.string.string_enter_your_pin)
         } else {
-            binding.tvToolBarTitle.text = "Set pin"
-            binding.tvSetPinTitle.text = "Set your pin"
+            binding.tvToolBarTitle.text = resources.getString(R.string.string_set_pin)
+            binding.tvSetPinTitle.text = resources.getString(R.string.string_set_your_pin)
         }
     }
 
@@ -118,11 +123,16 @@ class SetPinFragment : Fragment() {
     private fun onPinEntered(pin: String) {
         if (isFromSignupToPin) {
             if (pin == preferenceManager.getPin()) {
-                if (auth.currentUser != null){
+                if (preferenceManager.isGuestUser()){
                     startActivity(MainActivity::class.java)
                     requireActivity().finish()
                 }else{
-                    navigate(R.id.action_setPinFragment2_to_signupFragment)
+                    if (auth.currentUser != null){
+                        startActivity(MainActivity::class.java)
+                        requireActivity().finish()
+                    }else{
+                        navigate(R.id.action_setPinFragment2_to_signupFragment)
+                    }
                 }
             } else {
                 handleWrongPin()

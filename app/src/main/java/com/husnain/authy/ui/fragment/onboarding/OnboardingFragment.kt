@@ -82,6 +82,7 @@ class OnboardingFragment : Fragment() {
             preferenceManager.saveOnboardingFinished(true)
             if (preferenceManager.isGuestUser()){
                 startActivity(MainActivity::class.java)
+                requireActivity().finish()
             }else{
                 findNavController().navigate(R.id.action_onboardingFragment_to_signupFragment, null, navOptions)
             }

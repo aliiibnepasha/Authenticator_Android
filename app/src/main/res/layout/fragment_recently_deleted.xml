@@ -25,7 +25,7 @@
         android:layout_marginTop="25dp"
         android:layout_marginEnd="10dp"
         android:fontFamily="@font/poppins_semibold"
-        android:text="Recently deleted"
+        android:text="@string/string_recently_deleted"
         android:textColor="@color/black"
         android:textSize="@dimen/_16ssp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -39,6 +39,7 @@
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         android:layout_marginHorizontal="@dimen/_10sdp"
         android:layout_marginTop="@dimen/_20sdp"
+        android:layoutDirection="ltr"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/appCompatTextView2" />
@@ -68,7 +69,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/btn_height_primary"
                 android:gravity="center"
-                android:text="Restore" />
+                android:text="@string/string_restore" />
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView
@@ -86,7 +87,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/btn_height_primary"
                 android:gravity="center"
-                android:text="Permanently delete" />
+                android:text="@string/string_permanently_delete" />
         </com.google.android.material.card.MaterialCardView>
 
     </LinearLayout>
@@ -116,7 +117,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/btn_height_primary"
                 android:gravity="center"
-                android:text="Restore All" />
+                android:text="@string/string_restore_all" />
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView
@@ -134,7 +135,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/btn_height_primary"
                 android:gravity="center"
-                android:text="Delete all" />
+                android:text="@string/string_delete_all" />
         </com.google.android.material.card.MaterialCardView>
 
     </LinearLayout>
@@ -143,7 +144,7 @@
         android:id="@+id/tvNoDataFound"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="No data found."
+        android:text="@string/string_no_data_found"
         android:textSize="16sp"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"

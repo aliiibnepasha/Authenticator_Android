@@ -62,6 +62,13 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
+    //Camera
+    implementation(libs.androidx.camera.lifecycle)
+    implementation("androidx.camera:camera-camera2:1.4.1")
+    implementation("androidx.camera:camera-view:1.4.1")
+    implementation("androidx.camera:camera-core:1.4.1")
+    implementation("com.google.guava:guava:33.0.0-jre")
+
 
     //Glide
     implementation("com.github.bumptech.glide:glide:4.16.0")
@@ -112,7 +119,7 @@ dependencies {
     implementation("com.tbuonomo:dotsindicator:5.1.0")
 
     //Qr code scanner
-    implementation("io.github.g00fy2.quickie:quickie-bundled:1.10.0")
+//    implementation("io.github.g00fy2.quickie:quickie-bundled:1.10.0")
 
     //biometric
     implementation("androidx.biometric:biometric:1.2.0-alpha05")
@@ -141,6 +148,8 @@ dependencies {
     implementation("androidx.work:work-runtime-ktx:$work_version")
     implementation("androidx.work:work-runtime-ktx:2.10.0")
 
+    //Ml kit qr scanner
+    implementation("com.google.mlkit:barcode-scanning:17.3.0")
     //To read google authenticator data
     implementation("com.google.protobuf:protobuf-javalite:3.21.12")
     implementation("org.jetbrains.kotlin:kotlin-stdlib:1.9.10")

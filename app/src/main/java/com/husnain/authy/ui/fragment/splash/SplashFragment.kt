@@ -19,6 +19,7 @@ import com.husnain.authy.preferences.PreferenceManager
 import com.husnain.authy.ui.activities.MainActivity
 import com.husnain.authy.utls.Constants
 import com.husnain.authy.utls.CustomToast.showCustomToast
+import com.husnain.authy.utls.DelayOption
 import com.husnain.authy.utls.navigate
 import com.husnain.authy.utls.startActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -47,48 +48,57 @@ class SplashFragment : Fragment() {
     }
 
     private fun init() {
-        if (Constants.isComingFromLogout) {
-            Constants.isComingFromLogout = false
+        if (Constants.isComingToAuthFromGuest) {
+            Constants.isComingToAuthFromGuest = false
             navigate(R.id.action_splashFragment_to_signupFragment)
         } else {
-            if (!preferenceManager.isOnboardingFinished()) {
-                navigate(R.id.action_splashFragment_to_onboardingFragment)
+            if (Constants.isComingFromLogout) {
+                Constants.isComingFromLogout = false
+                navigate(R.id.action_splashFragment_to_signupFragment)
             } else {
-                handleUser()
-            }
+                if (!preferenceManager.isOnboardingFinished()) {
+                    navigate(R.id.action_splashFragment_to_onboardingFragment)
+                } else {
+                    handleUser()
+                }
 
+            }
         }
     }
 
     private fun handleUser() {
-        if (isGuestUser()) return
+        if (shouldShowLockScreen()){
+            preferenceManager.saveLastAppOpenTime()
+            when {
+                preferenceManager.isBiometricLockEnabled() -> {
+                    checkForBiometricLogin()
+                }
 
-        when {
-            preferenceManager.isBiometricLockEnabled() -> checkForBiometricLogin()
-            !preferenceManager.getPin().isNullOrEmpty() -> navigateToPinSetup()
-            else -> delayAndNavigate()
-        }
-    }
+                !preferenceManager.getPin().isNullOrEmpty() -> {
+                    navigateToPinSetup()
+                }
 
-    private fun isGuestUser(): Boolean {
-        return if (preferenceManager.isGuestUser()) {
-            binding.root.postDelayed({
-                startActivity(MainActivity::class.java)
-            }, 500)
-
-            true
-        } else {
-            false
+                else -> {
+                    delayAndNavigate()
+                }
+            }
+        }else{
+            delayAndNavigate()
         }
     }
 
     private fun delayAndNavigate() {
         binding.root.postDelayed({
-            if (isUserLogedIn()) {
+            if (preferenceManager.isGuestUser()){
                 goToMainActivity()
-            } else {
-                navigate(R.id.action_splashFragment_to_signupFragment)
+            }else{
+                if (isUserLogedIn()) {
+                    goToMainActivity()
+                } else {
+                    navigate(R.id.action_splashFragment_to_signupFragment)
+                }
             }
+
         }, 500)
     }
 
@@ -97,10 +107,14 @@ class SplashFragment : Fragment() {
             showBiometricPrompt(
                 activity = requireActivity(),
                 onSuccess = {
-                    if (isUserLogedIn()) {
+                    if (preferenceManager.isGuestUser()){
                         goToMainActivity()
-                    } else {
-                        navigate(R.id.action_splashFragment_to_signupFragment)
+                    }else{
+                        if (isUserLogedIn()) {
+                            goToMainActivity()
+                        } else {
+                            navigate(R.id.action_splashFragment_to_signupFragment)
+                        }
                     }
                 },
                 onFailure = {
@@ -160,7 +174,7 @@ class SplashFragment : Fragment() {
     }
 
     private fun goToMainActivity() {
-        startActivity(Intent(requireActivity(), MainActivity::class.java))
+        startActivity(MainActivity::class.java)
         requireActivity().finish()
     }
 
@@ -174,13 +188,34 @@ class SplashFragment : Fragment() {
         }
     }
 
+    private fun shouldShowLockScreen(): Boolean {
+        val selectedDelayOption = preferenceManager.getDelayOption()
+        val lastAppOpenTime = preferenceManager.getLastAppOpenTime()
+        val currentTime = System.currentTimeMillis()
+        if (selectedDelayOption == DelayOption.IMMEDIATELY) {
+            return true
+        }
+
+        val timeDifference = currentTime - lastAppOpenTime
+        val delayInMillis = when (selectedDelayOption) {
+            DelayOption.IMMEDIATELY -> return true
+            DelayOption.AFTER_15S -> 15 * 1000L
+            DelayOption.AFTER_30S -> 30 * 1000L
+            DelayOption.AFTER_50S -> 50 * 1000L
+            DelayOption.AFTER_1M -> 60 * 1000L
+            DelayOption.NEVER -> Long.MAX_VALUE // NEVER means no delay, so always show lock screen
+        }
+
+        return timeDifference > delayInMillis
+    }
+
+
     override fun onDestroyView() {
         super.onDestroyView()
-        // Reset the flags to restore the default UI behavior
         requireActivity().window.apply {
             clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
             decorView.systemUiVisibility =
-                View.SYSTEM_UI_FLAG_VISIBLE // Reset the system UI visibility
+                View.SYSTEM_UI_FLAG_VISIBLE
         }
         _binding = null
     }

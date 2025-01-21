@@ -17,7 +17,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.IdRes
 import androidx.biometric.BiometricManager
@@ -28,10 +27,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.snackbar.Snackbar
 import com.husnain.authy.R
 import com.husnain.authy.databinding.BottomSheetDeleteTotpBinding
-import com.husnain.authy.databinding.BottomSheetLayoutBinding
-import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Locale
+import com.husnain.authy.databinding.CustomBottomSheetDeleteAccountBinding
 
 fun View.visible() {
     visibility = View.VISIBLE
@@ -205,9 +201,46 @@ enum class OperationType {
     DELETE_ALL
 }
 
-enum class SubscriptionType {
-    ONE_WEEK,
-    ONE_MONTH,
+
+enum class DelayOption {
+    IMMEDIATELY,
+    AFTER_15S,
+    AFTER_30S,
+    AFTER_50S,
+    AFTER_1M,
+    NEVER;
+
+    // Method to get the display text from resources
+    fun getDisplayText(context: Context): String {
+        return when (this) {
+            IMMEDIATELY -> context.getString(R.string.delay_immediately)
+            AFTER_15S -> context.getString(R.string.delay_after_15s)
+            AFTER_30S -> context.getString(R.string.delay_after_30s)
+            AFTER_50S -> context.getString(R.string.delay_after_50s)
+            AFTER_1M -> context.getString(R.string.delay_after_1m)
+            NEVER -> context.getString(R.string.delay_never)
+        }
+    }
 }
+
+fun Fragment.showDeleteAccountConfirmationBottomSheet(
+    onYes: () -> Unit,
+) {
+    val bottomSheetDialog = BottomSheetDialog(requireContext(), R.style.BottomSheetDialogTheme)
+    val binding = CustomBottomSheetDeleteAccountBinding.inflate(LayoutInflater.from(requireContext()))
+    bottomSheetDialog.setContentView(binding.root)
+
+    binding.lyYes.setOnClickListener {
+        onYes.invoke()
+        bottomSheetDialog.dismiss()
+    }
+
+    binding.lyNo.setOnClickListener {
+        bottomSheetDialog.dismiss()
+    }
+
+    bottomSheetDialog.show()
+}
+
 
 

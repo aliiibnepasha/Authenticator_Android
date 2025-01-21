@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.lifecycleScope
 import com.husnain.authy.R
 import com.husnain.authy.data.models.ModelTotp
 import com.husnain.authy.data.room.tables.EntityTotp
@@ -24,9 +23,6 @@ import com.husnain.authy.utls.navigate
 import com.husnain.authy.utls.showBottomSheetDialog
 import com.husnain.authy.utls.visible
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 
 @AndroidEntryPoint
@@ -56,11 +52,13 @@ class HomeFragment : Fragment() {
 
     private fun setOnClickListener() {
         binding.btnAddNewAccountWhenSomeAccountAdded.setOnClickListener {
-            navigate(R.id.action_homeFragment_to_addNewFragment)
+//            navigate(R.id.action_homeFragment_to_addNewFragment)
+            navigate(R.id.action_homeFragment_to_addAccountFragment)
         }
 
         binding.btnAddAccountFirstTime.setOnClickListener {
-            navigate(R.id.action_homeFragment_to_addNewFragment)
+//            navigate(R.id.action_homeFragment_to_addNewFragment)
+            navigate(R.id.action_homeFragment_to_addAccountFragment)
         }
 
         binding.imgSearch.setOnClickListener {
@@ -109,7 +107,7 @@ class HomeFragment : Fragment() {
 
                 is DataState.Success -> {
                     if (isDeleted){
-                        showCustomToast("Deleted Successfully")
+                        showCustomToast(getString(R.string.string_deleted_successfully))
                         isDeleted = false
                     }
                     vmHome.fetchAllTotp()
@@ -149,7 +147,7 @@ class HomeFragment : Fragment() {
 
             //Long click to show the delete bottom sheet
             adapter.setOnLongClickListener { totpData ->
-                showBottomSheetDialog("Delete", onPrimaryClick = {
+                showBottomSheetDialog(getString(R.string.string_delete), onPrimaryClick = {
                     vmRecentlyDeleted.insertToRecentlyDeleted(RecentlyDeleted(totpData.serviceName,totpData.secretKey))
                     vmHome.deleteTotp(totpData.secretKey)
                     isDeleted = true

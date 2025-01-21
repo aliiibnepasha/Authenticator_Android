@@ -1,6 +1,7 @@
 package com.husnain.authy.ui.fragment.main.localization
 
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,13 +13,15 @@ import com.husnain.authy.ui.activities.MainActivity
 import com.husnain.authy.utls.popBack
 import com.husnain.authy.utls.startActivity
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.Locale
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class LocalizeFragment : Fragment() {
     private var _binding: FragmentLocalizeBinding? = null
     private val binding get() = _binding!!
-    @Inject lateinit var preferenceManager: PreferenceManager
+    @Inject
+    lateinit var preferenceManager: PreferenceManager
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -52,7 +55,7 @@ class LocalizeFragment : Fragment() {
 
         )
 
-        val adapter = AdapterLanguages(languagesList){
+        val adapter = AdapterLanguages(languagesList) {
             changeLanguage(it)
         }
         binding.rvLocalizationLanugages.adapter = adapter
@@ -63,9 +66,21 @@ class LocalizeFragment : Fragment() {
     private fun changeLanguage(modelLanguage: ModelLanguage) {
         preferenceManager.saveLang(modelLanguage.langShortType)
         (requireActivity() as MainActivity).changeLanguage(modelLanguage.langShortType)
-        startActivity(MainActivity::class.java)
-        requireActivity().finish()
+
+        // Update the layout direction dynamically
+        val newLocale = Locale(modelLanguage.langShortType)
+        Locale.setDefault(newLocale)
+
+        val layoutDirection = if (TextUtils.getLayoutDirectionFromLocale(newLocale) == View.LAYOUT_DIRECTION_RTL) {
+            View.LAYOUT_DIRECTION_RTL
+        } else {
+            View.LAYOUT_DIRECTION_LTR
+        }
+
+        requireActivity().window.decorView.layoutDirection = layoutDirection
     }
+
+
 
     override fun onDestroyView() {
         super.onDestroyView()

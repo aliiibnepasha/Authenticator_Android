@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.husnain.authy.R
 import com.husnain.authy.data.models.ModelSubscription
 import com.husnain.authy.databinding.ItemSubscriptionBinding
+import java.util.Locale
 
 class AdapterSubscription(
     private var items: List<ModelSubscription>,
@@ -43,9 +44,15 @@ class AdapterSubscription(
     inner class ViewHolder(val binding: ItemSubscriptionBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(data: ModelSubscription) {
             binding.tvDuration.text = data.duration.uppercase()
+            val currentLocale = Locale.getDefault().language
             binding.tvPrice.text = data.price
+
+            if (currentLocale == "ar" || currentLocale == "ur") {
+                binding.tvDuration2.text = "${data.duration.uppercase()}/"
+            }else{
+                binding.tvDuration2.text = "/${data.duration.uppercase()}"
+            }
             binding.tvLabel.text = data.label.uppercase()
-            binding.tvDuration2.text = "/${data.duration.uppercase()}"
 
             // Highlight the selected item
             if (bindingAdapterPosition == selectedPosition) {

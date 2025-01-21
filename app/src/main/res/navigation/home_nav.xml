@@ -41,14 +41,14 @@
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" >
         <action
-            android:id="@+id/action_homeFragment_to_addNewFragment"
-            app:destination="@id/addNewFragment" />
-        <action
             android:id="@+id/action_homeFragment_to_searchFragment"
             app:destination="@id/searchFragment" />
         <action
             android:id="@+id/action_homeFragment_to_subscriptionFragment"
             app:destination="@id/subscriptionFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_addAccountFragment"
+            app:destination="@id/addAccountFragment" />
     </fragment>
     <fragment
         android:id="@+id/addAccountManuallyFragment"
@@ -57,18 +57,6 @@
         tools:layout="@layout/fragment_add_account_manually" >
         <action
             android:id="@+id/action_addAccountManuallyFragment_to_homeFragment"
-            app:destination="@id/homeFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/addNewFragment"
-        android:name="com.husnain.authy.ui.fragment.main.addNewAccount.AddNewFragment"
-        android:label="fragment_add_new"
-        tools:layout="@layout/fragment_add_new" >
-        <action
-            android:id="@+id/action_addNewFragment_to_addAccountManuallyFragment"
-            app:destination="@id/addAccountManuallyFragment" />
-        <action
-            android:id="@+id/action_addNewFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
     </fragment>
     <fragment
@@ -110,4 +98,17 @@
         android:name="com.husnain.authy.ui.fragment.main.recentlyDeleted.RecentlyDeletedFragment"
         android:label="fragment_recently_deleted"
         tools:layout="@layout/fragment_recently_deleted" />
+    <fragment
+        android:id="@+id/addAccountFragment"
+        android:name="com.husnain.authy.ui.fragment.main.addNewAccount.AddAccountFragment"
+        android:label="AddAccountFragment"
+        tools:layout="@layout/fragment_add_account"
+        >
+        <action
+            android:id="@+id/action_addAccountFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+        <action
+            android:id="@+id/action_addAccountFragment_to_addAccountManuallyFragment"
+            app:destination="@id/addAccountManuallyFragment" />
+    </fragment>
 </navigation>

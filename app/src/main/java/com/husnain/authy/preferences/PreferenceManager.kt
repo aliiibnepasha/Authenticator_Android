@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import com.google.gson.Gson
 import com.husnain.authy.data.models.ModelPurchase
 import com.husnain.authy.data.models.ModelUser
+import com.husnain.authy.utls.DelayOption
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.util.Date
 import javax.inject.Inject
@@ -106,5 +107,24 @@ class PreferenceManager @Inject constructor(@ApplicationContext private val cont
 
     fun isGuestUser(): Boolean {
         return myPref.getBoolean(kEY_GUEST_USER, true)
+    }
+
+
+    fun saveDelayOption(option: DelayOption) {
+        myPref.edit().putString("selected_delay_option", option.name).apply()
+    }
+
+    fun getDelayOption(): DelayOption {
+        val name = myPref.getString("selected_delay_option", DelayOption.NEVER.name)
+        return DelayOption.valueOf(name!!)
+    }
+
+    fun saveLastAppOpenTime() {
+        val currentTime = System.currentTimeMillis()
+        myPref.edit().putLong("last_app_open_time", currentTime).apply()
+    }
+
+    fun getLastAppOpenTime(): Long {
+        return myPref.getLong("last_app_open_time", 0)
     }
 }

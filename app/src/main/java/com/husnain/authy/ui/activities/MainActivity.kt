@@ -31,11 +31,21 @@ import java.util.Locale
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class MainActivity : LocalizationActivity(){
+class MainActivity : LocalizationActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var navHostFragment: Fragment
-    @Inject lateinit var preferenceManager: PreferenceManager
+
+    @Inject
+    lateinit var preferenceManager: PreferenceManager
     private lateinit var billingClient: BillingClient
+
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        val lang = preferenceManager.getLang()
+        val locale = Locale(lang)
+        Locale.setDefault(locale)
+        window.decorView.layoutDirection = locale.layoutDirection
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,18 +77,30 @@ class MainActivity : LocalizationActivity(){
                 if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
                     checkSubscriptionStatus()
                 } else {
-                    Log.e("LOG_AUTHY", "Error setting up BillingClient: ${billingResult.debugMessage}")
+                    Log.e(
+                        "LOG_AUTHY",
+                        "Error setting up BillingClient: ${billingResult.debugMessage}"
+                    )
                 }
             }
         })
     }
 
     private fun setUpBottomBar() {
-        navHostFragment = supportFragmentManager.findFragmentById(R.id.afterAuthActivityNavHostFragment)!!
+        navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.afterAuthActivityNavHostFragment)!!
         binding.bottomNavigationView.itemIconTintList = null
         binding.bottomNavigationView.setupWithNavController(navHostFragment.findNavController())
 
         navHostFragment.findNavController().addOnDestinationChangedListener { _, destination, _ ->
+
+            if (destination.id == R.id.addAccountFragment) {
+                binding.mainBannerAdView.gone()
+                stopShimmer()
+            } else {
+                binding.mainBannerAdView.visible()
+            }
+
             if (destination.id == R.id.homeFragment || destination.id == R.id.newToolsFragment || destination.id == R.id.settingFragment) {
                 binding.bottomNavigationView.visible()
             } else {
@@ -97,7 +119,7 @@ class MainActivity : LocalizationActivity(){
         }
     }
 
-    fun changeLanguage(language: String){
+    fun changeLanguage(language: String) {
         setLanguage(language)
     }
 
@@ -114,24 +136,23 @@ class MainActivity : LocalizationActivity(){
 
         binding.mainBannerAdView.adListener = object : AdListener() {
             override fun onAdLoaded() {
-                binding.adShimmer.stopShimmer()
-                binding.adShimmer.gone()
+                stopShimmer()
                 binding.mainBannerAdView.visible()
             }
 
             override fun onAdFailedToLoad(adError: LoadAdError) {
-                binding.adShimmer.stopShimmer()
-                binding.adShimmer.gone()
+                stopShimmer()
                 binding.mainBannerAdView.gone()
+                binding.mainBannerAdView.loadAd(adRequest)
                 Log.e(Constants.TAG, "Ad failed to load: ${adError.message}")
             }
         }
 
     }
 
-    override fun onAttachedToWindow() {
-        super.onAttachedToWindow()
-        window.decorView.layoutDirection = Locale.getDefault().layoutDirection
+    private fun stopShimmer() {
+        binding.adShimmer.stopShimmer()
+        binding.adShimmer.gone()
     }
 
     private fun checkSubscriptionStatus() {
@@ -157,7 +178,10 @@ class MainActivity : LocalizationActivity(){
                         Log.d("LOG_AUTHY", "Subscription is active. autoRenewing = $isAutoRenewing")
                         preferenceManager.saveSubscriptionActive(true)
                     } else {
-                        Log.d("LOG_AUTHY", "Subscription is not active. autoRenewing = $isAutoRenewing")
+                        Log.d(
+                            "LOG_AUTHY",
+                            "Subscription is not active. autoRenewing = $isAutoRenewing"
+                        )
                         preferenceManager.saveSubscriptionActive(false)
                     }
                 } else {

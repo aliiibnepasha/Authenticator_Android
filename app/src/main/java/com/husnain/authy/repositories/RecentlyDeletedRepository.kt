@@ -1,19 +1,23 @@
 package com.husnain.authy.repositories
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.room.PrimaryKey
+import com.husnain.authy.R
 import com.husnain.authy.data.room.daos.DaoRecentlyDeleted
 import com.husnain.authy.data.room.daos.DaoTotp
 import com.husnain.authy.data.room.tables.EntityTotp
 import com.husnain.authy.data.room.tables.RecentlyDeleted
 import com.husnain.authy.utls.DataState
 import com.husnain.authy.utls.OperationType
+import com.husnain.authy.utls.SingleLiveEvent
 import javax.inject.Inject
 
 class RecentlyDeletedRepository @Inject constructor(
     private val daoRecentlyDeleted: DaoRecentlyDeleted,
-    private val daoTotp: DaoTotp
+    private val daoTotp: DaoTotp,
+    private val context: Context
 ) {
     private val _recentlyDeletedListState = MutableLiveData<DataState<List<RecentlyDeleted>>>()
     val recentlyDeletedListState: LiveData<DataState<List<RecentlyDeleted>>> = _recentlyDeletedListState
@@ -32,7 +36,7 @@ class RecentlyDeletedRepository @Inject constructor(
         } catch (e: Exception) {
             _recentlyDeletedListState.postValue(
                 DataState.Error(
-                    e.message ?: "Failed to fetch data"
+                    context.getString(R.string.string_something_went_wrong_please_try_again)
                 )
             )
         }
@@ -44,7 +48,7 @@ class RecentlyDeletedRepository @Inject constructor(
             daoRecentlyDeleted.insertOrReplaceRecentlyDeletedData(data)
             _insertState.postValue(DataState.Success(Unit))
         } catch (e: Exception) {
-            _insertState.postValue(DataState.Error(e.message ?: "Failed to insert data"))
+            _insertState.postValue(DataState.Error(context.getString(R.string.string_something_went_wrong_please_try_again)))
         }
     }
 
@@ -81,7 +85,7 @@ class RecentlyDeletedRepository @Inject constructor(
                 }
             }
         } catch (e: Exception) {
-            _restoreState.postValue(DataState.Error("Failed to perform the operation"))
+            _restoreState.postValue(DataState.Error(context.getString(R.string.string_something_went_wrong_please_try_again)))
         }
     }
 
@@ -90,7 +94,7 @@ class RecentlyDeletedRepository @Inject constructor(
             daoTotp.insertOrReplaceTotpData(data)
             _restoreState.postValue(DataState.Success(Unit))
         } catch (e: Exception) {
-            _restoreState.postValue(DataState.Error(e.message ?: "Failed to insert data"))
+            _restoreState.postValue(DataState.Error(context.getString(R.string.string_something_went_wrong_please_try_again)))
         }
     }
 

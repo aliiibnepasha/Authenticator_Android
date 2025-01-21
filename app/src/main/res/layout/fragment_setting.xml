@@ -199,7 +199,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="15dp"
                             android:fontFamily="@font/poppins_medium"
-                            android:text="Recently deleted"
+                            android:text="@string/string_recently_deleted"
                             android:textColor="#484C52"
                             android:textSize="14sp"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -330,7 +330,9 @@
                 android:layout_marginHorizontal="@dimen/_15sdp"
                 android:layout_marginTop="8dp"
                 app:cardCornerRadius="14dp"
+                android:layout_marginBottom="@dimen/_20sdp"
                 app:cardElevation="4dp"
+                app:layout_constraintBottom_toTopOf="@id/btnLogout"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/appCompatTextView8">
@@ -524,16 +526,14 @@
                 android:id="@+id/btnLogout"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/btn_height_primary"
-                android:text="Logout"
                 android:layout_marginHorizontal="24dp"
-                android:background="@drawable/bg_gradiant_button"
-                android:textColor="@color/white"
-                android:layout_marginTop="@dimen/_15sdp"
                 android:layout_marginBottom="@dimen/_15sdp"
+                android:background="@drawable/bg_gradiant_button"
+                android:text="@string/string_logout"
+                android:textColor="@color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/cardView3" />
+                app:layout_constraintStart_toStartOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

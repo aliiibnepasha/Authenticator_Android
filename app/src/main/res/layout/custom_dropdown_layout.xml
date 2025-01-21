@@ -1,0 +1,19 @@
+<!-- res/layout/custom_dropdown_layout.xml -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/_200sdp"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="8dp"
+    android:layout_marginVertical="@dimen/_5sdp"
+    android:background="?android:attr/selectableItemBackground">
+
+    <TextView
+        android:id="@+id/textViewDropdown"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Select Option"
+        android:textSize="16sp"
+        android:gravity="center"
+        android:paddingEnd="8dp"/>
+</LinearLayout>

@@ -56,4 +56,57 @@
     <string name="string_backup">بیك اپ</string>
     <string name="string_security">معلومات اور اشتراک</string>
     <string name="string_sync">ہم آہنگی اور کلاؤڈ بیک اپ</string>
+    //new
+    <string name="stringenter_pin">پن داخل کریں</string>
+    <string name="string_enter_your_pin">اپنا پن داخل کریں</string>
+    <string name="string_bottom_home">گھر</string>
+    <string name="string_bottom_new_tools">نئے ٹولز</string>
+    <string name="string_bottom_setting">سیٹنگ</string>
+    <string name="delay_immediately">فوراً</string>
+    <string name="delay_after_15s">15 سیکنڈ بعد</string>
+    <string name="delay_after_30s">30 سیکنڈ بعد</string>
+    <string name="delay_after_50s">50 سیکنڈ بعد</string>
+    <string name="delay_after_1m">ایک منٹ بعد</string>
+    <string name="delay_never">کبھی نہیں</string>
+    <string name="string_logout">لاگ آؤٹ</string>
+    <string name="string_recently_deleted">حال ہی میں حذف کیا گیا</string>
+    <string name="string_sync_now">ابھی ہم آہنگ کریں</string>
+    <string name="string_subscription">سبسکرپشن</string>
+    <string name="string_upgrade_to_pro">پرو میں اپ گریڈ کریں</string>
+    <string name="string_secure_all_your_accounts">اپنے تمام اکاؤنٹس کو محفوظ کریں</string>
+    <string name="string_fast_amp_easy_setup">جلدی اور آسان سیٹ اپ</string>
+    <string name="string_auto_backup_amp_sync">خودکار بیک اپ اور ہم آہنگی</string>
+    <string name="string_auto_renewel_cancel_anytime">خودکار تجدید۔ کسی بھی وقت منسوخ کریں</string>
+    <string name="string_cancel">منسوخ کریں</string>
+    <string name="string_camera">کیمرہ</string>
+    <string name="string_gallery">گیلری</string>
+    <string name="string_no_data_found">کوئی ڈیٹا نہیں ملا</string>
+    <string name="string_delete_all">سب کچھ حذف کریں</string>
+    <string name="string_restore_all">سب کچھ بحال کریں</string>
+    <string name="string_permanently_delete">مستقل طور پر حذف کریں</string>
+    <string name="string_restore">بحال کریں</string>
+    <string name="string_lets_add_your_first_account">آئیے آپ کا پہلا اکاؤنٹ شامل کرتے ہیں</string>
+    <string name="string_add_your_account">+ اپنا اکاؤنٹ شامل کریں</string>
+    <string name="string_add_new_account">+ نیا اکاؤنٹ شامل کریں</string>
+    <string name="string_search_accounts">اکاؤنٹس تلاش کریں</string>
+    <string name="string_no">نہیں</string>
+    <string name="string_yes">ہاں</string>
+    <string name="string_account_dlt_confimation_text">کیا آپ کو یقین ہے کہ آپ اپنا اکاؤنٹ حذف کرنا چاہتے ہیں؟</string>
+    <string name="string_continue_to_checkout">چیک آؤٹ پر جائیں</string>
+
+    //new2
+    <string name="string_delete">حذف کریں</string>
+    <string name="string_deleted_successfully">کامیابی سے حذف کردیا گیا</string>
+    <string name="string_something_went_wrong_please_try_again">کچھ غلط ہو گیا، دوبارہ کوشش کریں۔</string>
+    <string name="string_missing_permission_to_scan_qr_codes">QR کوڈز اسکین کرنے کی اجازت غائب ہے۔</string>
+    <string name="string_scanned_qr_is_not_a_2fa_qr">اسکین کردہ QR ایک 2FA QR نہیں ہے۔</string>
+    <string name="string_no_user_is_currently_logged_in">فی الحال کوئی صارف لاگ ان نہیں ہے۔</string>
+    <string name="string_user_already_exists">صارف پہلے سے موجود ہے۔</string>
+    <string name="string_authentication_failed">تصدیق ناکام ہوگئی۔</string>
+    <string name="string_user_already_exists_with_same_email">اسی ای میل کے ساتھ صارف پہلے سے موجود ہے۔</string>
+    <string name="string_wrong_credentials">غلط اسناد۔</string>
+    <string name="string_repo_authentication_failed">تصدیق ناکام ہوگئی۔</string>
+    <string name="string_singup_desc2">اپنی ڈیجیٹل دنیا کو آسانی سے محفوظ کریں—جو اہم ہے اسے محفوظ کرنے کے لیے سائن اپ کریں!</string>
+    <string name="string_signin_desc2">خوش آمدید! اپنے محفوظ والٹ تک رسائی حاصل کرنے کے لیے سائن ان کریں اور محفوظ رہیں۔</string>
+    <string name="string_forgot_password_new">پاس ورڈ بھول گئے</string>
 </resources>

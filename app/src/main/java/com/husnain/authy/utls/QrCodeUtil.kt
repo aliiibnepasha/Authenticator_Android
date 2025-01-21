@@ -1,28 +1,24 @@
 package com.husnain.authy.utls
+
 import android.content.Context
-import android.view.LayoutInflater
-import android.widget.Toast
-import androidx.activity.result.ActivityResultLauncher
-import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
-import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.husnain.authy.R
-import com.husnain.authy.databinding.BottomSheetLayoutBinding
-import io.github.g00fy2.quickie.QRResult
-import io.github.g00fy2.quickie.ScanQRCode
-import io.github.g00fy2.quickie.content.QRContent
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.net.Uri
+import android.util.Log
+import android.view.LayoutInflater
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.zxing.BinaryBitmap
 import com.google.zxing.LuminanceSource
 import com.google.zxing.RGBLuminanceSource
 import com.google.zxing.common.HybridBinarizer
 import com.google.zxing.qrcode.QRCodeReader
-
-import android.util.Log
+import com.husnain.authy.R
 import com.husnain.authy.data.room.tables.EntityTotp
+import com.husnain.authy.databinding.BottomSheetLayoutBinding
 
 fun handleTOTPURI(
     uri: String,
@@ -68,48 +64,6 @@ fun handleTOTPURI(
     }
 }
 
-// Utility function to handle QR code scanning
-fun Fragment.setupQrCodeScanner(
-    onSuccess: (String) -> Unit,
-    onNot2FAQR: () -> Unit = {
-        Toast.makeText(requireContext(), "Scanned QR is not a 2FA QR", Toast.LENGTH_SHORT).show()
-    },
-    onUserCanceled: () -> Unit = {},
-    onMissingPermission: () -> Unit = {
-        Toast.makeText(requireContext(), "Missing permission to scan QR codes.", Toast.LENGTH_SHORT).show()
-    },
-    onError: (String) -> Unit = { errorMessage ->
-        Toast.makeText(requireContext(), "Error occurred: $errorMessage", Toast.LENGTH_SHORT).show()
-    }
-): ActivityResultLauncher<Nothing?> {
-    return registerForActivityResult(ScanQRCode()) { result ->
-        when (result) {
-            is QRResult.QRSuccess -> {
-                val content = result.content
-                when (content) {
-                    is QRContent.Plain -> {
-                        val uri = content.rawValue
-                        if (uri != null) {
-                            onSuccess(uri)
-                        }
-                    }
-
-                    else -> onNot2FAQR()
-                }
-            }
-
-            QRResult.QRUserCanceled -> onUserCanceled()
-
-            QRResult.QRMissingPermission -> onMissingPermission()
-
-            is QRResult.QRError -> {
-                val errorMessage = "${result.exception.javaClass.simpleName}: ${result.exception.localizedMessage}"
-                onError(errorMessage)
-            }
-        }
-    }
-}
-
 fun Fragment.showBottomSheetDialog(
     onCameraClick: () -> Unit,
     onGalleryClick: () -> Unit
@@ -130,6 +84,7 @@ fun Fragment.showBottomSheetDialog(
 
     bottomSheetDialog.show()
 }
+
 
 fun Fragment.setupGalleryPicker(
     onImagePicked: (Uri) -> Unit

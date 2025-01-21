@@ -61,5 +61,58 @@
     <string name="string_security">Info &amp; Share</string>
     <string name="string_sync">Sync and cloud backup</string>
     <string name="string_google_cloud_server_client_id" translatable="false">159368296018-vhh2ompmq65o12a5f20mkas01539luga.apps.googleusercontent.com</string>
+    //news
+    <string name="stringenter_pin">Enter pin</string>
+    <string name="string_enter_your_pin">Enter your pin</string>
+    <string name="string_bottom_home">Home</string>
+    <string name="string_bottom_new_tools">New tools</string>
+    <string name="string_bottom_setting">Setting</string>
+    <string name="delay_immediately">Immediately</string>
+    <string name="delay_after_15s">After 15s</string>
+    <string name="delay_after_30s">After 30s</string>
+    <string name="delay_after_50s">After 50s</string>
+    <string name="delay_after_1m">After 1m</string>
+    <string name="delay_never">Never</string>
+    <string name="string_logout">Logout</string>
+    <string name="string_recently_deleted">Recently deleted</string>
+    <string name="string_sync_now">Sync Now</string>
+    <string name="string_subscription">Subscription</string>
+    <string name="string_upgrade_to_pro">Upgrade to pro</string>
+    <string name="string_secure_all_your_accounts">Secure all your accounts</string>
+    <string name="string_fast_amp_easy_setup"><![CDATA[Fast & easy setup]]></string>
+    <string name="string_auto_backup_amp_sync"><![CDATA[Auto backup & sync]]></string>
+    <string name="string_auto_renewel_cancel_anytime">Auto renewel. Cancel anytime</string>
+    <string name="string_cancel">Cancel</string>
+    <string name="string_camera">Camera</string>
+    <string name="string_gallery">Gallery</string>
+    <string name="string_no_data_found">No data found.</string>
+    <string name="string_delete_all">Delete all</string>
+    <string name="string_restore_all">Restore All</string>
+    <string name="string_permanently_delete">Permanently delete</string>
+    <string name="string_restore">Restore</string>
+    <string name="string_lets_add_your_first_account">Lets add your first account</string>
+    <string name="string_add_your_account">+ Add Your Account</string>
+    <string name="string_add_new_account">+ Add New Account</string>
+    <string name="string_search_accounts">Search accounts</string>
+    <string name="string_no">No</string>
+    <string name="string_yes">yes</string>
+    <string name="string_account_dlt_confimation_text">Are you sure you want to delete\nyour account?</string>
+    <string name="string_continue_to_checkout">Continue to checkout</string>
+    //new2
+    <string name="string_delete">Delete</string>
+    <string name="string_deleted_successfully">Deleted Successfully</string>
+    <string name="string_something_went_wrong_please_try_again">Something went wrong, please try again</string>
+    <string name="string_missing_permission_to_scan_qr_codes">Missing permission to scan QR codes.</string>
+    <string name="string_scanned_qr_is_not_a_2fa_qr">Scanned qr is not a 2FA Qr</string>
+    <string name="string_no_user_is_currently_logged_in">No user is currently logged in.</string>
+    <string name="string_user_already_exists">User already exists.</string>
+    <string name="string_authentication_failed">Authentication failed.</string>
+    <string name="string_user_already_exists_with_same_email">User already exists with same email.</string>
+    <string name="string_wrong_credentials">Wrong credentials.</string>
+    <string name="string_repo_authentication_failed">Authentication failed.</string>
+    <string name="string_singup_desc2">Secure your digital world with ease—sign up to protect what matters most!”</string>
+    <string name="string_signin_desc2">Welcome back! Sign in to access your secure vault and stay protected.</string>
+    <string name="string_forgot_password_new">Forgot Password</string>
+
 
 </resources>

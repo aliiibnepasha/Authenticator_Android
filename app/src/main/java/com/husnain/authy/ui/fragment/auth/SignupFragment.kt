@@ -2,15 +2,10 @@ package com.husnain.authy.ui.fragment.auth
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.biometric.BiometricManager
-import androidx.biometric.BiometricPrompt
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.google.firebase.auth.FirebaseAuth
@@ -20,7 +15,6 @@ import com.husnain.authy.databinding.FragmentSignupBinding
 import com.husnain.authy.preferences.PreferenceManager
 import com.husnain.authy.ui.activities.MainActivity
 import com.husnain.authy.utls.BackPressedExtensions.goBackPressed
-import com.husnain.authy.utls.Constants
 import com.husnain.authy.utls.CustomToast.showCustomToast
 import com.husnain.authy.utls.DataState
 import com.husnain.authy.utls.getTextFromEdit
@@ -86,8 +80,7 @@ class SignupFragment : Fragment() {
 
                 is DataState.Success -> {
                     stopLoader()
-                    startActivity(MainActivity::class.java)
-                    requireActivity().finish()
+                    startMainActivityFromGuestToLogin()
                 }
 
                 is DataState.Error -> {
@@ -105,8 +98,7 @@ class SignupFragment : Fragment() {
 
                 is DataState.Success -> {
                     stopLoaderForGoogle()
-                    startActivity(MainActivity::class.java)
-                    requireActivity().finish()
+                    startMainActivityFromGuestToLogin()
                 }
 
                 is DataState.Error -> {
@@ -115,6 +107,13 @@ class SignupFragment : Fragment() {
                 }
             }
         })
+    }
+
+    private fun startMainActivityFromGuestToLogin(){
+        val intent = Intent(requireActivity(), MainActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+        startActivity(intent)
+        requireActivity().finish()
     }
 
     private fun requestCreateAccount() {
@@ -181,7 +180,7 @@ class SignupFragment : Fragment() {
 
     private fun handleSystemNavBackPressed(){
         goBackPressed {
-            requireActivity().finishAffinity()
+            startMainActivityFromGuestToLogin()
         }
     }
 

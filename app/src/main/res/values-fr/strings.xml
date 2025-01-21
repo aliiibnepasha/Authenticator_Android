@@ -37,7 +37,7 @@
     <string name="string_apploack_desc">Définir un PIN pour protéger l\'app</string>
     <string name="string_pin_lock">PIN</string>
     <string name="string_biometric_lock">Biométrie</string>
-    <string name="string_relock_time">Temps de verrouillage</string>
+    <string name="string_relock_time">Reverrouiller</string>
     <string name="string_set_pin">Définir un PIN</string>
     <string name="string_set_your_pin">Définir votre PIN</string>
     <string name="string_setting">Paramètres</string>
@@ -56,6 +56,56 @@
     <string name="string_backup">Sauvegarde</string>
     <string name="string_security">Infos et partage</string>
     <string name="string_sync">Synchronisation et sauvegarde</string>
-
-
+    //new
+    <string name="stringenter_pin">Entrez le code PIN</string>
+    <string name="string_enter_your_pin">Entrez votre code PIN</string>
+    <string name="string_bottom_home">Accueil</string>
+    <string name="string_bottom_new_tools">Nouveaux outils</string>
+    <string name="string_bottom_setting">Paramètres</string>
+    <string name="delay_immediately">Immédiatement</string>
+    <string name="delay_after_15s">Après 15s</string>
+    <string name="delay_after_30s">Après 30s</string>
+    <string name="delay_after_50s">Après 50s</string>
+    <string name="delay_after_1m">Après 1m</string>
+    <string name="delay_never">Jamais</string>
+    <string name="string_logout">Se déconnecter</string>
+    <string name="string_recently_deleted">Récemment supprimé</string>
+    <string name="string_sync_now">Synchroniser maintenant</string>
+    <string name="string_subscription">Abonnement</string>
+    <string name="string_upgrade_to_pro">Passer à la version Pro</string>
+    <string name="string_secure_all_your_accounts">Sécurisez tous vos comptes</string>
+    <string name="string_fast_amp_easy_setup">Installation rapide et facile</string>
+    <string name="string_auto_backup_amp_sync">Sauvegarde et synchronisation automatiques</string>
+    <string name="string_auto_renewel_cancel_anytime">Renouvellement automatique. Annuler à tout moment</string>
+    <string name="string_cancel">Annuler</string>
+    <string name="string_camera">Appareil photo</string>
+    <string name="string_gallery">Galerie</string>
+    <string name="string_no_data_found">Aucune donnée trouvée</string>
+    <string name="string_delete_all">Tout supprimer</string>
+    <string name="string_restore_all">Tout restaurer</string>
+    <string name="string_permanently_delete">Supprimer définitivement</string>
+    <string name="string_restore">Restaurer</string>
+    <string name="string_lets_add_your_first_account">Ajoutons votre premier compte</string>
+    <string name="string_add_your_account">+ Ajouter votre compte</string>
+    <string name="string_add_new_account">+ Ajouter un nouveau compte</string>
+    <string name="string_search_accounts">Rechercher des comptes</string>
+    <string name="string_no">Non</string>
+    <string name="string_yes">Oui</string>
+    <string name="string_account_dlt_confimation_text">Êtes-vous sûr de vouloir supprimer votre compte ?</string>
+    <string name="string_continue_to_checkout">Continuer à la caisse</string>
+    //new2
+    <string name="string_delete">Supprimer</string>
+    <string name="string_deleted_successfully">Supprimé avec succès</string>
+    <string name="string_something_went_wrong_please_try_again">Erreur, réessayez.</string>
+    <string name="string_missing_permission_to_scan_qr_codes">Permission manquante pour scanner QR.</string>
+    <string name="string_scanned_qr_is_not_a_2fa_qr">Le QR scanné n\'est pas 2FA.</string>
+    <string name="string_no_user_is_currently_logged_in">Aucun utilisateur connecté.</string>
+    <string name="string_user_already_exists">Utilisateur existant.</string>
+    <string name="string_authentication_failed">Échec de l\'authentification.</string>
+    <string name="string_user_already_exists_with_same_email">Utilisateur existant avec cet email.</string>
+    <string name="string_wrong_credentials">Identifiants incorrects.</string>
+    <string name="string_repo_authentication_failed">Échec de l\'authentification.</string>
+    <string name="string_singup_desc2">Protégez facilement vos données—inscrivez-vous !</string>
+    <string name="string_signin_desc2">Bienvenue ! Connectez-vous pour accéder.</string>
+    <string name="string_forgot_password_new">Mot de passe oublié</string>
 </resources>
