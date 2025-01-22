@@ -1,6 +1,5 @@
 package com.husnain.authy.ui.fragment.main.subscription
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -21,7 +20,6 @@ import com.husnain.authy.R
 import com.husnain.authy.data.models.ModelSubscription
 import com.husnain.authy.databinding.FragmentSubscriptionBinding
 import com.husnain.authy.preferences.PreferenceManager
-import com.husnain.authy.ui.activities.AuthActivity
 import com.husnain.authy.ui.fragment.main.subscription.adapter.AdapterSubscription
 import com.husnain.authy.utls.Constants
 import com.husnain.authy.utls.CustomToast.showCustomToast
@@ -37,7 +35,8 @@ import javax.inject.Inject
 class SubscriptionFragment : Fragment() {
     private var _binding: FragmentSubscriptionBinding? = null
     private val binding get() = _binding!!
-    @Inject lateinit var preferenceManager: PreferenceManager
+    @Inject
+    lateinit var preferenceManager: PreferenceManager
     private lateinit var billingClient: BillingClient
     private lateinit var adapter: AdapterSubscription
     private lateinit var selectedProductId: String
@@ -56,30 +55,25 @@ class SubscriptionFragment : Fragment() {
     }
 
     private fun setOnClickListener() {
-        binding.imgBack.setOnClickListener {
+        binding.imgCross.setOnClickListener {
             popBack()
         }
         binding.btnCheckout.setOnClickListener {
-            if (preferenceManager.isGuestUser()) {
-                Constants.isComingToAuthFromGuest = true
-                val intent = Intent(requireContext(), AuthActivity::class.java)
-                startActivity(intent)
-            } else {
-                if (::selectedProductId.isInitialized && selectedProductId.isNotEmpty()) {
-                    if (selectedProductId == Constants.lifeTimePorductId){
-                        initiatePurchase(selectedProductId)
-                    }else{
-                        initiateSubscribe(selectedProductId)
-                    }
+            if (::selectedProductId.isInitialized && selectedProductId.isNotEmpty()) {
+                if (selectedProductId == Constants.lifeTimePorductId) {
+                    initiatePurchase(selectedProductId)
                 } else {
-                    showCustomToast(getString(R.string.string_please_select_at_least_one))
+                    initiateSubscribe(selectedProductId)
                 }
+            } else {
+                showCustomToast(getString(R.string.string_please_select_at_least_one))
             }
         }
     }
 
     private fun initAdapter() {
-        val defaultSubscriptionDataList = listOf(ModelSubscription("Weekly", "Most Popular", "$7.99", "weekly_plan"),)
+        val defaultSubscriptionDataList =
+            listOf(ModelSubscription("Weekly", "Most Popular", "$7.99", "weekly_plan"))
         adapter = AdapterSubscription(defaultSubscriptionDataList) { selectedSubscription ->
             selectedProductId = selectedSubscription.productId
         }
@@ -185,14 +179,15 @@ class SubscriptionFragment : Fragment() {
                 }
             }
 
-            val sortedSubscriptionDataList = updatedSubscriptionDataList.sortedWith(compareBy { subscription ->
-                when (subscription.productId) {
-                    Constants.weaklySubId -> 1
-                    Constants.monthlySubId -> 2
-                    Constants.lifeTimePorductId -> 3
-                    else -> Int.MAX_VALUE
-                }
-            })
+            val sortedSubscriptionDataList =
+                updatedSubscriptionDataList.sortedWith(compareBy { subscription ->
+                    when (subscription.productId) {
+                        Constants.weaklySubId -> 1
+                        Constants.monthlySubId -> 2
+                        Constants.lifeTimePorductId -> 3
+                        else -> Int.MAX_VALUE
+                    }
+                })
 
             // Update the UI with the sorted results
             withContext(Dispatchers.Main) { adapter.updateData(sortedSubscriptionDataList) }
@@ -237,6 +232,8 @@ class SubscriptionFragment : Fragment() {
     private fun handleSubscribe(purchase: Purchase) {
         if (purchase.purchaseState == Purchase.PurchaseState.PURCHASED) {
             preferenceManager.saveSubscriptionActive(true)
+            showCustomToast("Subscription is successfully activated")
+            popBack()
         }
     }
 
@@ -266,6 +263,7 @@ class SubscriptionFragment : Fragment() {
         if (purchase.purchaseState == Purchase.PurchaseState.PURCHASED) {
             preferenceManager.saveLifeTimeAccessActive(true)
             showCustomToast("Lifetime purchase completed successfully!")
+            popBack()
         } else {
             showCustomToast(resources.getString(R.string.string_something_went_wrong_please_try_again))
         }

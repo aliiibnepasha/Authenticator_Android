@@ -44,15 +44,15 @@ class OnboardingFragment : Fragment() {
         )
 
         val titles = listOf(
-            "Welcome",
-            "Discover Features",
-            "Get Started"
+            "Stay One Step Ahead",
+            "Protect what matters",
+            "Access made easy"
         )
 
         val descriptions = listOf(
-            "Welcome to our app. Enjoy the journey!",
-            "Discover amazing features tailored for you.",
-            "Let’s get started and explore together!"
+            "Get seamless authentication and advanced security features, all in one place.",
+            "Protect what matters with enhanced security and peace of mind",
+            "Secure your digital world with ease."
         )
 
         adapter = OnboardingAdapter(images, titles, descriptions)

@@ -56,7 +56,7 @@ class MainActivity : LocalizationActivity() {
 
     private fun inIt() {
         setupBillingClient()
-        inItAdmob()
+//        inItAdmob()
         setUpBottomBar()
         handleBackPressed()
     }
@@ -117,12 +117,12 @@ class MainActivity : LocalizationActivity() {
         binding.bottomNavigationView.setupWithNavController(navHostFragment.findNavController())
 
         navHostFragment.findNavController().addOnDestinationChangedListener { _, destination, _ ->
-            if (destination.id == R.id.addAccountFragment || destination.id == R.id.webViewFragment) {
-                stopShimmer()
-                binding.mainBannerAdView.gone()
-            } else {
-                inItAdmob()
-            }
+//            if (destination.id == R.id.addAccountFragment || destination.id == R.id.webViewFragment) {
+//                stopShimmer()
+//                binding.mainBannerAdView.gone()
+//            } else {
+//                inItAdmob()
+//            }
 
             if (destination.id == R.id.homeFragment || destination.id == R.id.newToolsFragment || destination.id == R.id.settingFragment) {
                 binding.bottomNavigationView.visible()

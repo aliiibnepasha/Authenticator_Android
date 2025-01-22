@@ -19,6 +19,7 @@ class VmHome @Inject constructor(
     val insertState = repository.insertState
     val deleteState = repository.deleteState
     val insertRecentlyDeletedState = recentlyDeletedRepository.insertState
+    var isNavigationTriggered: Boolean = false
 
     init {
         fetchAllTotp()

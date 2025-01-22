@@ -14,8 +14,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.husnain.authy.data.room.daos.DaoTotp
 import com.husnain.authy.databinding.FragmentBackUpBinding
 import com.husnain.authy.preferences.PreferenceManager
+import com.husnain.authy.ui.fragment.main.backup.workers.SyncJobService
 import com.husnain.authy.utls.popBack
-import com.husnain.authy.workers.SyncJobService
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 

@@ -27,6 +27,7 @@ class PreferenceManager @Inject constructor(@ApplicationContext private val cont
         private const val kEY_GUEST_USER = "keyGuestUser"
         private const val KEY_SETTING_SCROLL_POSITION = "keySettingScrollPosition"
         private const val KEY_LAST_SYNC_TIME = "lastSyncTime"
+        private const val KEY_IS_TO_SHOW_SUBS_SCREEN = "showSubsScreen"
     }
 
     private val gson = Gson()
@@ -44,6 +45,17 @@ class PreferenceManager @Inject constructor(@ApplicationContext private val cont
 
     fun isOnboardingFinished(): Boolean {
         return myPref.getBoolean(KEY_ONBOARDING_FINISHED, false)
+    }
+
+    fun saveIsToShowSubsScreenAsDialog(isToShow: Boolean) {
+        myPref.edit().apply {
+            putBoolean(KEY_IS_TO_SHOW_SUBS_SCREEN, isToShow)
+            apply()
+        }
+    }
+
+    fun isToShowSubsScreenAsDialog(): Boolean {
+        return myPref.getBoolean(KEY_IS_TO_SHOW_SUBS_SCREEN, false)
     }
 
     fun saveIsAllowScreenShots(allow: Boolean) {

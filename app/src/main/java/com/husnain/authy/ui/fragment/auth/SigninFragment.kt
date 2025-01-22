@@ -12,6 +12,7 @@ import com.husnain.authy.R
 import com.husnain.authy.data.models.ModelUser
 import com.husnain.authy.databinding.FragmentSigninBinding
 import com.husnain.authy.ui.activities.MainActivity
+import com.husnain.authy.utls.BackPressedExtensions.goBackPressed
 import com.husnain.authy.utls.Constants
 import com.husnain.authy.utls.CustomToast.showCustomToast
 import com.husnain.authy.utls.DataState
@@ -41,14 +42,14 @@ class SigninFragment : Fragment() {
     private fun inIt() {
         setOnClickListener()
         setUpObserver()
+        goBackPressed {
+            startMainActivityFromGuestToLogin()
+        }
     }
 
     private fun setOnClickListener() {
-        if (Constants.isComingToAuthFromGuestSignUp){
-            navigate(R.id.action_signupFragment_to_signinFragment)
-        }
-
         binding.tvSignup.setOnClickListener {
+            Constants.isComingToAuthFromGuestToSignIn = false
             popBack()
         }
         binding.tvForgotPassword.setOnClickListener {
@@ -139,6 +140,7 @@ class SigninFragment : Fragment() {
     }
 
     private fun startMainActivityFromGuestToLogin(){
+        Constants.isComingToAuthFromGuestToSignIn = false
         val intent = Intent(requireActivity(), MainActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
         startActivity(intent)

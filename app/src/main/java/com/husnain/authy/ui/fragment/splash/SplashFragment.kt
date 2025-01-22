@@ -1,6 +1,5 @@
 package com.husnain.authy.ui.fragment.splash
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -59,6 +58,7 @@ class SplashFragment : Fragment() {
                 if (!preferenceManager.isOnboardingFinished()) {
                     navigate(R.id.action_splashFragment_to_onboardingFragment)
                 } else {
+                    preferenceManager.saveIsToShowSubsScreenAsDialog(true)
                     handleUser()
                 }
 

@@ -6,7 +6,7 @@ object Constants {
     const val TAG = "LOG_AUTHY"
     var isComingFromLogout = false
     var isComingToAuthFromGuest = false
-    var isComingToAuthFromGuestSignUp = false
+    var isComingToAuthFromGuestToSignIn = false
     //Warning! don't change ids until unless changes from console
     const val weaklySubId = "weekly_plan"
     const val monthlySubId = "monthly_plan"

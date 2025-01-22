@@ -28,9 +28,6 @@
         <action
             android:id="@+id/action_settingFragment_to_webViewFragment"
             app:destination="@id/webViewFragment" />
-        <action
-            android:id="@+id/action_settingFragment_to_otpFragment"
-            app:destination="@id/otpFragment" />
     </fragment>
     <fragment
         android:id="@+id/newToolsFragment"
@@ -122,8 +119,4 @@
         android:name="com.husnain.authy.ui.fragment.main.webView.WebViewFragment"
         android:label="fragment_web_view"
         tools:layout="@layout/fragment_web_view" />
-    <fragment
-        android:id="@+id/otpFragment"
-        android:name="com.husnain.authy.ui.fragment.extra.OtpFragment"
-        android:label="OtpFragment" />
 </navigation>

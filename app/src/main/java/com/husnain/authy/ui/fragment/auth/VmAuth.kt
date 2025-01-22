@@ -18,6 +18,7 @@ class VmAuth @Inject constructor(
     val logoutState = repository.logoutState
     val googleLoginState = repository.googleLoginStatus
     val deleteAccountState = repository.deleteAccountStatus
+    var isNavigationTriggered: Boolean = false
 
     fun loginWithEmailPass(user: ModelUser) {
         viewModelScope.launch {

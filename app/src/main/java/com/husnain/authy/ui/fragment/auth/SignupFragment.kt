@@ -15,6 +15,7 @@ import com.husnain.authy.databinding.FragmentSignupBinding
 import com.husnain.authy.preferences.PreferenceManager
 import com.husnain.authy.ui.activities.MainActivity
 import com.husnain.authy.utls.BackPressedExtensions.goBackPressed
+import com.husnain.authy.utls.Constants
 import com.husnain.authy.utls.CustomToast.showCustomToast
 import com.husnain.authy.utls.DataState
 import com.husnain.authy.utls.getTextFromEdit
@@ -57,6 +58,10 @@ class SignupFragment : Fragment() {
     }
 
     private fun setOnClickListener() {
+        if (Constants.isComingToAuthFromGuestToSignIn) {
+            navigate(R.id.action_signupFragment_to_signinFragment)
+        }
+
         binding.tvSignin.setOnClickListener {
             navigate(R.id.action_signupFragment_to_signinFragment)
         }
@@ -108,7 +113,8 @@ class SignupFragment : Fragment() {
         })
     }
 
-    private fun startMainActivityFromGuestToLogin(){
+    private fun startMainActivityFromGuestToLogin() {
+        Constants.isComingToAuthFromGuestToSignIn = false
         val intent = Intent(requireActivity(), MainActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
         startActivity(intent)
@@ -177,7 +183,7 @@ class SignupFragment : Fragment() {
     }
 
 
-    private fun handleSystemNavBackPressed(){
+    private fun handleSystemNavBackPressed() {
         goBackPressed {
             startMainActivityFromGuestToLogin()
         }

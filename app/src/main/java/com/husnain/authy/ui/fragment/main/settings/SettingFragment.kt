@@ -50,9 +50,9 @@ class SettingFragment : Fragment() {
     ): View {
         _binding = FragmentSettingBinding.inflate(inflater, container, false)
         scrollPosition = savedInstanceState?.getInt("scroll_position") ?: 0
-        binding.scrollView.post {
-            binding.scrollView.scrollTo(0, preferenceManager.getSettingScrollPosition())
-        }
+//        binding.scrollView.post {
+//            binding.scrollView.scrollTo(0, preferenceManager.getSettingScrollPosition())
+//        }
         inIt()
         return binding.root
     }
@@ -95,7 +95,6 @@ class SettingFragment : Fragment() {
         binding.tvSignup.setOnClickListener {
             if (preferenceManager.isGuestUser()) {
                 Constants.isComingToAuthFromGuest = true
-                Constants.isComingToAuthFromGuestSignUp = true
                 val intent = Intent(requireContext(), AuthActivity::class.java)
                 startActivity(intent)
             }
@@ -103,6 +102,7 @@ class SettingFragment : Fragment() {
         binding.btnLogin.setOnClickListener {
             if (preferenceManager.isGuestUser()) {
                 Constants.isComingToAuthFromGuest = true
+                Constants.isComingToAuthFromGuestToSignIn = true
                 val intent = Intent(requireContext(), AuthActivity::class.java)
                 startActivity(intent)
             }
@@ -260,9 +260,9 @@ class SettingFragment : Fragment() {
 
     override fun onPause() {
         super.onPause()
-        binding.scrollView.let {
-            preferenceManager.saveSettingScrollPosition(it.scrollY)
-        }
+//        binding.scrollView.let {
+//            preferenceManager.saveSettingScrollPosition(it.scrollY)
+//        }
     }
     override fun onDestroyView() {
         super.onDestroyView()

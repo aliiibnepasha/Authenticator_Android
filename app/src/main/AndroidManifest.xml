@@ -46,7 +46,7 @@
             android:value="@string/admob_app_id" />
 
         <service
-            android:name="com.husnain.authy.workers.SyncJobService"
+            android:name="com.husnain.authy.ui.fragment.main.backup.workers.SyncJobService"
             android:permission="android.permission.BIND_JOB_SERVICE">
         </service>
     </application>
