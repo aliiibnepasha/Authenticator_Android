@@ -6,18 +6,14 @@ import android.content.ComponentName
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.work.WorkInfo
-import androidx.work.WorkManager
+import androidx.fragment.app.Fragment
 import com.google.firebase.auth.FirebaseAuth
-import com.husnain.authy.R
 import com.husnain.authy.data.room.daos.DaoTotp
 import com.husnain.authy.databinding.FragmentBackUpBinding
-import com.husnain.authy.utls.CustomToast.showCustomToast
+import com.husnain.authy.preferences.PreferenceManager
 import com.husnain.authy.utls.popBack
 import com.husnain.authy.workers.SyncJobService
 import dagger.hilt.android.AndroidEntryPoint
@@ -28,6 +24,7 @@ class BackUpFragment : Fragment() {
     private var _binding: FragmentBackUpBinding? = null
     private val binding get() = _binding!!
     @Inject lateinit var auth: FirebaseAuth
+    @Inject lateinit var preferenceManager: PreferenceManager
     private lateinit var jobScheduler: JobScheduler
     @Inject lateinit var daoTotp: DaoTotp
 
@@ -39,7 +36,12 @@ class BackUpFragment : Fragment() {
     }
 
     private fun inIt() {
+        inItUi()
         setOnClickListener()
+    }
+
+    private fun inItUi() {
+        binding.tvLastSyncTime.text = preferenceManager.getLastSyncTime()
     }
 
     private fun setOnClickListener() {

@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
@@ -13,7 +12,6 @@ import com.husnain.authy.R
 import com.husnain.authy.databinding.FragmentOnboardingBinding
 import com.husnain.authy.preferences.PreferenceManager
 import com.husnain.authy.ui.activities.MainActivity
-import com.husnain.authy.utls.navigate
 import com.husnain.authy.utls.startActivity
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -40,9 +38,9 @@ class OnboardingFragment : Fragment() {
 
     private fun setUpViewPagerAdapter() {
         val images = listOf(
-            R.drawable.ic_login,
-            R.drawable.ic_signup,
-            R.drawable.ic_facebook
+            R.drawable.img_onboarding1,
+            R.drawable.img_onboarding2,
+            R.drawable.img_onboarding3
         )
 
         val titles = listOf(

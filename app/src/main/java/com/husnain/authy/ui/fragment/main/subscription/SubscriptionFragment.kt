@@ -17,6 +17,7 @@ import com.android.billingclient.api.Purchase
 import com.android.billingclient.api.PurchasesUpdatedListener
 import com.android.billingclient.api.QueryProductDetailsParams
 import com.android.billingclient.api.queryProductDetails
+import com.husnain.authy.R
 import com.husnain.authy.data.models.ModelSubscription
 import com.husnain.authy.databinding.FragmentSubscriptionBinding
 import com.husnain.authy.preferences.PreferenceManager
@@ -25,7 +26,6 @@ import com.husnain.authy.ui.fragment.main.subscription.adapter.AdapterSubscripti
 import com.husnain.authy.utls.Constants
 import com.husnain.authy.utls.CustomToast.showCustomToast
 import com.husnain.authy.utls.popBack
-import com.husnain.authy.utls.startActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -35,12 +35,9 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class SubscriptionFragment : Fragment() {
-
     private var _binding: FragmentSubscriptionBinding? = null
     private val binding get() = _binding!!
-    @Inject
-    lateinit var preferenceManager: PreferenceManager
-
+    @Inject lateinit var preferenceManager: PreferenceManager
     private lateinit var billingClient: BillingClient
     private lateinit var adapter: AdapterSubscription
     private lateinit var selectedProductId: String
@@ -58,9 +55,41 @@ class SubscriptionFragment : Fragment() {
         return binding.root
     }
 
+    private fun setOnClickListener() {
+        binding.imgBack.setOnClickListener {
+            popBack()
+        }
+        binding.btnCheckout.setOnClickListener {
+            if (preferenceManager.isGuestUser()) {
+                Constants.isComingToAuthFromGuest = true
+                val intent = Intent(requireContext(), AuthActivity::class.java)
+                startActivity(intent)
+            } else {
+                if (::selectedProductId.isInitialized && selectedProductId.isNotEmpty()) {
+                    if (selectedProductId == Constants.lifeTimePorductId){
+                        initiatePurchase(selectedProductId)
+                    }else{
+                        initiateSubscribe(selectedProductId)
+                    }
+                } else {
+                    showCustomToast(getString(R.string.string_please_select_at_least_one))
+                }
+            }
+        }
+    }
+
+    private fun initAdapter() {
+        val defaultSubscriptionDataList = listOf(ModelSubscription("Weekly", "Most Popular", "$7.99", "weekly_plan"),)
+        adapter = AdapterSubscription(defaultSubscriptionDataList) { selectedSubscription ->
+            selectedProductId = selectedSubscription.productId
+        }
+        binding.rvSubscription.adapter = adapter
+    }
+
+    //Billing
     private fun setupBillingClient() {
         billingClient = BillingClient.newBuilder(requireContext())
-            .setListener(purchaseUpdateListener)
+            .setListener(subscribeUpdateListener)
             .enablePendingPurchases()
             .build()
         connectBillingClient()
@@ -84,73 +113,90 @@ class SubscriptionFragment : Fragment() {
     }
 
     private fun queryProductDetails() {
-        val productList = listOf(
+        // Define subscription products
+        val subsProductList = listOf(
             QueryProductDetailsParams.Product.newBuilder()
-                .setProductId("weekly_plan")
+                .setProductId(Constants.weaklySubId)
+                .setProductType(BillingClient.ProductType.SUBS)
+                .build(),
+            QueryProductDetailsParams.Product.newBuilder()
+                .setProductId(Constants.monthlySubId)
                 .setProductType(BillingClient.ProductType.SUBS)
                 .build()
         )
-        val params = QueryProductDetailsParams.newBuilder()
-            .setProductList(productList)
-            .build()
+
+        // Define in-app products
+        val inAppProductList = listOf(
+            QueryProductDetailsParams.Product.newBuilder()
+                .setProductId(Constants.lifeTimePorductId)
+                .setProductType(BillingClient.ProductType.INAPP)
+                .build()
+        )
 
         lifecycleScope.launch(Dispatchers.IO) {
-            val result = billingClient.queryProductDetails(params)
-            if (result.billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
-                val updatedSubscriptionDataList = mutableListOf<ModelSubscription>()
+            val updatedSubscriptionDataList = mutableListOf<ModelSubscription>()
 
-                result.productDetailsList?.forEach { productDetails ->
+            // Query subscriptions
+            val subsParams = QueryProductDetailsParams.newBuilder()
+                .setProductList(subsProductList)
+                .build()
+            val subsResult = billingClient.queryProductDetails(subsParams)
+
+            if (subsResult.billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
+                subsResult.productDetailsList?.forEach { productDetails ->
                     productDetailsMap[productDetails.productId] = productDetails
 
-                    val price =
-                        productDetails.subscriptionOfferDetails?.firstOrNull()?.pricingPhases?.pricingPhaseList?.firstOrNull()?.formattedPrice
-                    val title = productDetails.name
+                    val price = productDetails.subscriptionOfferDetails?.firstOrNull()
+                        ?.pricingPhases?.pricingPhaseList?.firstOrNull()?.formattedPrice ?: ""
 
+                    val (duration, label) = getSubscriptionDurationAndLabel(productDetails.productId)
                     updatedSubscriptionDataList.add(
                         ModelSubscription(
-                            "Weakly",
-                            "Most popular",
-                            price!!,
+                            duration,
+                            label,
+                            price,
                             productDetails.productId
                         )
                     )
                 }
-                withContext(Dispatchers.Main) { adapter.updateData(updatedSubscriptionDataList) }
-            } else {
-                withContext(Dispatchers.Main) {
-                    showCustomToast("Failed to fetch product details: ${result.billingResult.debugMessage}")
+            }
+
+            // Query in-app products
+            val inAppParams = QueryProductDetailsParams.newBuilder()
+                .setProductList(inAppProductList)
+                .build()
+            val inAppResult = billingClient.queryProductDetails(inAppParams)
+
+            if (inAppResult.billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
+                inAppResult.productDetailsList?.forEach { productDetails ->
+                    productDetailsMap[productDetails.productId] = productDetails
+
+                    val price = productDetails.oneTimePurchaseOfferDetails?.formattedPrice ?: ""
+
+                    val (duration, label) = getSubscriptionDurationAndLabel(productDetails.productId)
+                    updatedSubscriptionDataList.add(
+                        ModelSubscription(
+                            duration,
+                            label,
+                            price,
+                            productDetails.productId
+                        )
+                    )
                 }
             }
-        }
-    }
 
-    private fun setOnClickListener() {
-        binding.imgBack.setOnClickListener {
-            popBack()
-        }
-        binding.btnCheckout.setOnClickListener {
-            if (preferenceManager.isGuestUser()) {
-                Constants.isComingToAuthFromGuest = true
-                val intent = Intent(requireContext(), AuthActivity::class.java)
-                startActivity(intent)
-            } else {
-                if (::selectedProductId.isInitialized && selectedProductId.isNotEmpty()) {
-                    initiateSubscribe(selectedProductId)
-                } else {
-                    showCustomToast("Please select at least one")
+            val sortedSubscriptionDataList = updatedSubscriptionDataList.sortedWith(compareBy { subscription ->
+                when (subscription.productId) {
+                    Constants.weaklySubId -> 1
+                    Constants.monthlySubId -> 2
+                    Constants.lifeTimePorductId -> 3
+                    else -> Int.MAX_VALUE
                 }
-            }
-        }
-    }
+            })
 
-    private fun initAdapter() {
-        val defaultSubscriptionDataList = listOf(
-            ModelSubscription("Weekly", "Most Popular", "", "weekly_plan"),
-        )
-        adapter = AdapterSubscription(defaultSubscriptionDataList) { selectedSubscription ->
-            selectedProductId = selectedSubscription.productId
+            // Update the UI with the sorted results
+            withContext(Dispatchers.Main) { adapter.updateData(sortedSubscriptionDataList) }
         }
-        binding.rvSubscription.adapter = adapter
     }
 
     private fun initiateSubscribe(productId: String) {
@@ -169,26 +215,68 @@ class SubscriptionFragment : Fragment() {
                 .build()
             val billingResult = billingClient.launchBillingFlow(requireActivity(), flowParams)
             if (billingResult.responseCode != BillingClient.BillingResponseCode.OK) {
-                showCustomToast("Failed to launch billing flow: ${billingResult.debugMessage}")
+                showCustomToast(resources.getString(R.string.string_something_went_wrong_please_try_again))
             }
         } else {
-            showCustomToast("Product details not available for $productId")
+            showCustomToast(resources.getString(R.string.string_something_went_wrong_please_try_again))
         }
     }
 
-    private val purchaseUpdateListener = PurchasesUpdatedListener { billingResult, purchases ->
+    private val subscribeUpdateListener = PurchasesUpdatedListener { billingResult, purchases ->
         if (billingResult.responseCode == BillingClient.BillingResponseCode.OK && purchases != null) {
             for (purchase in purchases) {
-                handlePurchase(purchase)
+                when (purchase.products.firstOrNull()) {
+                    "lifetime_pro" -> handleLifetimePurchase(purchase)
+                    else -> handleSubscribe(purchase)
+                }
+
             }
         }
     }
 
-    private fun handlePurchase(purchase: Purchase) {
+    private fun handleSubscribe(purchase: Purchase) {
         if (purchase.purchaseState == Purchase.PurchaseState.PURCHASED) {
             preferenceManager.saveSubscriptionActive(true)
-            requireActivity().runOnUiThread {
+        }
+    }
+
+    private fun initiatePurchase(productId: String) {
+        val productDetails = productDetailsMap[productId]
+        if (productDetails != null) {
+            val flowParams = BillingFlowParams.newBuilder()
+                .setProductDetailsParamsList(
+                    listOf(
+                        BillingFlowParams.ProductDetailsParams.newBuilder()
+                            .setProductDetails(productDetails)
+                            .build()
+                    )
+                )
+                .build()
+
+            val billingResult = billingClient.launchBillingFlow(requireActivity(), flowParams)
+            if (billingResult.responseCode != BillingClient.BillingResponseCode.OK) {
+                showCustomToast(resources.getString(R.string.string_something_went_wrong_please_try_again))
             }
+        } else {
+            showCustomToast(resources.getString(R.string.string_something_went_wrong_please_try_again))
+        }
+    }
+
+    private fun handleLifetimePurchase(purchase: Purchase) {
+        if (purchase.purchaseState == Purchase.PurchaseState.PURCHASED) {
+            preferenceManager.saveLifeTimeAccessActive(true)
+            showCustomToast("Lifetime purchase completed successfully!")
+        } else {
+            showCustomToast(resources.getString(R.string.string_something_went_wrong_please_try_again))
+        }
+    }
+
+    private fun getSubscriptionDurationAndLabel(productId: String): Pair<String, String> {
+        return when (productId) {
+            Constants.weaklySubId -> Pair("Weekly", "Most popular")
+            Constants.monthlySubId -> Pair("Monthly", "Best value")
+            Constants.lifeTimePorductId -> Pair("Lifetime Access", "Enterprise")
+            else -> Pair("Unknown", "N/A")
         }
     }
 

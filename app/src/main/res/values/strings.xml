@@ -113,6 +113,10 @@
     <string name="string_singup_desc2">Secure your digital world with ease—sign up to protect what matters most!”</string>
     <string name="string_signin_desc2">Welcome back! Sign in to access your secure vault and stay protected.</string>
     <string name="string_forgot_password_new">Forgot Password</string>
+    <string name="string_forgot_pass_desc">Forgot your password? Let’s get you back on track securely and quickly!</string>
+    <string name="string_please_select_at_least_one">Please select at least one</string>
+    <string name="string_lifetime_purchase_successful">Lifetime purchase is successful</string>
+    <string name="string_subscription_successful">Subscribed successfully</string>
 
 
 </resources>

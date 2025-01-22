@@ -21,12 +21,10 @@ import com.husnain.authy.preferences.PreferenceManager
 import com.husnain.authy.ui.fragment.main.home.HomeFragment
 import com.husnain.authy.utls.BackPressedExtensions.goBackPressed
 import com.husnain.authy.utls.Constants
+import com.husnain.authy.utls.NetworkUtils
 import com.husnain.authy.utls.gone
 import com.husnain.authy.utls.visible
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import java.util.Locale
 import javax.inject.Inject
 
@@ -38,6 +36,7 @@ class MainActivity : LocalizationActivity() {
     @Inject
     lateinit var preferenceManager: PreferenceManager
     private lateinit var billingClient: BillingClient
+    private lateinit var adRequest: AdRequest
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
@@ -50,14 +49,15 @@ class MainActivity : LocalizationActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
+        MobileAds.initialize(this@MainActivity)
         setContentView(binding.root)
         inIt()
     }
 
     private fun inIt() {
         setupBillingClient()
-        setUpBottomBar()
         inItAdmob()
+        setUpBottomBar()
         handleBackPressed()
     }
 
@@ -86,19 +86,42 @@ class MainActivity : LocalizationActivity() {
         })
     }
 
+    private fun inItAdmob() {
+        adRequest = AdRequest.Builder().build()
+
+        if (NetworkUtils.isNetworkAvailable(this)){
+            binding.mainBannerAdView.loadAd(adRequest)
+        }else{
+            stopShimmer()
+            binding.mainBannerAdView.gone()
+            return
+        }
+
+        binding.mainBannerAdView.adListener = object : AdListener() {
+            override fun onAdLoaded() {
+                stopShimmer()
+                binding.mainBannerAdView.visible()
+            }
+
+            override fun onAdFailedToLoad(adError: LoadAdError) {
+                stopShimmer()
+                binding.mainBannerAdView.gone()
+            }
+        }
+
+    }
+
     private fun setUpBottomBar() {
-        navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.afterAuthActivityNavHostFragment)!!
+        navHostFragment = supportFragmentManager.findFragmentById(R.id.afterAuthActivityNavHostFragment)!!
         binding.bottomNavigationView.itemIconTintList = null
         binding.bottomNavigationView.setupWithNavController(navHostFragment.findNavController())
 
         navHostFragment.findNavController().addOnDestinationChangedListener { _, destination, _ ->
-
-            if (destination.id == R.id.addAccountFragment) {
-                binding.mainBannerAdView.gone()
+            if (destination.id == R.id.addAccountFragment || destination.id == R.id.webViewFragment) {
                 stopShimmer()
+                binding.mainBannerAdView.gone()
             } else {
-                binding.mainBannerAdView.visible()
+                inItAdmob()
             }
 
             if (destination.id == R.id.homeFragment || destination.id == R.id.newToolsFragment || destination.id == R.id.settingFragment) {
@@ -119,40 +142,13 @@ class MainActivity : LocalizationActivity() {
         }
     }
 
-    fun changeLanguage(language: String) {
-        setLanguage(language)
-    }
-
-    private fun inItAdmob() {
-        val backgroundScope = CoroutineScope(Dispatchers.IO)
-        backgroundScope.launch {
-            MobileAds.initialize(this@MainActivity) {
-                Log.d(Constants.TAG, "Admob initialized successfully")
-            }
-        }
-
-        val adRequest = AdRequest.Builder().build()
-        binding.mainBannerAdView.loadAd(adRequest)
-
-        binding.mainBannerAdView.adListener = object : AdListener() {
-            override fun onAdLoaded() {
-                stopShimmer()
-                binding.mainBannerAdView.visible()
-            }
-
-            override fun onAdFailedToLoad(adError: LoadAdError) {
-                stopShimmer()
-                binding.mainBannerAdView.gone()
-                binding.mainBannerAdView.loadAd(adRequest)
-                Log.e(Constants.TAG, "Ad failed to load: ${adError.message}")
-            }
-        }
-
-    }
-
     private fun stopShimmer() {
         binding.adShimmer.stopShimmer()
         binding.adShimmer.gone()
+    }
+
+    fun changeLanguage(language: String) {
+        setLanguage(language)
     }
 
     private fun checkSubscriptionStatus() {
@@ -168,7 +164,9 @@ class MainActivity : LocalizationActivity() {
         billingClient.queryPurchasesAsync(queryPurchasesParams) { billingResult, purchaseList ->
             if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
                 val subscribedProduct = purchaseList.firstOrNull { purchase ->
-                    purchase.products.contains("weekly_plan") || purchase.products.contains("monthly_plan")
+                    purchase.products.contains(Constants.weaklySubId) || purchase.products.contains(
+                        Constants.monthlySubId
+                    )
                 }
 
                 if (subscribedProduct != null) {

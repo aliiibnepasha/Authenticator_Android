@@ -30,6 +30,15 @@ class OnboardingAdapter(
         holder.imageView.setImageResource(images[position])
         holder.titleText.text = titles[position]
         holder.descriptionText.text = descriptions[position]
+
+        if (position == 0) {
+            holder.imageView.scaleType = ImageView.ScaleType.CENTER_CROP
+            val paddingInPixels = holder.itemView.context.resources.getDimensionPixelSize(R.dimen.padding_top_20dp)
+            holder.imageView.setPadding(0, paddingInPixels, 0, 0) // Add padding to the top only
+        } else {
+            holder.imageView.scaleType = ImageView.ScaleType.FIT_XY
+            holder.imageView.setPadding(0, 0, 0, 0) // Remove any padding
+        }
     }
 
     override fun getItemCount(): Int = images.size

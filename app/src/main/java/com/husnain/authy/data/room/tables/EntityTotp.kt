@@ -8,4 +8,5 @@ data class EntityTotp(
     @PrimaryKey(autoGenerate = true) val uid: Int = 0,
     var serviceName: String,
     var secretKey: String = "",
+    var docId:String = ""
 )

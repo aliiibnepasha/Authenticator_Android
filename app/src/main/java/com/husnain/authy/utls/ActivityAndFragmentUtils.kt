@@ -50,8 +50,8 @@ fun Fragment.navigate(
     val navController = findNavController()
     val options = NavOptions.Builder().apply {
         setEnterAnim(R.anim.slide_in)
-        setExitAnim(R.anim.fade_out)
-        setPopEnterAnim(R.anim.fade_in)
+//        setExitAnim(R.anim.fade_out)
+//        setPopEnterAnim(R.anim.fade_in)
         setPopExitAnim(R.anim.slide_out)
     }.build()
     navController.navigate(destinationId, args, options)
@@ -60,6 +60,7 @@ fun Fragment.navigate(
 fun Fragment.popBack(){
     findNavController().popBackStack()
 }
+
 fun View.invisible() {
     visibility = View.INVISIBLE
 }

@@ -64,16 +64,28 @@
                 app:srcCompat="@drawable/ic_backup" />
 
             <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/appCompatTextView13"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_10sdp"
                 android:text="@string/string_backup"
                 android:textColor="#484C52"
+                android:fontFamily="@font/poppins_semibold"
                 android:textSize="14sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="@+id/appCompatImageView10"
                 app:layout_constraintStart_toEndOf="@+id/appCompatImageView10"
                 app:layout_constraintTop_toTopOf="@+id/appCompatImageView10" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvLastSyncTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:text="Last sync: --"
+                android:textColor="#484C52"
+                android:fontFamily="@font/poppins_regular"
+                android:textSize="12sp"
+                app:layout_constraintStart_toEndOf="@+id/appCompatImageView10"
+                app:layout_constraintTop_toBottomOf="@+id/appCompatTextView13" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.husnain.authy.utls.ShadowLayout>
 

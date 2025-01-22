@@ -14,7 +14,6 @@ import com.husnain.authy.data.models.ModelTotp
 import com.husnain.authy.data.room.tables.EntityTotp
 import com.husnain.authy.data.room.tables.RecentlyDeleted
 import com.husnain.authy.databinding.FragmentHomeBinding
-import com.husnain.authy.ui.fragment.main.recentlyDeleted.VmRecentlyDeleted
 import com.husnain.authy.utls.CustomToast.showCustomToast
 import com.husnain.authy.utls.DataState
 import com.husnain.authy.utls.PermissionUtils
@@ -32,7 +31,6 @@ class HomeFragment : Fragment() {
     private lateinit var adapter: AdapterHomeTotp
     private val vmHome: VmHome by viewModels()
     var isDeleted = false
-    private val vmRecentlyDeleted: VmRecentlyDeleted by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -119,7 +117,7 @@ class HomeFragment : Fragment() {
             }
         })
 
-        vmRecentlyDeleted.insertState.observe(viewLifecycleOwner, Observer { state ->
+        vmHome.insertRecentlyDeletedState.observe(viewLifecycleOwner, Observer { state ->
             when (state) {
                 is DataState.Loading -> {
                 }
@@ -148,7 +146,7 @@ class HomeFragment : Fragment() {
             //Long click to show the delete bottom sheet
             adapter.setOnLongClickListener { totpData ->
                 showBottomSheetDialog(getString(R.string.string_delete), onPrimaryClick = {
-                    vmRecentlyDeleted.insertToRecentlyDeleted(RecentlyDeleted(totpData.serviceName,totpData.secretKey))
+                    vmHome.insertToRecentlyDeleted(RecentlyDeleted(totpData.serviceName,totpData.secretKey))
                     vmHome.deleteTotp(totpData.secretKey)
                     isDeleted = true
                 })

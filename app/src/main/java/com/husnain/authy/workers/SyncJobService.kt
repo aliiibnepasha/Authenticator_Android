@@ -6,14 +6,12 @@ import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
 import com.husnain.authy.data.room.SyncDatabase
 import com.husnain.authy.data.room.daos.DaoTotp
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedInject
+import com.husnain.authy.preferences.PreferenceManager
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
-import javax.inject.Inject
 
 class SyncJobService : JobService() {
     private lateinit var daoTotp: DaoTotp
@@ -24,6 +22,7 @@ class SyncJobService : JobService() {
     override fun onStartJob(params: JobParameters?): Boolean {
         daoTotp = SyncDatabase.getDatabase(applicationContext).daoTotp()
         firestore = FirebaseFirestore.getInstance()
+        val preferenceManager = PreferenceManager(applicationContext)
         notificationManager = SyncNotificationHelper(applicationContext)
 
         GlobalScope.launch(Dispatchers.IO) {
@@ -48,7 +47,7 @@ class SyncJobService : JobService() {
                         .await()
 
                     if (existingDocs.isEmpty) {
-                        // Add new document if it doesn't exist
+                        // Add new document
                         val totpData = hashMapOf(
                             "uid" to totp.uid,
                             "serviceName" to totp.serviceName,
@@ -62,6 +61,7 @@ class SyncJobService : JobService() {
 
                 }
 
+                preferenceManager.saveLastSyncDateTime()
                 notificationManager.showCompletionNotification()
                 jobFinished(params, false)
             } catch (e: Exception) {

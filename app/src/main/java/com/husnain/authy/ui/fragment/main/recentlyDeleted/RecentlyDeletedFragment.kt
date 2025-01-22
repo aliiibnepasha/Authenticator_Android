@@ -25,8 +25,6 @@ class RecentlyDeletedFragment : Fragment() {
     private lateinit var adapter: AdapterRecentlyDeleted
     private var selectedDataToDelete: RecentlyDeleted? = null
     private val vmRecentlyDeleted: VmRecentlyDeleted by viewModels()
-    private val vmHome: VmHome by viewModels()
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -109,7 +107,7 @@ class RecentlyDeletedFragment : Fragment() {
                     vmRecentlyDeleted.fetchRecentlyDeleted()
                     //Fetch for home so that when user go back to home user can see the data
                     //Note(you can also do it in home fragment onRestart
-                    vmHome.fetchAllTotp()
+                    vmRecentlyDeleted.fetchAllTotp()
                     showCustomToast("Action completed successfully")
                 }
 

@@ -2,23 +2,23 @@ package com.husnain.authy.ui.fragment.auth
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.husnain.authy.R
 import com.husnain.authy.data.models.ModelUser
 import com.husnain.authy.databinding.FragmentSigninBinding
 import com.husnain.authy.ui.activities.MainActivity
+import com.husnain.authy.utls.Constants
 import com.husnain.authy.utls.CustomToast.showCustomToast
 import com.husnain.authy.utls.DataState
 import com.husnain.authy.utls.getTextFromEdit
 import com.husnain.authy.utls.navigate
 import com.husnain.authy.utls.popBack
 import com.husnain.authy.utls.setupKeyboardDismissListener
-import com.husnain.authy.utls.startActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -44,6 +44,10 @@ class SigninFragment : Fragment() {
     }
 
     private fun setOnClickListener() {
+        if (Constants.isComingToAuthFromGuestSignUp){
+            navigate(R.id.action_signupFragment_to_signinFragment)
+        }
+
         binding.tvSignup.setOnClickListener {
             popBack()
         }

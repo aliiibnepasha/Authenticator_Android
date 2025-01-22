@@ -109,6 +109,7 @@ dependencies {
     //Room database
     val roomVersion = "2.6.1"
     implementation("androidx.room:room-runtime:$roomVersion")
+    //noinspection KaptUsageInsteadOfKsp
     kapt("androidx.room:room-compiler:$roomVersion")
     implementation("androidx.room:room-ktx:$roomVersion")
 
@@ -118,19 +119,16 @@ dependencies {
     //Dots indicator
     implementation("com.tbuonomo:dotsindicator:5.1.0")
 
-    //Qr code scanner
-//    implementation("io.github.g00fy2.quickie:quickie-bundled:1.10.0")
-
     //biometric
     implementation("androidx.biometric:biometric:1.2.0-alpha05")
 
-    //Totp
+    //To create one time password otp for authenticaitons
     implementation("dev.turingcomplete:kotlin-onetimepassword:2.4.1")
 
     //Localization
     implementation("com.akexorcist:localization:1.2.11")
 
-    //Qr
+    //To Read qr data from gallery image
     implementation("com.journeyapps:zxing-android-embedded:4.3.0")
 
     //Admob
@@ -143,13 +141,9 @@ dependencies {
     val billing_version = "7.1.1"
     implementation("com.android.billingclient:billing-ktx:$billing_version")
 
-    //worker
-    val work_version = "2.10.0"
-    implementation("androidx.work:work-runtime-ktx:$work_version")
-    implementation("androidx.work:work-runtime-ktx:2.10.0")
-
     //Ml kit qr scanner
     implementation("com.google.mlkit:barcode-scanning:17.3.0")
+
     //To read google authenticator data
     implementation("com.google.protobuf:protobuf-javalite:3.21.12")
     implementation("org.jetbrains.kotlin:kotlin-stdlib:1.9.10")

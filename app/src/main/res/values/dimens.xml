@@ -6,4 +6,5 @@
     <dimen name="default_corner_radius">4dp</dimen>
     <dimen name="default_shadow_radius">4dp</dimen>
     <dimen name="margin_end_24dp">24dp</dimen>
+    <dimen name="padding_top_20dp">24dp</dimen>
 </resources>

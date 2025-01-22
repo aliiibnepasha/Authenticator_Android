@@ -3,11 +3,12 @@ package com.husnain.authy.preferences
 import android.content.Context
 import android.content.SharedPreferences
 import com.google.gson.Gson
-import com.husnain.authy.data.models.ModelPurchase
 import com.husnain.authy.data.models.ModelUser
 import com.husnain.authy.utls.DelayOption
 import dagger.hilt.android.qualifiers.ApplicationContext
+import java.text.SimpleDateFormat
 import java.util.Date
+import java.util.Locale
 import javax.inject.Inject
 
 class PreferenceManager @Inject constructor(@ApplicationContext private val context: Context) {
@@ -21,8 +22,11 @@ class PreferenceManager @Inject constructor(@ApplicationContext private val cont
         private const val KEY_BIOMETRIC_LOCK = "biometric_lock"
         private const val KEY_USER = "key_user"
         private const val KEY_IS_SUBSCRIPTION_ACTIVE = "keyIsSubscriptionActive"
+        private const val KEY_IS_LIFE_TIME_ACCESS_ACTIVE = "lifeTimeAccess"
         private const val KEY_SUBSCRIPTION_END_DATE = "keySubscriptionEndDate"
         private const val kEY_GUEST_USER = "keyGuestUser"
+        private const val KEY_SETTING_SCROLL_POSITION = "keySettingScrollPosition"
+        private const val KEY_LAST_SYNC_TIME = "lastSyncTime"
     }
 
     private val gson = Gson()
@@ -101,6 +105,14 @@ class PreferenceManager @Inject constructor(@ApplicationContext private val cont
         return myPref.getBoolean(KEY_IS_SUBSCRIPTION_ACTIVE, false)
     }
 
+    fun saveLifeTimeAccessActive(isLifeTimeAccess: Boolean) {
+        myPref.edit().putBoolean(KEY_IS_LIFE_TIME_ACCESS_ACTIVE, isLifeTimeAccess).apply()
+    }
+
+    fun isLifeTimeAccessActive(): Boolean {
+        return myPref.getBoolean(KEY_IS_LIFE_TIME_ACCESS_ACTIVE, false)
+    }
+
     fun saveGuestUser(isGuest: Boolean) {
         myPref.edit().putBoolean(kEY_GUEST_USER, isGuest).apply()
     }
@@ -127,4 +139,24 @@ class PreferenceManager @Inject constructor(@ApplicationContext private val cont
     fun getLastAppOpenTime(): Long {
         return myPref.getLong("last_app_open_time", 0)
     }
+
+    fun saveSettingScrollPosition(position: Int) {
+        myPref.edit().putInt(KEY_SETTING_SCROLL_POSITION, position).apply()
+    }
+
+    fun getSettingScrollPosition(): Int {
+        return myPref.getInt(KEY_SETTING_SCROLL_POSITION, 0)
+    }
+
+    fun saveLastSyncDateTime() {
+        val currentTime = System.currentTimeMillis()
+        val formatter = SimpleDateFormat("d MMM yyyy - hh:mm a", Locale.getDefault())
+        val formattedTime = formatter.format(Date(currentTime))
+        myPref.edit().putString(KEY_LAST_SYNC_TIME, formattedTime).apply()
+    }
+
+    fun getLastSyncTime(): String? {
+        return myPref.getString(KEY_LAST_SYNC_TIME, "")
+    }
+
 }

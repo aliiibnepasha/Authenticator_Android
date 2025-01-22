@@ -12,11 +12,18 @@ import javax.inject.Inject
 
 @HiltViewModel
 class VmRecentlyDeleted @Inject constructor(
-    private val repository: RecentlyDeletedRepository
+    private val repository: RecentlyDeletedRepository,
+    private val totpRepository: TotpRepository
 ): ViewModel(){
     val insertState = repository.insertState
     val fetchState = repository.recentlyDeletedListState
     val restoreState = repository.restoreState
+
+    fun fetchAllTotp() {
+        viewModelScope.launch {
+            totpRepository.fetchTotpData()
+        }
+    }
 
     fun insertToRecentlyDeleted(data: RecentlyDeleted){
         viewModelScope.launch {
