@@ -26,6 +26,7 @@ import com.husnain.authy.utls.popBack
 import com.husnain.authy.utls.setupGalleryPicker
 import com.husnain.authy.utls.showBottomSheetDialog
 import com.husnain.authy.utls.showDeleteAccountConfirmationBottomSheet
+import com.husnain.authy.utls.startActivity
 import com.husnain.authy.utls.visible
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -95,16 +96,14 @@ class SettingFragment : Fragment() {
         binding.tvSignup.setOnClickListener {
             if (preferenceManager.isGuestUser()) {
                 Constants.isComingToAuthFromGuest = true
-                val intent = Intent(requireContext(), AuthActivity::class.java)
-                startActivity(intent)
+                startActivity(AuthActivity::class.java)
             }
         }
         binding.btnLogin.setOnClickListener {
             if (preferenceManager.isGuestUser()) {
                 Constants.isComingToAuthFromGuest = true
                 Constants.isComingToAuthFromGuestToSignIn = true
-                val intent = Intent(requireContext(), AuthActivity::class.java)
-                startActivity(intent)
+                startActivity(AuthActivity::class.java)
             }
         }
 

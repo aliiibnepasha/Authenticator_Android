@@ -24,6 +24,8 @@ import com.husnain.authy.ui.fragment.main.subscription.adapter.AdapterSubscripti
 import com.husnain.authy.utls.Constants
 import com.husnain.authy.utls.CustomToast.showCustomToast
 import com.husnain.authy.utls.popBack
+import com.husnain.authy.utls.progress.ProgressDialogUtil.dismissProgressDialog
+import com.husnain.authy.utls.progress.ProgressDialogUtil.showProgressDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -35,11 +37,12 @@ import javax.inject.Inject
 class SubscriptionFragment : Fragment() {
     private var _binding: FragmentSubscriptionBinding? = null
     private val binding get() = _binding!!
+
     @Inject
     lateinit var preferenceManager: PreferenceManager
     private lateinit var billingClient: BillingClient
     private lateinit var adapter: AdapterSubscription
-    private lateinit var selectedProductId: String
+    private var selectedProductId = Constants.weaklySubId
     private val productDetailsMap = mutableMapOf<String, ProductDetails>()
 
     override fun onCreateView(
@@ -49,7 +52,6 @@ class SubscriptionFragment : Fragment() {
     ): View {
         _binding = FragmentSubscriptionBinding.inflate(inflater, container, false)
         setupBillingClient()
-        initAdapter()
         setOnClickListener()
         return binding.root
     }
@@ -59,25 +61,21 @@ class SubscriptionFragment : Fragment() {
             popBack()
         }
         binding.btnCheckout.setOnClickListener {
-            if (::selectedProductId.isInitialized && selectedProductId.isNotEmpty()) {
-                if (selectedProductId == Constants.lifeTimePorductId) {
-                    initiatePurchase(selectedProductId)
-                } else {
-                    initiateSubscribe(selectedProductId)
-                }
+            if (selectedProductId == Constants.lifeTimePorductId) {
+                initiatePurchase(selectedProductId)
             } else {
-                showCustomToast(getString(R.string.string_please_select_at_least_one))
+                initiateSubscribe(selectedProductId)
             }
         }
     }
 
-    private fun initAdapter() {
-        val defaultSubscriptionDataList =
-            listOf(ModelSubscription("Weekly", "Most Popular", "$7.99", "weekly_plan"))
-        adapter = AdapterSubscription(defaultSubscriptionDataList) { selectedSubscription ->
+    private fun initAdapter(data: List<ModelSubscription>) {
+        adapter = AdapterSubscription(data)
+        binding.rvSubscription.adapter = adapter
+
+        adapter.itemClickListener { selectedSubscription ->
             selectedProductId = selectedSubscription.productId
         }
-        binding.rvSubscription.adapter = adapter
     }
 
     //Billing
@@ -106,8 +104,25 @@ class SubscriptionFragment : Fragment() {
         })
     }
 
+    private fun getSubscriptionData() {
+//        val modelList = preferenceManager.getSubscriptionDataList()
+//
+//        Log.d("SubscriptionFragment", "Fetched model list: $modelList")
+//
+//        if (!modelList.isNullOrEmpty()) {
+//            if (billingClient.isReady) {
+//                initAdapter(modelList)
+//            } else {
+//                showCustomToast("Billing client is not ready.")
+//            }
+//        } else {
+        queryProductDetails()
+//        }
+    }
+
     private fun queryProductDetails() {
         // Define subscription products
+        showProgressDialog()
         val subsProductList = listOf(
             QueryProductDetailsParams.Product.newBuilder()
                 .setProductId(Constants.weaklySubId)
@@ -190,7 +205,15 @@ class SubscriptionFragment : Fragment() {
                 })
 
             // Update the UI with the sorted results
-            withContext(Dispatchers.Main) { adapter.updateData(sortedSubscriptionDataList) }
+            withContext(Dispatchers.Main) {
+                try {
+                    initAdapter(sortedSubscriptionDataList)
+                    preferenceManager.saveSubscriptionDataListToPrefs(sortedSubscriptionDataList)
+                } catch (e: Exception) {
+                    e.message?.let { showCustomToast(it) }
+                }
+                dismissProgressDialog()
+            }
         }
     }
 

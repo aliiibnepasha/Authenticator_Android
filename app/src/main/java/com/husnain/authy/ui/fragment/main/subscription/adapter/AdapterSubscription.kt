@@ -10,20 +10,24 @@ import java.util.Locale
 
 class AdapterSubscription(
     private var items: List<ModelSubscription>,
-    private val onItemSelected: (ModelSubscription) -> Unit
 ) : RecyclerView.Adapter<AdapterSubscription.ViewHolder>() {
-
+    private var onItemSelected: ((ModelSubscription) -> Unit)? = null
     private var selectedPosition = 0 // Preselect the first item
 
     init {
-        // Invoke the callback with the first item's data
         if (items.isNotEmpty()) {
-            onItemSelected.invoke(items[selectedPosition])
+            onItemSelected?.invoke(items[selectedPosition])
         }
     }
 
+    fun itemClickListener(listener: (ModelSubscription) -> Unit) {
+        onItemSelected = listener
+    }
+
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = ItemSubscriptionBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding =
+            ItemSubscriptionBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
 
@@ -41,7 +45,8 @@ class AdapterSubscription(
         holder.bind(data)
     }
 
-    inner class ViewHolder(val binding: ItemSubscriptionBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class ViewHolder(val binding: ItemSubscriptionBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         fun bind(data: ModelSubscription) {
             binding.tvDuration.text = data.duration.uppercase()
             val currentLocale = Locale.getDefault().language
@@ -49,7 +54,7 @@ class AdapterSubscription(
 
             if (currentLocale == "ar" || currentLocale == "ur") {
                 binding.tvDuration2.text = "${data.duration.uppercase()}/"
-            }else{
+            } else {
                 binding.tvDuration2.text = "/${data.duration.uppercase()}"
             }
             binding.tvLabel.text = data.label.uppercase()
@@ -70,7 +75,7 @@ class AdapterSubscription(
                 notifyItemChanged(previousSelectedPosition)
                 notifyItemChanged(selectedPosition)
 
-                onItemSelected.invoke(data)
+                onItemSelected?.invoke(data)
             }
         }
     }

@@ -5,7 +5,6 @@ import android.app.job.JobScheduler
 import android.content.ComponentName
 import android.os.Bundle
 import android.os.PersistableBundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,6 +16,9 @@ import com.husnain.authy.preferences.PreferenceManager
 import com.husnain.authy.ui.fragment.main.backup.workers.SyncJobService
 import com.husnain.authy.utls.popBack
 import dagger.hilt.android.AndroidEntryPoint
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -41,7 +43,7 @@ class BackUpFragment : Fragment() {
     }
 
     private fun inItUi() {
-        binding.tvLastSyncTime.text = preferenceManager.getLastSyncTime()
+        inItLastSyncTime()
     }
 
     private fun setOnClickListener() {
@@ -49,10 +51,11 @@ class BackUpFragment : Fragment() {
             popBack()
         }
         binding.btnSyncNow.setOnClickListener {
-            val userId = auth.currentUser?.uid!!
-            startSyncJob(userId)
+            val userId = auth.currentUser?.uid
+            if (userId != null){
+                startSyncJob(userId)
+            }
         }
-
     }
 
     private fun startSyncJob(userId: String) {
@@ -70,9 +73,23 @@ class BackUpFragment : Fragment() {
         val result = jobScheduler.schedule(jobInfo)
 
         if (result == JobScheduler.RESULT_SUCCESS) {
-            Log.d("JobScheduler", "Job scheduled successfully")
-        } else {
-            Log.e("JobScheduler", "Job scheduling failed")
+            setCurrentTime()
+        }
+    }
+
+    private fun setCurrentTime(){
+        val currentTime = System.currentTimeMillis()
+        val formatter = SimpleDateFormat("d MMM yyyy - hh:mm a", Locale.ENGLISH)
+        val formattedTime = formatter.format(Date(currentTime))
+        binding.tvLastSyncTime.text = "Last sync: $formattedTime"
+    }
+
+    private fun inItLastSyncTime(){
+        var lastSyncDateTime = preferenceManager.getLastSyncTime()
+        if (lastSyncDateTime?.isEmpty() == true){
+            binding.tvLastSyncTime.text = "Last sync: --"
+        }else{
+            binding.tvLastSyncTime.text = "Last sync: $lastSyncDateTime"
         }
     }
     override fun onDestroyView() {

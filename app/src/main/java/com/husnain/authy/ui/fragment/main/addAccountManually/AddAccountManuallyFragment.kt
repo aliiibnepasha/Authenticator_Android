@@ -1,16 +1,16 @@
 package com.husnain.authy.ui.fragment.main.addAccountManually
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.husnain.authy.R
 import com.husnain.authy.data.room.tables.EntityTotp
 import com.husnain.authy.databinding.FragmentAddAccountManuallyBinding
-import com.husnain.authy.ui.fragment.main.home.VmHome
+import com.husnain.authy.ui.fragment.main.addNewAccount.VmAddAccount
 import com.husnain.authy.utls.CustomToast.showCustomToast
 import com.husnain.authy.utls.DataState
 import com.husnain.authy.utls.navigate
@@ -22,7 +22,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class AddAccountManuallyFragment : Fragment() {
     private var _binding: FragmentAddAccountManuallyBinding? = null
     private val binding get() = _binding!!
-    private val vmHome:VmHome by viewModels()
+    private val vmAddAccount:VmAddAccount by viewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentAddAccountManuallyBinding.inflate(inflater, container, false)
@@ -41,7 +41,7 @@ class AddAccountManuallyFragment : Fragment() {
     }
 
     private fun setUpObservers() {
-        vmHome.insertState.observe(viewLifecycleOwner, Observer { state ->
+        vmAddAccount.insertState.observe(viewLifecycleOwner, Observer { state ->
             when (state) {
                 is DataState.Loading -> {
                 }
@@ -64,7 +64,7 @@ class AddAccountManuallyFragment : Fragment() {
         }
         binding.btnAddAccount.setOnClickListener {
             if (validateAccountFields()){
-                vmHome.insertSecretData(EntityTotp(0,binding.edtAccountName.text.toString(),binding.edtPrivateKey.text.toString()))
+                vmAddAccount.insertSecretData(EntityTotp(0,binding.edtAccountName.text.toString(),binding.edtPrivateKey.text.toString()))
             }
         }
     }

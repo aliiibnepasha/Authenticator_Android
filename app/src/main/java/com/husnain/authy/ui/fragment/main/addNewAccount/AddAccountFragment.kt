@@ -33,7 +33,7 @@ import com.google.zxing.qrcode.QRCodeReader
 import com.husnain.authy.R
 import com.husnain.authy.data.room.tables.EntityTotp
 import com.husnain.authy.databinding.FragmentAddAccountBinding
-import com.husnain.authy.ui.fragment.main.home.VmHome
+import com.husnain.authy.preferences.PreferenceManager
 import com.husnain.authy.utls.CustomToast.showCustomToast
 import com.husnain.authy.utls.DataState
 import com.husnain.authy.utls.OtpMigration
@@ -46,6 +46,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
+import javax.inject.Inject
 
 @AndroidEntryPoint
 @Suppress("DEPRECATION")
@@ -53,7 +54,8 @@ class AddAccountFragment : Fragment() {
     private var _binding: FragmentAddAccountBinding? = null
     private val binding get() = _binding!!
     private lateinit var cameraExecutor: ExecutorService
-    private val vmHome: VmHome by viewModels()
+    @Inject lateinit var preferenceManager: PreferenceManager
+    private val vmAddAccount: VmAddAccount by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -167,7 +169,7 @@ class AddAccountFragment : Fragment() {
 
                 if (secretKey != null && label != null) {
                     Log.d("secret key data", "Secret: $secretKey\nLabel: $label")
-                    vmHome.insertSecretData(EntityTotp(0, label, secretKey))
+                    vmAddAccount.insertSecretData(EntityTotp(0, label, secretKey))
                 } else {
                     showCustomToast(getString(R.string.string_something_went_wrong_please_try_again))
                 }
@@ -178,9 +180,9 @@ class AddAccountFragment : Fragment() {
                 if (decodedDataList != null) {
                     for (data in decodedDataList) {
                         if (data.name.isEmpty() && data.issuer.isNotEmpty()) {
-                            vmHome.insertSecretData(EntityTotp(0, data.issuer, data.secretBase32))
+                            vmAddAccount.insertSecretData(EntityTotp(0, data.issuer, data.secretBase32))
                         } else {
-                            vmHome.insertSecretData(EntityTotp(0, data.name, data.secretBase32))
+                            vmAddAccount.insertSecretData(EntityTotp(0, data.name, data.secretBase32))
                         }
                         println("Account Name: ${data.name}, issuer: ${data.issuer}, Secret: ${data.secretBase32}")
                     }
@@ -195,7 +197,7 @@ class AddAccountFragment : Fragment() {
     }
 
     private fun setUpObservers() {
-        vmHome.insertState.observe(viewLifecycleOwner) { state ->
+        vmAddAccount.insertState.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is DataState.Loading -> {
                 }

@@ -12,6 +12,8 @@ import com.husnain.authy.data.room.tables.EntityTotp
 import com.husnain.authy.preferences.PreferenceManager
 import com.husnain.authy.utls.DataState
 import com.husnain.authy.utls.NetworkUtils
+import com.husnain.authy.utls.SingleLiveEvent
+import com.husnain.authy.utls.SyncServiceUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
@@ -27,8 +29,11 @@ class TotpRepository @Inject constructor(
     private val _totpListState = MutableLiveData<DataState<List<EntityTotp>>>()
     val totpListState: LiveData<DataState<List<EntityTotp>>> = _totpListState
 
-    private val _insertState = MutableLiveData<DataState<Unit>>()
-    val insertState: LiveData<DataState<Unit>> = _insertState
+    private val _insertState = SingleLiveEvent<DataState<Unit>>()
+    val insertState: SingleLiveEvent<DataState<Unit>> = _insertState
+
+    private val _insertStateForSync = MutableLiveData<DataState<Unit>>()
+    val insertStateForSync: MutableLiveData<DataState<Unit>> = _insertStateForSync
 
     private val _deleteState = MutableLiveData<DataState<Nothing>>()
     val deleteState: LiveData<DataState<Nothing>> = _deleteState
@@ -45,9 +50,11 @@ class TotpRepository @Inject constructor(
 
     suspend fun insertTotp(data: EntityTotp) {
         _insertState.postValue(DataState.Loading())
+        _insertStateForSync.postValue(DataState.Loading())
         try {
             daoTotp.insertOrReplaceTotpData(data)
             _insertState.postValue(DataState.Success(Unit))
+            SyncServiceUtil.syncIfUserValidForSyncing(context,auth.currentUser?.uid,preferenceManager)
         } catch (e: Exception) {
             _insertState.postValue(DataState.Error(context.getString(R.string.string_something_went_wrong_please_try_again)))
         }

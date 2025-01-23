@@ -3,6 +3,8 @@ package com.husnain.authy.preferences
 import android.content.Context
 import android.content.SharedPreferences
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import com.husnain.authy.data.models.ModelSubscription
 import com.husnain.authy.data.models.ModelUser
 import com.husnain.authy.utls.DelayOption
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -23,11 +25,12 @@ class PreferenceManager @Inject constructor(@ApplicationContext private val cont
         private const val KEY_USER = "key_user"
         private const val KEY_IS_SUBSCRIPTION_ACTIVE = "keyIsSubscriptionActive"
         private const val KEY_IS_LIFE_TIME_ACCESS_ACTIVE = "lifeTimeAccess"
-        private const val KEY_SUBSCRIPTION_END_DATE = "keySubscriptionEndDate"
+        private const val KEY_LAST_APP_OPEN_TIME = "last_app_open_time"
         private const val kEY_GUEST_USER = "keyGuestUser"
         private const val KEY_SETTING_SCROLL_POSITION = "keySettingScrollPosition"
         private const val KEY_LAST_SYNC_TIME = "lastSyncTime"
         private const val KEY_IS_TO_SHOW_SUBS_SCREEN = "showSubsScreen"
+        private const val kEY_SUBSCRIPTION_DATA_LIST = "mySubsDataList"
     }
 
     private val gson = Gson()
@@ -133,7 +136,6 @@ class PreferenceManager @Inject constructor(@ApplicationContext private val cont
         return myPref.getBoolean(kEY_GUEST_USER, true)
     }
 
-
     fun saveDelayOption(option: DelayOption) {
         myPref.edit().putString("selected_delay_option", option.name).apply()
     }
@@ -145,11 +147,11 @@ class PreferenceManager @Inject constructor(@ApplicationContext private val cont
 
     fun saveLastAppOpenTime() {
         val currentTime = System.currentTimeMillis()
-        myPref.edit().putLong("last_app_open_time", currentTime).apply()
+        myPref.edit().putLong(KEY_LAST_APP_OPEN_TIME, currentTime).apply()
     }
 
     fun getLastAppOpenTime(): Long {
-        return myPref.getLong("last_app_open_time", 0)
+        return myPref.getLong(KEY_LAST_APP_OPEN_TIME, 0)
     }
 
     fun saveSettingScrollPosition(position: Int) {
@@ -162,13 +164,28 @@ class PreferenceManager @Inject constructor(@ApplicationContext private val cont
 
     fun saveLastSyncDateTime() {
         val currentTime = System.currentTimeMillis()
-        val formatter = SimpleDateFormat("d MMM yyyy - hh:mm a", Locale.getDefault())
+        val formatter = SimpleDateFormat("d MMM yyyy - hh:mm a", Locale.ENGLISH)
         val formattedTime = formatter.format(Date(currentTime))
         myPref.edit().putString(KEY_LAST_SYNC_TIME, formattedTime).apply()
     }
 
     fun getLastSyncTime(): String? {
         return myPref.getString(KEY_LAST_SYNC_TIME, "")
+    }
+
+    fun saveSubscriptionDataListToPrefs(list: List<ModelSubscription>) {
+        val json = gson.toJson(list)
+        myPref.edit().putString(kEY_SUBSCRIPTION_DATA_LIST, json).apply()
+    }
+
+    fun getSubscriptionDataList(): List<ModelSubscription>? {
+        val json = myPref.getString(kEY_SUBSCRIPTION_DATA_LIST, null)
+        return if (json != null) {
+            val type = object : TypeToken<List<ModelSubscription>>() {}.type
+            gson.fromJson<List<ModelSubscription>>(json, type)
+        } else {
+            null
+        }
     }
 
 }

@@ -95,9 +95,11 @@ class HomeFragment : Fragment() {
         vmHome.totpListState.observe(viewLifecycleOwner, Observer { state ->
             when (state) {
                 is DataState.Loading -> {
+                    binding.loadingView.start()
                 }
 
                 is DataState.Success -> {
+                    binding.loadingView.stop()
                     val data = state.data
                     if (data != null) {
                         setupAdapter(data)
@@ -105,6 +107,7 @@ class HomeFragment : Fragment() {
                 }
 
                 is DataState.Error -> {
+                    binding.loadingView.stop()
                     showCustomToast("Error: ${state.message}")
                 }
             }

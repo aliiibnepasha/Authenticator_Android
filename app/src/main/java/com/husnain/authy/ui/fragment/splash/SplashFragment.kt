@@ -51,23 +51,17 @@ class SplashFragment : Fragment() {
             Constants.isComingToAuthFromGuest = false
             navigate(R.id.action_splashFragment_to_signupFragment)
         } else {
-            if (Constants.isComingFromLogout) {
-                Constants.isComingFromLogout = false
-                navigate(R.id.action_splashFragment_to_signupFragment)
+            if (!preferenceManager.isOnboardingFinished()) {
+                navigate(R.id.action_splashFragment_to_onboardingFragment)
             } else {
-                if (!preferenceManager.isOnboardingFinished()) {
-                    navigate(R.id.action_splashFragment_to_onboardingFragment)
-                } else {
-                    preferenceManager.saveIsToShowSubsScreenAsDialog(true)
-                    handleUser()
-                }
-
+                preferenceManager.saveIsToShowSubsScreenAsDialog(true)
+                handleUser()
             }
         }
     }
 
     private fun handleUser() {
-        if (shouldShowLockScreen()){
+        if (shouldShowLockScreen()) {
             preferenceManager.saveLastAppOpenTime()
             when {
                 preferenceManager.isBiometricLockEnabled() -> {
@@ -82,16 +76,16 @@ class SplashFragment : Fragment() {
                     delayAndNavigate()
                 }
             }
-        }else{
+        } else {
             delayAndNavigate()
         }
     }
 
     private fun delayAndNavigate() {
         binding.root.postDelayed({
-            if (preferenceManager.isGuestUser()){
+            if (preferenceManager.isGuestUser()) {
                 goToMainActivity()
-            }else{
+            } else {
                 if (isUserLogedIn()) {
                     goToMainActivity()
                 } else {
@@ -107,9 +101,9 @@ class SplashFragment : Fragment() {
             showBiometricPrompt(
                 activity = requireActivity(),
                 onSuccess = {
-                    if (preferenceManager.isGuestUser()){
+                    if (preferenceManager.isGuestUser()) {
                         goToMainActivity()
-                    }else{
+                    } else {
                         if (isUserLogedIn()) {
                             goToMainActivity()
                         } else {

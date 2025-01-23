@@ -144,6 +144,11 @@ dependencies {
     //Ml kit qr scanner
     implementation("com.google.mlkit:barcode-scanning:17.3.0")
 
+    //worker
+    val work_version = "2.10.0"
+    implementation("androidx.work:work-runtime-ktx:$work_version")
+    implementation("androidx.work:work-runtime-ktx:2.10.0")
+
     //To read google authenticator data
     implementation("com.google.protobuf:protobuf-javalite:3.21.12")
     implementation("org.jetbrains.kotlin:kotlin-stdlib:1.9.10")

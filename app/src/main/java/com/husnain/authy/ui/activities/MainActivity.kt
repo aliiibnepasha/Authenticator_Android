@@ -2,6 +2,7 @@ package com.husnain.authy.ui.activities
 
 import android.os.Bundle
 import android.util.Log
+import androidx.activity.viewModels
 import androidx.core.text.layoutDirection
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -15,6 +16,7 @@ import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.MobileAds
+import com.google.firebase.auth.FirebaseAuth
 import com.husnain.authy.R
 import com.husnain.authy.databinding.ActivityMainBinding
 import com.husnain.authy.preferences.PreferenceManager
@@ -32,11 +34,14 @@ import javax.inject.Inject
 class MainActivity : LocalizationActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var navHostFragment: Fragment
-
+    @Inject
+    lateinit var auth: FirebaseAuth
     @Inject
     lateinit var preferenceManager: PreferenceManager
     private lateinit var billingClient: BillingClient
     private lateinit var adRequest: AdRequest
+    private val vmMain: VmMain by viewModels()
+
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
@@ -89,9 +94,9 @@ class MainActivity : LocalizationActivity() {
     private fun inItAdmob() {
         adRequest = AdRequest.Builder().build()
 
-        if (NetworkUtils.isNetworkAvailable(this)){
+        if (NetworkUtils.isNetworkAvailable(this)) {
             binding.mainBannerAdView.loadAd(adRequest)
-        }else{
+        } else {
             stopShimmer()
             binding.mainBannerAdView.gone()
             return
@@ -112,7 +117,8 @@ class MainActivity : LocalizationActivity() {
     }
 
     private fun setUpBottomBar() {
-        navHostFragment = supportFragmentManager.findFragmentById(R.id.afterAuthActivityNavHostFragment)!!
+        navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.afterAuthActivityNavHostFragment)!!
         binding.bottomNavigationView.itemIconTintList = null
         binding.bottomNavigationView.setupWithNavController(navHostFragment.findNavController())
 

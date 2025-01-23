@@ -12,7 +12,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.husnain.authy.R
 import com.husnain.authy.data.models.ModelUser
 import com.husnain.authy.preferences.PreferenceManager
-import com.husnain.authy.utls.Constants
 import com.husnain.authy.utls.DataState
 import com.husnain.authy.utls.GoogleSigninUtils
 import com.husnain.authy.utls.SingleLiveEvent
@@ -165,7 +164,6 @@ class AuthRepository @Inject constructor(
         _logoutState.postValue(DataState.Loading())
         try {
             auth.signOut()
-            Constants.isComingFromLogout = true
             preferenceManager.saveGuestUser(true)
             _logoutState.postValue(DataState.Success())
         } catch (exception: Exception) {
