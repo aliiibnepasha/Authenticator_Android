@@ -159,7 +159,7 @@ class SettingFragment : Fragment() {
             navigate(R.id.action_settingFragment_to_webViewFragment,bundle)
         }
         binding.lyPrivacyPolicy.setOnClickListener {
-            val url = "https://sites.google.com/view/authenticatorapp-privacypolicy/home."
+            val url = "https://sites.google.com/view/authenticatorapp-privacypolicy/home"
             val bundle = Bundle().apply {
                 putString(KEY_HEADER_TITLE,resources.getString(R.string.string_privacy_policy))
                 putString(KEY_LINK_TO_LOAD,url)

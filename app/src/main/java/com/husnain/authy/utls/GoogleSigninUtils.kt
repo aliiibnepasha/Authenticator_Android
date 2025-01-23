@@ -13,7 +13,6 @@ import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.firebase.Firebase
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.auth
-import com.husnain.authy.R
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
@@ -72,7 +71,7 @@ object GoogleSigninUtils {
         return GetGoogleIdOption.Builder()
             .setFilterByAuthorizedAccounts(false)
             .setAutoSelectEnabled(false)
-            .setServerClientId("159368296018-lpqj9cau29j1ftptoeni09i9ihk89m1f.apps.googleusercontent.com")
+            .setServerClientId("250275436359-5rc135ddgorgpugjvvkb6cq1osihj0mb.apps.googleusercontent.com")
             .build()
     }
 }

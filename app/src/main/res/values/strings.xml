@@ -1,8 +1,13 @@
 <resources>
-    //Ad unit id's
-    <string name="ad_banner_test_ud" translatable="false">ca-app-pub-3940256099942544/9214589741</string>
-    <string name="admob_app_id" translatable="false"> ca-app-pub-3940256099942544~3347511713</string>
+    //Admob Testing
+    <string name="admob_banner_id_test" translatable="false">ca-app-pub-3940256099942544/9214589741</string>
+    <string name="admob_app_id_test" translatable="false"> ca-app-pub-3940256099942544~3347511713</string>
+
+    //Admob release
+    <string name="admob_banner_id_release" translatable="false">ca-app-pub-9844943887550892/7808160688</string>
+    <string name="admob_app_id_release" translatable="false">ca-app-pub-9844943887550892~3638913015</string>
     <string name="string_licence_key_google_play" translatable="false">MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAuwd2Y2BhXOr7LqSdbMrlB6R3ROdrOoHkQAmWYNzhCQtmRr4rfoDXB0ykMHqlEaN4HpEIpG8Pt6pQO8wi++kVDtZe/V4kiBq+eQTv3BL4l0LHw469/MA1IkIdEOhSwo3kNCaOgLdLTC5eIAzCOJU50QLMib2x18VmgfqjD+UonfMKkbaK3SXfOXw7y42H2zwn9mweBgCCgntAM8/+TztK8lLZqX1eXSqD+VeFuie5nqkr47qWAocECGmTpXniRYKe30K51wWx1eUNdoa9mKY14sAoMosuvgVHd1+jybRq3rQTqQGKGx+cSMN3OTj+yHhXn1zx5ve0ij9htN5cElgFXQIDAQAB</string>
+
     //Login Signup
     <string name="app_name">Authy</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>

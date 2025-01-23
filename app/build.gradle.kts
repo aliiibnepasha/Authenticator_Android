@@ -13,24 +13,27 @@ android {
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.theswiftvision.authenticator"
+        applicationId = "com.theswiftvision.authenticatorapp"
         minSdk = 26
         //noinspection EditedTargetSdkVersion,OldTargetApi
         targetSdk = 35
-        versionCode = 4
-        versionName = "1.0.3"
+        versionCode = 1
+        versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
         release {
-            isMinifyEnabled = true
+            isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
 //            signingConfig = signingConfigs.getByName("debug")
+        }
+        getByName("debug") {
+            signingConfig = signingConfigs.getByName("debug")
         }
     }
     buildFeatures {
