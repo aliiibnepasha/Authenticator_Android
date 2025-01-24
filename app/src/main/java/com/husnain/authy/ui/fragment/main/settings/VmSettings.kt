@@ -18,25 +18,11 @@ class VmSettings @Inject constructor(
     val logoutState = authRepository.logoutState
     val deleteAccountState = authRepository.deleteAccountStatus
 
-    fun insertSecretData(data: EntityTotp) {
-        viewModelScope.launch {
-            totpRepository.insertTotp(data)
-        }
-    }
-
-    fun fetchAllTotp() {
-        viewModelScope.launch {
-            totpRepository.fetchTotpData()
-        }
-    }
-
-
     fun logout(){
         viewModelScope.launch {
             authRepository.logout()
         }
     }
-
 
     fun deleteAccount(){
         viewModelScope.launch {

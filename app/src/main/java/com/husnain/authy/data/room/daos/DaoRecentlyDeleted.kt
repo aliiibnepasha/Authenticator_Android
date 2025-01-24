@@ -33,4 +33,7 @@ interface DaoRecentlyDeleted {
 
     @Query("DELETE FROM table_recently_deleted")
     suspend fun clearAllRecentlyDeletedTable()
+
+    @Query("SELECT COUNT(*) > 0 FROM table_recently_deleted WHERE secret = :secretKey")
+    suspend fun isRecentlyDeleted(secretKey: String): Boolean
 }

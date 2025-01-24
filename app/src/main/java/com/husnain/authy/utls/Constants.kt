@@ -11,4 +11,5 @@ object Constants {
     const val weaklySubId = "weekly_plan"
     const val monthlySubId = "monthly_plan"
     const val lifeTimePorductId = "lifetime_pro"
+    var isComingAfterRestore = false
 }

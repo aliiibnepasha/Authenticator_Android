@@ -9,7 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.husnain.authy.data.room.tables.RecentlyDeleted
 import com.husnain.authy.databinding.FragmentRecentlyDeletedBinding
-import com.husnain.authy.ui.fragment.main.home.VmHome
+import com.husnain.authy.utls.Constants
 import com.husnain.authy.utls.CustomToast.showCustomToast
 import com.husnain.authy.utls.DataState
 import com.husnain.authy.utls.OperationType
@@ -25,6 +25,7 @@ class RecentlyDeletedFragment : Fragment() {
     private lateinit var adapter: AdapterRecentlyDeleted
     private var selectedDataToDelete: RecentlyDeleted? = null
     private val vmRecentlyDeleted: VmRecentlyDeleted by viewModels()
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -64,7 +65,7 @@ class RecentlyDeletedFragment : Fragment() {
             selectedDataToDelete?.let { it1 ->
                 vmRecentlyDeleted.restoreOrDelete(
                     it1,
-                    OperationType.DELETE
+                    OperationType.PERMANENTLY_DELETE
                 )
             }
         }
@@ -98,16 +99,19 @@ class RecentlyDeletedFragment : Fragment() {
         })
 
         vmRecentlyDeleted.restoreState.observe(viewLifecycleOwner, Observer { state ->
+            binding.loadingView.stop()
             when (state) {
                 is DataState.Loading -> {
+                    binding.loadingView.start()
                 }
 
                 is DataState.Success -> {
                     //Fetch here again to refresh the list
                     vmRecentlyDeleted.fetchRecentlyDeleted()
-                    //Fetch for home so that when user go back to home user can see the data
-                    //Note(you can also do it in home fragment onRestart
-                    vmRecentlyDeleted.fetchAllTotp()
+                    Constants.isComingAfterRestore = true
+//                    //Fetch for home so that when user go back to home user can see the data
+//                    //Note(you can also do it in home fragment onRestart
+//                    vmRecentlyDeleted.fetchAllTotp()
                     showCustomToast("Action completed successfully")
                 }
 

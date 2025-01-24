@@ -54,7 +54,8 @@ class HomeFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         inItUi()
-        if (preferenceManager.isFirstLoginAfterAppInstall()){
+        if (preferenceManager.isFirstLoginAfterAppInstall() || Constants.isComingAfterRestore){
+            Constants.isComingAfterRestore = false
             preferenceManager.saveIsFirstLoginAfterAppInstall(false)
             vmHome.fetchAllTotp()
         }
@@ -139,9 +140,9 @@ class HomeFragment : Fragment() {
                 is DataState.Success -> {
                     if (isDeleted){
                         showCustomToast(getString(R.string.string_deleted_successfully))
+                        vmHome.fetchAllTotp()
                         isDeleted = false
                     }
-                    vmHome.fetchAllTotp()
                 }
 
                 is DataState.Error -> {
@@ -172,14 +173,14 @@ class HomeFragment : Fragment() {
             binding.lyLinearAddAccountFirstTime.gone()
 
             val dataList = data.map {
-                ModelTotp(it.secretKey, it.serviceName)
+                ModelTotp(secretKey = it.secretKey, serviceName = it.serviceName, firebaseDocId = it.docId)
             }
             adapter = AdapterHomeTotp(dataList)
 
             //Long click to show the delete bottom sheet
             adapter.setOnLongClickListener { totpData ->
                 showBottomSheetDialog(getString(R.string.string_delete), onPrimaryClick = {
-                    vmHome.insertToRecentlyDeleted(RecentlyDeleted(totpData.serviceName,totpData.secretKey))
+                    vmHome.insertToRecentlyDeleted(RecentlyDeleted(totpData.serviceName,totpData.secretKey,totpData.firebaseDocId))
                     vmHome.deleteTotp(totpData.secretKey)
                     isDeleted = true
                 })

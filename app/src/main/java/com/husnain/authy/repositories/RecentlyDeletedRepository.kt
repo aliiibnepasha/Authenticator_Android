@@ -1,23 +1,31 @@
 package com.husnain.authy.repositories
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.room.PrimaryKey
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.husnain.authy.R
 import com.husnain.authy.data.room.daos.DaoRecentlyDeleted
 import com.husnain.authy.data.room.daos.DaoTotp
 import com.husnain.authy.data.room.tables.EntityTotp
 import com.husnain.authy.data.room.tables.RecentlyDeleted
+import com.husnain.authy.preferences.PreferenceManager
+import com.husnain.authy.utls.Constants
 import com.husnain.authy.utls.DataState
 import com.husnain.authy.utls.OperationType
-import com.husnain.authy.utls.SingleLiveEvent
+import com.husnain.authy.utls.SyncServiceUtil
+import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 class RecentlyDeletedRepository @Inject constructor(
     private val daoRecentlyDeleted: DaoRecentlyDeleted,
     private val daoTotp: DaoTotp,
-    private val context: Context
+    private val context: Context,
+    private val auth: FirebaseAuth,
+    private val firestore: FirebaseFirestore,
+    private val preferenceManager: PreferenceManager
 ) {
     private val _recentlyDeletedListState = MutableLiveData<DataState<List<RecentlyDeleted>>>()
     val recentlyDeletedListState: LiveData<DataState<List<RecentlyDeleted>>> = _recentlyDeletedListState
@@ -48,7 +56,18 @@ class RecentlyDeletedRepository @Inject constructor(
             daoRecentlyDeleted.insertOrReplaceRecentlyDeletedData(data)
             _insertState.postValue(DataState.Success(Unit))
         } catch (e: Exception) {
+            e.message?.let { Log.d(Constants.TAG, it) }
             _insertState.postValue(DataState.Error(context.getString(R.string.string_something_went_wrong_please_try_again)))
+        }
+    }
+
+    private suspend fun insertTotp(data: EntityTotp) {
+        try {
+            daoTotp.insertOrReplaceTotpData(data)
+            _restoreState.postValue(DataState.Success(Unit))
+        } catch (e: Exception) {
+            e.message?.let { Log.d(Constants.TAG, it) }
+            _restoreState.postValue(DataState.Error(context.getString(R.string.string_something_went_wrong_please_try_again)))
         }
     }
 
@@ -58,44 +77,109 @@ class RecentlyDeletedRepository @Inject constructor(
         try {
             when (operation) {
                 OperationType.RESTORE -> {
-                    // Restore the individual item
                     daoRecentlyDeleted.deleteRecentBySecret(data!!.secret)
                     insertTotp(EntityTotp(0, data.name, data.secret))
-                }
-
-                OperationType.DELETE -> {
-                    // Delete the individual item
-                    daoRecentlyDeleted.deleteRecentBySecret(data!!.secret)
                     _restoreState.postValue(DataState.Success(Unit))
+                    SyncServiceUtil.syncIfUserValidForSyncing(context,auth.currentUser?.uid,preferenceManager)
                 }
 
                 OperationType.RESTORE_ALL -> {
-                    // Fetch all recently deleted items and restore them
                     val allRecentlyDeleted = daoRecentlyDeleted.getAllRecentlyDeletedData()
                     allRecentlyDeleted.forEach { item ->
                         insertTotp(EntityTotp(0, item.name, item.secret))
                     }
                     daoRecentlyDeleted.clearAllRecentlyDeletedTable()
                     _restoreState.postValue(DataState.Success(Unit))
+                    SyncServiceUtil.syncIfUserValidForSyncing(context,auth.currentUser?.uid,preferenceManager)
+                }
+
+                OperationType.PERMANENTLY_DELETE -> {
+                    if (data != null) {
+                        deleteDocumentFromFirebase(data)
+                    }
                 }
 
                 OperationType.DELETE_ALL -> {
-                    daoRecentlyDeleted.clearAllRecentlyDeletedTable()
-                    _restoreState.postValue(DataState.Success(Unit))
+                    deleteAllDocumentsFromFirebase()
                 }
             }
         } catch (e: Exception) {
+            e.message?.let { Log.d(Constants.TAG, it) }
             _restoreState.postValue(DataState.Error(context.getString(R.string.string_something_went_wrong_please_try_again)))
         }
     }
 
-    private suspend fun insertTotp(data: EntityTotp) {
-        try {
-            daoTotp.insertOrReplaceTotpData(data)
-            _restoreState.postValue(DataState.Success(Unit))
-        } catch (e: Exception) {
-            _restoreState.postValue(DataState.Error(context.getString(R.string.string_something_went_wrong_please_try_again)))
+
+    private suspend fun deleteDocumentFromFirebase(data: RecentlyDeleted) {
+        val userId = auth.currentUser?.uid
+        if (userId != null) {
+            try {
+                val collectionRef = firestore.collection("totps")
+                    .document(userId)
+                    .collection("totps")
+
+                val querySnapshot = collectionRef.get().await()
+                var documentDeleted = false
+
+                for (document in querySnapshot.documents) {
+                    val secretKey = document.getString("secretKey")
+                    if (secretKey == data.secret) {
+                        document.reference.delete().await()
+                        documentDeleted = true
+                        Log.d(Constants.TAG, "Document deleted from Firestore")
+                        break
+                    }
+                }
+
+                if (!documentDeleted) {
+                    Log.d(Constants.TAG, "Matching document not found in Firestore")
+                }
+
+                daoRecentlyDeleted.deleteRecentBySecret(data.secret)
+                _restoreState.postValue(DataState.Success(Unit))
+            } catch (e: Exception) {
+                e.message?.let { Log.d(Constants.TAG, it) }
+                _restoreState.postValue(DataState.Error(context.getString(R.string.string_something_went_wrong_please_try_again)))
+            }
+        } else {
+            daoRecentlyDeleted.deleteRecentBySecret(data.secret)
+            _restoreState.postValue(DataState.Success())
         }
     }
+
+
+
+    private suspend fun deleteAllDocumentsFromFirebase() {
+        val userId = auth.currentUser?.uid
+        if (userId != null) {
+            try {
+                val allRecentlyDeleted = daoRecentlyDeleted.getAllRecentlyDeletedData()
+                val collectionRef = firestore.collection("totps")
+                    .document(userId)
+                    .collection("totps")
+
+                val querySnapshot = collectionRef.get().await()
+                allRecentlyDeleted.forEach { item ->
+                    for (document in querySnapshot.documents) {
+                        val secretKey = document.getString("secretKey")
+                        if (secretKey == item.secret) {
+                            document.reference.delete().await()
+                            break
+                        }
+                    }
+                }
+                daoRecentlyDeleted.clearAllRecentlyDeletedTable()
+                _restoreState.postValue(DataState.Success(Unit))
+            } catch (e: Exception) {
+                e.message?.let { Log.d(Constants.TAG, it) }
+                _restoreState.postValue(DataState.Error(context.getString(R.string.string_something_went_wrong_please_try_again)))
+            }
+        }else{
+            daoRecentlyDeleted.clearAllRecentlyDeletedTable()
+            _restoreState.postValue(DataState.Success())
+        }
+    }
+
+
 
 }

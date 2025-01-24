@@ -161,7 +161,7 @@ fun Fragment.isBiometricSupported(): Boolean {
 
 enum class OperationType {
     RESTORE,
-    DELETE,
+    PERMANENTLY_DELETE,
     RESTORE_ALL,
     DELETE_ALL
 }

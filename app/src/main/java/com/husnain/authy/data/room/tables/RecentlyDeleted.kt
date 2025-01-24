@@ -7,5 +7,6 @@ import androidx.room.PrimaryKey
 data class RecentlyDeleted(
     val name: String,
     val secret: String,
+    var firebaseDocId: String = "",
     @PrimaryKey(autoGenerate = true) val uid: Int = 0,
 )

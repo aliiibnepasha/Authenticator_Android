@@ -1,26 +1,28 @@
 package com.husnain.authy.repositories
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.QuerySnapshot
 import com.husnain.authy.R
+import com.husnain.authy.data.room.daos.DaoRecentlyDeleted
 import com.husnain.authy.data.room.daos.DaoTotp
 import com.husnain.authy.data.room.tables.EntityTotp
 import com.husnain.authy.preferences.PreferenceManager
+import com.husnain.authy.utls.Constants
 import com.husnain.authy.utls.DataState
 import com.husnain.authy.utls.NetworkUtils
 import com.husnain.authy.utls.SingleLiveEvent
 import com.husnain.authy.utls.SyncServiceUtil
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class TotpRepository @Inject constructor(
     private val daoTotp: DaoTotp,
+    private val daoRecentlyDeleted: DaoRecentlyDeleted,
     private val context: Context,
     private val firestore: FirebaseFirestore,
     private val auth: FirebaseAuth,
@@ -44,6 +46,7 @@ class TotpRepository @Inject constructor(
             val data = daoTotp.getAllTotpData()
             _totpListState.postValue(DataState.Success(data))
         } catch (e: Exception) {
+            e.message?.let { Log.d(Constants.TAG, it) }
             _totpListState.postValue(DataState.Error(context.getString(R.string.string_something_went_wrong_please_try_again)))
         }
     }
@@ -91,33 +94,16 @@ class TotpRepository @Inject constructor(
 
     private suspend fun fetchTotpFromFirestore(userId: String) {
         _totpListState.postValue(DataState.Loading())
-
+        val totpCollectionName = "totps"
         try {
-            val task = firestore.collection("totps")
+            val documents = firestore.collection(totpCollectionName)
                 .document(userId)
-                .collection("totps")
+                .collection(totpCollectionName)
                 .get()
-                .await() // Use the extension function to await Firestore result asynchronously
+                .await()
 
-            val documents: QuerySnapshot? = task
-            documents?.documents?.mapNotNull { document ->
-                val serviceName = document.getString("serviceName") ?: ""
-                val secretKey = document.getString("secretKey") ?: ""
-                val docId = document.id // Firestore document ID
-                val fireStoreUid = document.getLong("uid")?.toInt() ?: 0
-
-                if (serviceName.isNotEmpty() && secretKey.isNotEmpty()) {
-                    val entityTotp = EntityTotp(
-                        uid = fireStoreUid,
-                        serviceName = serviceName,
-                        secretKey = secretKey,
-                        docId = docId
-                    )
-
-                    withContext(Dispatchers.IO) {
-                        insertTotp(entityTotp)
-                    }
-                }
+            documents?.documents?.forEach { document ->
+                processFirebaseDocument(document)
             }
 
             fetchTotpDataFromRoomDb()
@@ -125,6 +111,24 @@ class TotpRepository @Inject constructor(
             _totpListState.postValue(DataState.Error("Failed to fetch Totp data: ${e.message}"))
         }
     }
+
+    private suspend fun processFirebaseDocument(document: DocumentSnapshot) {
+        val serviceName = document.getString("serviceName").orEmpty()
+        val secretKey = document.getString("secretKey").orEmpty()
+        val fireStoreUid = document.getLong("uid")?.toInt() ?: 0
+        val docId = document.id
+
+        if (serviceName.isNotBlank() && secretKey.isNotBlank() && !daoRecentlyDeleted.isRecentlyDeleted(secretKey)) {
+            val entityTotp = EntityTotp(
+                uid = fireStoreUid,
+                serviceName = serviceName,
+                secretKey = secretKey,
+                docId = docId
+            )
+            daoTotp.insertOrReplaceTotpData(entityTotp)
+        }
+    }
+
 
     private fun isUserValidToFetchDataFromFirebase(): Boolean {
         return when {
