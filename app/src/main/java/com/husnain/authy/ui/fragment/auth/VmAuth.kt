@@ -15,10 +15,7 @@ class VmAuth @Inject constructor(
 ) : ViewModel() {
     val loginState = repository.loginStatus
     val signUpState = repository.signUpStatus
-    val logoutState = repository.logoutState
     val googleLoginState = repository.googleLoginStatus
-    val deleteAccountState = repository.deleteAccountStatus
-    var isNavigationTriggered: Boolean = false
 
     fun loginWithEmailPass(user: ModelUser) {
         viewModelScope.launch {
@@ -32,20 +29,8 @@ class VmAuth @Inject constructor(
         }
     }
 
-    fun logout(){
-        viewModelScope.launch {
-            repository.logout()
-        }
-    }
 
     fun continueWithGoogle(context: Activity){
         repository.continueWithGoogle(viewModelScope,context)
-    }
-
-
-    fun deleteAccount(){
-        viewModelScope.launch {
-            repository.deleteUserAccountAndData()
-        }
     }
 }

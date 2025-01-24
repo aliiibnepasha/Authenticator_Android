@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Authy</string>
     <string name="hello_blank_fragment">Bonjour</string>
     <string name="string_error">Erreur</string>
     <string name="string_sign_up">S\'inscrire</string>

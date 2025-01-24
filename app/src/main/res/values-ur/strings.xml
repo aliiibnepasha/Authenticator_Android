@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">آثی</string>
     <string name="hello_blank_fragment">ہیلو خالی فریگمنٹ</string>
     <string name="string_error">غلطی</string>
     <string name="string_sign_up">سائن اپ</string>

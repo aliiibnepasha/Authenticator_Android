@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     //Login Signup
-    <string name="app_name">أوثي</string>
     <string name="hello_blank_fragment">مرحباً بك في الفراغ</string>
     <string name="string_error">خطأ</string>
     <string name="string_sign_up">إنشاء حساب</string>

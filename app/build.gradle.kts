@@ -23,14 +23,24 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        create("release") {
+            storeFile = file("$projectDir/keystore/authenticator_app.jks")
+
+            storePassword = "theswiftvision"
+            keyAlias = "key0"
+            keyPassword = "theswiftvision"
+        }
+    }
+
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-//            signingConfig = signingConfigs.getByName("debug")
+            signingConfig = signingConfigs.getByName("release")
         }
         getByName("debug") {
             signingConfig = signingConfigs.getByName("debug")

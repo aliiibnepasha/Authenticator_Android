@@ -20,6 +20,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Authy"
+rootProject.name = "Authenticator"
 include(":app")
  

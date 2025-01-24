@@ -11,23 +11,18 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
-import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
-import android.widget.Toast
 import androidx.annotation.IdRes
 import androidx.biometric.BiometricManager
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.snackbar.Snackbar
 import com.husnain.authy.R
-import com.husnain.authy.databinding.BottomSheetDeleteTotpBinding
-import com.husnain.authy.databinding.CustomBottomSheetDeleteAccountBinding
 
 fun View.visible() {
     visibility = View.VISIBLE
@@ -90,21 +85,10 @@ fun View.hideWithAnimation(duration: Long = 300) {
             }
         })
 }
+
 fun Fragment.startActivity(destinationActivity: Class<*>) {
     val intent = Intent(requireActivity(), destinationActivity)
     startActivity(intent)
-}
-
-fun Fragment.toast(message: String) {
-    Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
-}
-
-fun Activity.toast(message: String) {
-    Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-}
-
-fun Context.toast(message: String) {
-    Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
 }
 
 
@@ -127,7 +111,6 @@ fun openAppSettings(activity: Activity) {
     activity.startActivity(intent)
 }
 
-
 fun showSnackBar(view: View,str: String){
     val snackbar = Snackbar.make(view, str, Snackbar.LENGTH_SHORT)
     val snackbarView = snackbar.view
@@ -144,29 +127,8 @@ fun Context.copyToClip(text: String){
     clipboard.setPrimaryClip(clip)
 }
 
-
 fun EditText.getTextFromEdit() : String{
     return  this.text.toString()
-}
-
-//Bottom Sheet
-fun Fragment.showBottomSheetDialog(txtPrimaryButton: String,onPrimaryClick:() -> Unit) {
-    val bottomSheetDialog = BottomSheetDialog(requireContext(), R.style.BottomSheetDialogTheme)
-    val binding = BottomSheetDeleteTotpBinding.inflate(LayoutInflater.from(requireContext()))
-    bottomSheetDialog.setContentView(binding.root)
-
-    binding.tvTop.text = txtPrimaryButton
-
-    binding.lyTopText.setOnClickListener {
-        onPrimaryClick.invoke()
-        bottomSheetDialog.dismiss()
-    }
-
-    binding.lyCancel.setOnClickListener {
-        bottomSheetDialog.dismiss()
-    }
-
-    bottomSheetDialog.show()
 }
 
 @SuppressLint("ClickableViewAccessibility")
@@ -194,6 +156,8 @@ fun Fragment.isBiometricSupported(): Boolean {
         else -> false
     }
 }
+
+//enums
 
 enum class OperationType {
     RESTORE,
@@ -223,25 +187,5 @@ enum class DelayOption {
         }
     }
 }
-
-fun Fragment.showDeleteAccountConfirmationBottomSheet(
-    onYes: () -> Unit,
-) {
-    val bottomSheetDialog = BottomSheetDialog(requireContext(), R.style.BottomSheetDialogTheme)
-    val binding = CustomBottomSheetDeleteAccountBinding.inflate(LayoutInflater.from(requireContext()))
-    bottomSheetDialog.setContentView(binding.root)
-
-    binding.lyYes.setOnClickListener {
-        onYes.invoke()
-        bottomSheetDialog.dismiss()
-    }
-
-    binding.lyNo.setOnClickListener {
-        bottomSheetDialog.dismiss()
-    }
-
-    bottomSheetDialog.show()
-}
-
 
 
