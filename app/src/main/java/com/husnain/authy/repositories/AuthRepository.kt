@@ -39,7 +39,6 @@ class AuthRepository @Inject constructor(
     private val _deleteAccountStatus = SingleLiveEvent<DataState<Nothing>>()
     val deleteAccountStatus: LiveData<DataState<Nothing>> get() = _deleteAccountStatus
 
-
     fun deleteUserAccountAndData() {
         _deleteAccountStatus.postValue(DataState.Loading())
         val user = auth.currentUser
@@ -85,7 +84,6 @@ class AuthRepository @Inject constructor(
             }
     }
 
-
     fun signUpWithEmailPass(user: ModelUser) {
         _signUpStatus.postValue(DataState.Loading())
         auth.createUserWithEmailAndPassword(user.userEmail, user.userPassword)
@@ -110,6 +108,7 @@ class AuthRepository @Inject constructor(
                 .addOnSuccessListener { document ->
                     if (document.exists()) {
                         preferenceManager.saveGuestUser(false)
+                        preferenceManager.saveIsFirstLoginAfterAppInstall(true)
                         _googleLoginStatus.value = DataState.Success()
                         _signUpStatus.value = DataState.Success()
                     } else {
@@ -141,6 +140,7 @@ class AuthRepository @Inject constructor(
             .addOnSuccessListener {
                 preferenceManager.saveUserData(user)
                 preferenceManager.saveGuestUser(true)
+                preferenceManager.saveIsFirstLoginAfterAppInstall(true)
                 _loginStatus.value = DataState.Success()
             }
             .addOnFailureListener { exception ->

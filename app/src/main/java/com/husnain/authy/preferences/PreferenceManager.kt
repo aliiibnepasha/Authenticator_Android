@@ -3,8 +3,6 @@ package com.husnain.authy.preferences
 import android.content.Context
 import android.content.SharedPreferences
 import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
-import com.husnain.authy.data.models.ModelSubscription
 import com.husnain.authy.data.models.ModelUser
 import com.husnain.authy.utls.DelayOption
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -17,6 +15,7 @@ class PreferenceManager @Inject constructor(@ApplicationContext private val cont
     companion object {
         //Keys
         private const val PREF_NAME = "MyPrefs"
+        private const val KEY_IS_FIRST_LOGIN = "isFirstLogin"
         private const val KEY_ONBOARDING_FINISHED = "key_onboarding_finished"
         private const val KEY_ALLOW_SCREEN_SHOTS = "key_allow_screen_shots"
         private const val KEY_PIN = "keyPin"
@@ -26,11 +25,9 @@ class PreferenceManager @Inject constructor(@ApplicationContext private val cont
         private const val KEY_IS_SUBSCRIPTION_ACTIVE = "keyIsSubscriptionActive"
         private const val KEY_IS_LIFE_TIME_ACCESS_ACTIVE = "lifeTimeAccess"
         private const val KEY_LAST_APP_OPEN_TIME = "last_app_open_time"
-        private const val kEY_GUEST_USER = "keyGuestUser"
-        private const val KEY_SETTING_SCROLL_POSITION = "keySettingScrollPosition"
+        private const val KEY_GUEST_USER = "keyGuestUser"
         private const val KEY_LAST_SYNC_TIME = "lastSyncTime"
         private const val KEY_IS_TO_SHOW_SUBS_SCREEN = "showSubsScreen"
-        private const val kEY_SUBSCRIPTION_DATA_LIST = "mySubsDataList"
     }
 
     private val gson = Gson()
@@ -129,11 +126,21 @@ class PreferenceManager @Inject constructor(@ApplicationContext private val cont
     }
 
     fun saveGuestUser(isGuest: Boolean) {
-        myPref.edit().putBoolean(kEY_GUEST_USER, isGuest).apply()
+        myPref.edit().putBoolean(KEY_GUEST_USER, isGuest).apply()
     }
 
+
     fun isGuestUser(): Boolean {
-        return myPref.getBoolean(kEY_GUEST_USER, true)
+        return myPref.getBoolean(KEY_GUEST_USER, true)
+    }
+
+    fun saveIsFirstLoginAfterAppInstall(isGuest: Boolean) {
+        myPref.edit().putBoolean(KEY_IS_FIRST_LOGIN, isGuest).apply()
+    }
+
+
+    fun isFirstLoginAfterAppInstall(): Boolean {
+        return myPref.getBoolean(KEY_IS_FIRST_LOGIN, false)
     }
 
     fun saveDelayOption(option: DelayOption) {
@@ -141,7 +148,7 @@ class PreferenceManager @Inject constructor(@ApplicationContext private val cont
     }
 
     fun getDelayOption(): DelayOption {
-        val name = myPref.getString("selected_delay_option", DelayOption.NEVER.name)
+        val name = myPref.getString("selected_delay_option", DelayOption.IMMEDIATELY.name)
         return DelayOption.valueOf(name!!)
     }
 
@@ -154,14 +161,6 @@ class PreferenceManager @Inject constructor(@ApplicationContext private val cont
         return myPref.getLong(KEY_LAST_APP_OPEN_TIME, 0)
     }
 
-    fun saveSettingScrollPosition(position: Int) {
-        myPref.edit().putInt(KEY_SETTING_SCROLL_POSITION, position).apply()
-    }
-
-    fun getSettingScrollPosition(): Int {
-        return myPref.getInt(KEY_SETTING_SCROLL_POSITION, 0)
-    }
-
     fun saveLastSyncDateTime() {
         val currentTime = System.currentTimeMillis()
         val formatter = SimpleDateFormat("d MMM yyyy - hh:mm a", Locale.ENGLISH)
@@ -172,20 +171,4 @@ class PreferenceManager @Inject constructor(@ApplicationContext private val cont
     fun getLastSyncTime(): String? {
         return myPref.getString(KEY_LAST_SYNC_TIME, "")
     }
-
-    fun saveSubscriptionDataListToPrefs(list: List<ModelSubscription>) {
-        val json = gson.toJson(list)
-        myPref.edit().putString(kEY_SUBSCRIPTION_DATA_LIST, json).apply()
-    }
-
-    fun getSubscriptionDataList(): List<ModelSubscription>? {
-        val json = myPref.getString(kEY_SUBSCRIPTION_DATA_LIST, null)
-        return if (json != null) {
-            val type = object : TypeToken<List<ModelSubscription>>() {}.type
-            gson.fromJson<List<ModelSubscription>>(json, type)
-        } else {
-            null
-        }
-    }
-
 }

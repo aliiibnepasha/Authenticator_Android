@@ -208,7 +208,6 @@ class SubscriptionFragment : Fragment() {
             withContext(Dispatchers.Main) {
                 try {
                     initAdapter(sortedSubscriptionDataList)
-                    preferenceManager.saveSubscriptionDataListToPrefs(sortedSubscriptionDataList)
                 } catch (e: Exception) {
                     e.message?.let { showCustomToast(it) }
                 }

@@ -44,8 +44,6 @@ class SettingFragment : Fragment() {
 
     @Inject
     lateinit var auth: FirebaseAuth
-    private lateinit var scanQrCodeLauncher: ActivityResultLauncher<Nothing?>
-    private lateinit var galleryPickerLauncher: ActivityResultLauncher<Intent>
     private val KEY_HEADER_TITLE = "headerTitle"
     private val KEY_LINK_TO_LOAD = "linkToLoad"
 
@@ -68,8 +66,6 @@ class SettingFragment : Fragment() {
     private fun inIt() {
         setOnClickListener()
         setUpObserver()
-        handleDataFromGallery()
-        handleDataFromCamera()
     }
 
     private fun updateUiBasedOnUserState() {
@@ -181,14 +177,10 @@ class SettingFragment : Fragment() {
 
         //google authenticator import
         binding.lyImportGoogleAuthData.setOnClickListener {
-            showBottomSheetDialog(
-                onGalleryClick = {
-                    openGallery(galleryPickerLauncher)
-                },
-                onCameraClick = {
-                    scanQrCodeLauncher.launch(null)
-                }
-            )
+            val bundle = Bundle().apply {
+                putBoolean(Constants.KEY_IS_COMING_FROM_SETTINGS_FOR_GOOGLE_AUTH_IMPORT,true)
+            }
+            navigate(R.id.action_settingFragment_to_addAccountFragment,bundle)
         }
 
         //Info and share
@@ -250,47 +242,17 @@ class SettingFragment : Fragment() {
         })
     }
 
-    private fun handleDataFromCamera() {
-//        scanQrCodeLauncher = setupQrCodeScanner(
-//            onSuccess = { qrContent ->
-//                processTOTPURI(qrContent)
+//    private fun processTOTPURI(qrContent: String) {
+//        handleTOTPURI(
+//            uri = qrContent,
+//            onInsertSecret = { entity ->
+//                vmSettings.insertSecretData(entity)
 //            },
-//            onNot2FAQR = {
-//                showCustomToast("Scanned QR is not a 2FA QR")
+//            onError = { error ->
+//                showCustomToast(error)
 //            },
-//            onMissingPermission = {
-//                showCustomToast("Missing permission to scan QR codes.")
-//            },
-//            onError = { errorMessage ->
-//                showCustomToast("Error occurred: $errorMessage")
-//            }
 //        )
-    }
-
-    private fun handleDataFromGallery() {
-        galleryPickerLauncher = setupGalleryPicker { uri ->
-            requireContext().decodeQRCode(uri,
-                onSuccess = { qrCodeContent ->
-                    processTOTPURI(qrCodeContent)
-                },
-                onError = { error ->
-                    showCustomToast("Error decoding QR code: ${error.localizedMessage}")
-                }
-            )
-        }
-    }
-
-    private fun processTOTPURI(qrContent: String) {
-        handleTOTPURI(
-            uri = qrContent,
-            onInsertSecret = { entity ->
-                vmSettings.insertSecretData(entity)
-            },
-            onError = { error ->
-                showCustomToast(error)
-            },
-        )
-    }
+//    }
 
     //info navigations
     private fun navToTermsAndConditions() {

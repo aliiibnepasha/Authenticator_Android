@@ -1,0 +1,50 @@
+
+
+;
+android*http://schemas.android.com/apk/res/android*
+4
+app'http://schemas.android.com/apk/res-auto*3androidx.coordinatorlayout.widget.CoordinatorLayout"`
+*http://schemas.android.com/apk/res/androidlayout_widthmatch_parent"(ô„2:0ÿÿÿÿÿÿÿÿÿ"a
+*http://schemas.android.com/apk/res/androidlayout_heightmatch_parent"(õ„2:0ÿÿÿÿÿÿÿÿÿ*
+…/com.google.android.material.appbar.AppBarLayout"`
+*http://schemas.android.com/apk/res/androidlayout_widthmatch_parent"(ô„2:0ÿÿÿÿÿÿÿÿÿ"S
+*http://schemas.android.com/apk/res/androidlayout_height300dp"(õ„2:hØ"£
+*http://schemas.android.com/apk/res/androidtheme,@style/ThemeOverlay.Material3.Dark.ActionBar"(€€„27
+5¢…Ôø+style/ThemeOverlay.Material3.Dark.ActionBar0*ô
+ë:com.google.android.material.appbar.CollapsingToolbarLayout"v
+'http://schemas.android.com/apk/res-autocontentScrim?attr/colorPrimary"(Ó‚ø2
+‚øattr/colorPrimary0"h
+'http://schemas.android.com/apk/res-autolayout_scrollFlagsscroll|exitUntilCollapsed"(à…ø2:8"I
+'http://schemas.android.com/apk/res-autotitleCollapsing Layout(ì‰ø"Z
+'http://schemas.android.com/apk/res-autoexpandedTitleMarginStart16dp"(Úƒø2:h "`
+*http://schemas.android.com/apk/res/androidlayout_widthmatch_parent"(ô„2:0ÿÿÿÿÿÿÿÿÿ"a
+*http://schemas.android.com/apk/res/androidlayout_heightmatch_parent"(õ„2:0ÿÿÿÿÿÿÿÿÿ"X
+'http://schemas.android.com/apk/res-autoexpandedTitleMarginEnd16dp"(Ùƒø2:h *„
+ûLinearLayout"
+*http://schemas.android.com/apk/res/android
+background@android:color/holo_blue_bright"(Ô„2)
+'›€˜android:color/holo_blue_bright0"`
+*http://schemas.android.com/apk/res/androidlayout_widthmatch_parent"(ô„2:0ÿÿÿÿÿÿÿÿÿ"a
+*http://schemas.android.com/apk/res/androidlayout_heightmatch_parent"(õ„2:0ÿÿÿÿÿÿÿÿÿ"R
+*http://schemas.android.com/apk/res/androidorientationvertical"(Ä„2:0*Á
+¸TextView"K
+*http://schemas.android.com/apk/res/androidpadding16dp""(Õ„2:h "`
+*http://schemas.android.com/apk/res/androidlayout_widthmatch_parent""(ô„2:0ÿÿÿÿÿÿÿÿÿ"a
+*http://schemas.android.com/apk/res/androidlayout_heightwrap_content""(õ„2:0şÿÿÿÿÿÿÿÿ"L
+*http://schemas.android.com/apk/res/androidtextSize18sp""(•„2:h‚$"L
+*http://schemas.android.com/apk/res/androidtextCollapsible Content(Ï‚„".F/F*	
+„	%androidx.core.widget.NestedScrollView"Ÿ
+'http://schemas.android.com/apk/res-autolayout_behavior&@string/appbar_scrolling_view_behavior"-( …ø21
+/¤€Ğø%string/appbar_scrolling_view_behavior0"`
+*http://schemas.android.com/apk/res/androidlayout_widthmatch_parent"-(ô„2:0ÿÿÿÿÿÿÿÿÿ"a
+*http://schemas.android.com/apk/res/androidlayout_heightmatch_parent"-(õ„2:0ÿÿÿÿÿÿÿÿÿ*ó
+êLinearLayout"K
+*http://schemas.android.com/apk/res/androidpadding16dp"3(Õ„2:h "`
+*http://schemas.android.com/apk/res/androidlayout_widthmatch_parent"3(ô„2:0ÿÿÿÿÿÿÿÿÿ"a
+*http://schemas.android.com/apk/res/androidlayout_heightwrap_content"3(õ„2:0şÿÿÿÿÿÿÿÿ"R
+*http://schemas.android.com/apk/res/androidorientationvertical"3(Ä„2:0*ó
+êTextView"`
+*http://schemas.android.com/apk/res/androidlayout_widthwrap_content"9(ô„2:0şÿÿÿÿÿÿÿÿ"a
+*http://schemas.android.com/apk/res/androidlayout_heightwrap_content"9(õ„2:0şÿÿÿÿÿÿÿÿ"L
+*http://schemas.android.com/apk/res/androidtextSize16sp"9(•„2:h‚ "K
+*http://schemas.android.com/apk/res/androidtextMore content below(Ï‚„9+3$-F*

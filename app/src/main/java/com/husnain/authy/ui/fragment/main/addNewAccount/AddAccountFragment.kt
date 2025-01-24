@@ -34,12 +34,15 @@ import com.husnain.authy.R
 import com.husnain.authy.data.room.tables.EntityTotp
 import com.husnain.authy.databinding.FragmentAddAccountBinding
 import com.husnain.authy.preferences.PreferenceManager
+import com.husnain.authy.utls.Constants
 import com.husnain.authy.utls.CustomToast.showCustomToast
 import com.husnain.authy.utls.DataState
 import com.husnain.authy.utls.OtpMigration
 import com.husnain.authy.utls.QRCodeAnalyzer
+import com.husnain.authy.utls.gone
 import com.husnain.authy.utls.navigate
 import com.husnain.authy.utls.popBack
+import com.husnain.authy.utls.visible
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -54,39 +57,26 @@ class AddAccountFragment : Fragment() {
     private var _binding: FragmentAddAccountBinding? = null
     private val binding get() = _binding!!
     private lateinit var cameraExecutor: ExecutorService
-    @Inject lateinit var preferenceManager: PreferenceManager
+    @Inject
+    lateinit var preferenceManager: PreferenceManager
     private val vmAddAccount: VmAddAccount by viewModels()
+    private var isComingFromSetting = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentAddAccountBinding.inflate(inflater, container, false)
-        inItUiAndCamera()
-        requestCameraPermissionIfMissing { granted ->
-            if (granted) {
-                startCamera()
-            }
-        }
         inIt()
         return binding.root
     }
 
     private fun inIt() {
+        //Warning don't change sequence of calling
         setOnClickListener()
+        inItUiAndCamera()
+        requestPermission()
+        getBundleDataAndSetUi()
         setUpObservers()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        makeFragmentFullScreen()
-    }
-
-    private fun requestCameraPermissionIfMissing(onResult: ((Boolean) -> Unit)) {
-        if (ContextCompat.checkSelfPermission(requireActivity(), CAMERA) == PackageManager.PERMISSION_GRANTED) {
-            onResult(true)
-        } else {
-            registerForActivityResult(ActivityResultContracts.RequestPermission()) { onResult(it) }.launch(CAMERA)
-        }
     }
 
     private fun setOnClickListener() {
@@ -100,6 +90,54 @@ class AddAccountFragment : Fragment() {
 
         binding.btnAddAccountManually.setOnClickListener {
             navigate(R.id.action_addAccountFragment_to_addAccountManuallyFragment)
+        }
+    }
+
+    private fun getBundleDataAndSetUi() {
+        val value =
+            arguments?.getBoolean(Constants.KEY_IS_COMING_FROM_SETTINGS_FOR_GOOGLE_AUTH_IMPORT)
+        value?.let { isValue ->
+            isComingFromSetting = isValue
+            binding.btnAddAccountManually.apply { if (isValue) gone() else visible() }
+        }
+    }
+
+    private fun requestPermission() {
+        requestCameraPermissionIfMissing { granted ->
+            if (granted) {
+                startCamera()
+            }
+        }
+    }
+
+    private fun requestCameraPermissionIfMissing(onResult: ((Boolean) -> Unit)) {
+        if (ContextCompat.checkSelfPermission(
+                requireActivity(),
+                CAMERA
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            onResult(true)
+        } else {
+            registerForActivityResult(ActivityResultContracts.RequestPermission()) { onResult(it) }.launch(
+                CAMERA
+            )
+        }
+    }
+
+    private fun setUpObservers() {
+        vmAddAccount.insertState.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is DataState.Loading -> {
+                }
+
+                is DataState.Success -> {
+                    navigate(R.id.action_addAccountFragment_to_homeFragment)
+                }
+
+                is DataState.Error -> {
+                    showCustomToast("Error: ${state.message}")
+                }
+            }
         }
     }
 
@@ -180,9 +218,21 @@ class AddAccountFragment : Fragment() {
                 if (decodedDataList != null) {
                     for (data in decodedDataList) {
                         if (data.name.isEmpty() && data.issuer.isNotEmpty()) {
-                            vmAddAccount.insertSecretData(EntityTotp(0, data.issuer, data.secretBase32))
+                            vmAddAccount.insertSecretData(
+                                EntityTotp(
+                                    0,
+                                    data.issuer,
+                                    data.secretBase32
+                                )
+                            )
                         } else {
-                            vmAddAccount.insertSecretData(EntityTotp(0, data.name, data.secretBase32))
+                            vmAddAccount.insertSecretData(
+                                EntityTotp(
+                                    0,
+                                    data.name,
+                                    data.secretBase32
+                                )
+                            )
                         }
                         println("Account Name: ${data.name}, issuer: ${data.issuer}, Secret: ${data.secretBase32}")
                     }
@@ -193,23 +243,6 @@ class AddAccountFragment : Fragment() {
 
         } catch (e: Exception) {
             showCustomToast("Error parsing TOTP URI: ${e.localizedMessage}")
-        }
-    }
-
-    private fun setUpObservers() {
-        vmAddAccount.insertState.observe(viewLifecycleOwner) { state ->
-            when (state) {
-                is DataState.Loading -> {
-                }
-
-                is DataState.Success -> {
-                    navigate(R.id.action_addAccountFragment_to_homeFragment)
-                }
-
-                is DataState.Error -> {
-                    showCustomToast("Error: ${state.message}")
-                }
-            }
         }
     }
 
@@ -278,6 +311,12 @@ class AddAccountFragment : Fragment() {
         }
     }
 
+    //lifecycle callbacks
+    override fun onResume() {
+        super.onResume()
+        makeFragmentFullScreen()
+    }
+
     override fun onPause() {
         super.onPause()
 //        lifecycleScope.launch {
@@ -285,7 +324,7 @@ class AddAccountFragment : Fragment() {
 //                cameraProvider.unbindAll()
 //            }
 //        }
-        if (::cameraExecutor.isInitialized){
+        if (::cameraExecutor.isInitialized) {
             cameraExecutor.shutdown()
         }
         requireActivity().window.apply {
@@ -297,7 +336,7 @@ class AddAccountFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        if (::cameraExecutor.isInitialized){
+        if (::cameraExecutor.isInitialized) {
             cameraExecutor.shutdown()
         }
         _binding = null

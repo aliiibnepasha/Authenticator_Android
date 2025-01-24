@@ -30,8 +30,6 @@ class AppLockFragment : Fragment() {
     @Inject lateinit var preferenceManager: PreferenceManager
     private val delayOptions = DelayOption.entries.toTypedArray()
     private var isNavigatingToSetPin = false
-    private lateinit var autoCompleteTextView: AutoCompleteTextView
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,9 +41,6 @@ class AppLockFragment : Fragment() {
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-    }
     private fun inIt() {
         inItUi()
         setOnClickListener()

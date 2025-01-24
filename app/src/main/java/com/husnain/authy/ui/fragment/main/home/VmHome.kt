@@ -2,7 +2,6 @@ package com.husnain.authy.ui.fragment.main.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.husnain.authy.data.room.tables.EntityTotp
 import com.husnain.authy.data.room.tables.RecentlyDeleted
 import com.husnain.authy.repositories.RecentlyDeletedRepository
 import com.husnain.authy.repositories.TotpRepository
@@ -16,7 +15,6 @@ class VmHome @Inject constructor(
     private val recentlyDeletedRepository: RecentlyDeletedRepository
 ): ViewModel(){
     val totpListState = repository.totpListState
-    val insertState = repository.insertState
     val deleteState = repository.deleteState
     val insertRecentlyDeletedState = recentlyDeletedRepository.insertState
     var isNavigationTriggered: Boolean = false
@@ -28,12 +26,6 @@ class VmHome @Inject constructor(
     fun fetchAllTotp() {
         viewModelScope.launch {
             repository.fetchTotpData()
-        }
-    }
-
-    fun insertSecretData(data: EntityTotp) {
-        viewModelScope.launch {
-            repository.insertTotp(data)
         }
     }
 

@@ -28,6 +28,9 @@
         <action
             android:id="@+id/action_settingFragment_to_webViewFragment"
             app:destination="@id/webViewFragment" />
+        <action
+            android:id="@+id/action_settingFragment_to_addAccountFragment"
+            app:destination="@id/addAccountFragment" />
     </fragment>
     <fragment
         android:id="@+id/newToolsFragment"

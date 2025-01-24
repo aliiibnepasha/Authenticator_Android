@@ -48,13 +48,16 @@ class HomeFragment : Fragment() {
     ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         inIt()
-        inItUi()
         return binding.root
     }
 
     override fun onResume() {
         super.onResume()
         inItUi()
+        if (preferenceManager.isFirstLoginAfterAppInstall()){
+            preferenceManager.saveIsFirstLoginAfterAppInstall(false)
+            vmHome.fetchAllTotp()
+        }
     }
 
     private fun inItUi(){
@@ -66,6 +69,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun inIt() {
+        inItUi()
         askPermissions()
         if (!vmHome.isNavigationTriggered) {
             autoScreensStartup()
