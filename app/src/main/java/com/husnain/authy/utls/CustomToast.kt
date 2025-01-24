@@ -15,7 +15,7 @@ object CustomToast {
     private var toast: Toast? = null
 
     fun Fragment.showCustomToast(strMessage: String) {
-        activity?.let { mContext ->
+        requireActivity().let { mContext ->
             val inflater = mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
             val layout: View = inflater.inflate(R.layout.toast_custom, mContext.findViewById(R.id.toast_container))
 

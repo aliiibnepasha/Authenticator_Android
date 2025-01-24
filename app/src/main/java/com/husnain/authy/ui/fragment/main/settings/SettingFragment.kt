@@ -38,8 +38,12 @@ class SettingFragment : Fragment() {
     private var _binding: FragmentSettingBinding? = null
     private val binding get() = _binding!!
     private val vmSettings: VmSettings by viewModels()
-    @Inject lateinit var preferenceManager: PreferenceManager
-    @Inject lateinit var auth: FirebaseAuth
+
+    @Inject
+    lateinit var preferenceManager: PreferenceManager
+
+    @Inject
+    lateinit var auth: FirebaseAuth
     private lateinit var scanQrCodeLauncher: ActivityResultLauncher<Nothing?>
     private lateinit var galleryPickerLauncher: ActivityResultLauncher<Intent>
     private val KEY_HEADER_TITLE = "headerTitle"
@@ -52,13 +56,15 @@ class SettingFragment : Fragment() {
     ): View {
         _binding = FragmentSettingBinding.inflate(inflater, container, false)
         inIt()
+        updateUiBasedOnUserState()
         return binding.root
     }
 
     override fun onResume() {
         super.onResume()
-        inItUi()
+        updateUiBasedOnUserState()
     }
+
     private fun inIt() {
         setOnClickListener()
         setUpObserver()
@@ -66,35 +72,41 @@ class SettingFragment : Fragment() {
         handleDataFromCamera()
     }
 
-    private fun inItUi() {
-        //show and hide ui bases on is user loged in or not
+    private fun updateUiBasedOnUserState() {
         val userId = auth.currentUser?.uid
-        val isUserLogedIn = userId != null
+        val isUserLoggedIn = userId != null
+        val isUserHavePremium = preferenceManager.isSubscriptionActive()
 
-        //if user id from auth is null means user is not loged in else loged in
-        if (!isUserLogedIn){
-            binding.apply {
+        binding.apply {
+            // Handle premium state
+            if (isUserHavePremium) {
+                lyGetPremium.gone()
+                imgSyncPremium.gone()
+            } else {
+                lyGetPremium.visible()
+                imgSyncPremium.visible()
+            }
+
+            // Handle login state
+            if (!isUserLoggedIn) {
                 btnLogout.gone()
                 tvDontHaveAndAccount.visible()
                 tvSignup.visible()
                 btnLogin.visible()
-            }
-        }else{
-            binding.apply {
+            } else {
                 btnLogout.visible()
                 tvDontHaveAndAccount.gone()
                 tvSignup.gone()
                 btnLogin.gone()
             }
         }
-
     }
 
     private fun setOnClickListener() {
         binding.imgBack.setOnClickListener {
             popBack()
         }
-        
+
         //Authentications
         binding.tvSignup.setOnClickListener {
             if (preferenceManager.isGuestUser()) {
@@ -115,12 +127,12 @@ class SettingFragment : Fragment() {
         binding.lyGetPremium.setOnClickListener {
             navigate(R.id.action_settingFragment_to_subscriptionFragment)
         }
-        
+
         //nav to change lang 
         binding.lyLocalizeLanguages.setOnClickListener {
             navigate(R.id.action_settingFragment_to_localizeFragment)
         }
-        
+
         //delete account
         binding.lyDeleteAccount.setOnClickListener {
             //show confirmation bottom sheet to user on delete tv click delete user data and account from db
@@ -128,32 +140,45 @@ class SettingFragment : Fragment() {
                 vmSettings.deleteAccount()
             }
         }
-        
+
         //Backup and sync
         binding.lyBackupAndSync.setOnClickListener {
-            if (!preferenceManager.isGuestUser()){
-                if (!preferenceManager.isSubscriptionActive()){
+            val isUserLoggedIn = auth.currentUser?.uid != null
+            val isUserHavePremium = preferenceManager.isSubscriptionActive()
+            Log.d(Constants.TAG, "premium = $isUserHavePremium, loggedIn = $isUserLoggedIn")
+
+            when {
+                // If the user is not subscribed, take them to the subscription screen
+                !isUserHavePremium -> {
                     navigate(R.id.action_settingFragment_to_subscriptionFragment)
-                }else{
+                }
+
+                // If the user is subscribed but not logged in, take them to the auth activity
+                isUserHavePremium && !isUserLoggedIn -> {
+                    Constants.isComingToAuthFromGuest = true
+                    startActivity(AuthActivity::class.java)
+                }
+
+                // If the user is subscribed and logged in, take them to the backup screen
+                isUserHavePremium && isUserLoggedIn -> {
                     navigate(R.id.action_settingFragment_to_backUpFragment)
                 }
-            }else{
-                navigate(R.id.action_settingFragment_to_subscriptionFragment)
             }
         }
-        
+
+
         //Recently deleted
         binding.lyRecentlyDeleted.setOnClickListener {
             navigate(R.id.action_settingFragment_to_recentlyDeletedFragment)
         }
-        
+
         //logout
         binding.btnLogout.setOnClickListener {
-            showBottomSheetDialog(resources.getString(R.string.string_logout),onPrimaryClick = {
+            showBottomSheetDialog(resources.getString(R.string.string_logout), onPrimaryClick = {
                 vmSettings.logout()
             })
         }
-        
+
         //google authenticator import
         binding.lyImportGoogleAuthData.setOnClickListener {
             showBottomSheetDialog(
@@ -168,10 +193,10 @@ class SettingFragment : Fragment() {
 
         //Info and share
         binding.lyTermsAndConsidtions.setOnClickListener {
-           navToTermsAndConditions()
+            navToTermsAndConditions()
         }
         binding.lyPrivacyPolicy.setOnClickListener {
-           navToPrivacyPolicy()
+            navToPrivacyPolicy()
         }
     }
 
@@ -186,7 +211,7 @@ class SettingFragment : Fragment() {
                 }
 
                 is DataState.Error -> {
-                    Log.e(Constants.TAG,"Error: ${state.message}")
+                    Log.e(Constants.TAG, "Error: ${state.message}")
                     showCustomToast(resources.getString(R.string.string_something_went_wrong_please_try_again))
                 }
             }
@@ -202,7 +227,7 @@ class SettingFragment : Fragment() {
                 }
 
                 is DataState.Error -> {
-                    Log.e(Constants.TAG,"Error: ${state.message}")
+                    Log.e(Constants.TAG, "Error: ${state.message}")
                     showCustomToast(resources.getString(R.string.string_something_went_wrong_please_try_again))
                 }
             }
@@ -218,7 +243,7 @@ class SettingFragment : Fragment() {
                 }
 
                 is DataState.Error -> {
-                    Log.e(Constants.TAG,"Error: ${state.message}")
+                    Log.e(Constants.TAG, "Error: ${state.message}")
                     showCustomToast(resources.getString(R.string.string_something_went_wrong_please_try_again))
                 }
             }
@@ -266,26 +291,26 @@ class SettingFragment : Fragment() {
             },
         )
     }
-    
+
     //info navigations
-    private fun navToTermsAndConditions(){
+    private fun navToTermsAndConditions() {
         val url = "https://sites.google.com/view/authenticatorapp-termofuse/home"
         val bundle = Bundle().apply {
-            putString(KEY_HEADER_TITLE,resources.getString(R.string.string_terms_amp_condition))
-            putString(KEY_LINK_TO_LOAD,url)
+            putString(KEY_HEADER_TITLE, resources.getString(R.string.string_terms_amp_condition))
+            putString(KEY_LINK_TO_LOAD, url)
         }
-        navigate(R.id.action_settingFragment_to_webViewFragment,bundle)
+        navigate(R.id.action_settingFragment_to_webViewFragment, bundle)
     }
-    
-    private fun navToPrivacyPolicy(){
+
+    private fun navToPrivacyPolicy() {
         val url = "https://sites.google.com/view/authenticatorapp-privacypolicy/home"
         val bundle = Bundle().apply {
-            putString(KEY_HEADER_TITLE,resources.getString(R.string.string_privacy_policy))
-            putString(KEY_LINK_TO_LOAD,url)
+            putString(KEY_HEADER_TITLE, resources.getString(R.string.string_privacy_policy))
+            putString(KEY_LINK_TO_LOAD, url)
         }
-        navigate(R.id.action_settingFragment_to_webViewFragment,bundle)
+        navigate(R.id.action_settingFragment_to_webViewFragment, bundle)
     }
-    
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

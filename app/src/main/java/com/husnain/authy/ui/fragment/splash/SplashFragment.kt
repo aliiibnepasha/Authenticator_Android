@@ -43,6 +43,8 @@ class SplashFragment : Fragment() {
         _binding = FragmentSplashBinding.inflate(inflater, container, false)
         makeFragmentFullScreen()
         init()
+        val isUserHavePremium = preferenceManager.isSubscriptionActive()
+        Log.d(Constants.TAG,"premium = $isUserHavePremium")
         return binding.root
     }
 

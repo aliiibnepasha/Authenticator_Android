@@ -24,6 +24,13 @@ class VmSettings @Inject constructor(
         }
     }
 
+    fun fetchAllTotp() {
+        viewModelScope.launch {
+            totpRepository.fetchTotpData()
+        }
+    }
+
+
     fun logout(){
         viewModelScope.launch {
             authRepository.logout()

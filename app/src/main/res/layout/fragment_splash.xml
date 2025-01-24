@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/poppins_bold"
-        android:text="Authy"
+        android:text="Authenticator"
         android:layout_marginTop="@dimen/_250sdp"
         android:textColor="@color/colorPrimary"
         android:textSize="@dimen/_28ssp"

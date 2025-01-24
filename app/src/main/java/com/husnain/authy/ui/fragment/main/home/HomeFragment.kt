@@ -25,7 +25,6 @@ import com.husnain.authy.utls.PermissionUtils
 import com.husnain.authy.utls.gone
 import com.husnain.authy.utls.navigate
 import com.husnain.authy.utls.progress.showBottomSheetDialog
-import com.husnain.authy.utls.showBottomSheetDialog
 import com.husnain.authy.utls.startActivity
 import com.husnain.authy.utls.visible
 import dagger.hilt.android.AndroidEntryPoint
@@ -49,7 +48,21 @@ class HomeFragment : Fragment() {
     ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         inIt()
+        inItUi()
         return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        inItUi()
+    }
+
+    private fun inItUi(){
+        if (!preferenceManager.isSubscriptionActive()){
+            binding.imgPremium.visible()
+        }else{
+            binding.imgPremium.gone()
+        }
     }
 
     private fun inIt() {
