@@ -1,12 +1,12 @@
 package com.husnain.authy.ui.fragment.main.search
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.husnain.authy.data.models.ModelTotp
@@ -56,7 +56,7 @@ class SearchFragment : Fragment() {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                if (::adapter.isInitialized && adapter.itemCount > 0) {
+                if (::adapter.isInitialized && adapter.itemCount >= 0) {
                     adapter.getFilter().filter(newText)
                 }
                 return true

@@ -37,6 +37,7 @@ import com.husnain.authy.preferences.PreferenceManager
 import com.husnain.authy.utls.Constants
 import com.husnain.authy.utls.CustomToast.showCustomToast
 import com.husnain.authy.utls.DataState
+import com.husnain.authy.utls.Flags
 import com.husnain.authy.utls.OtpMigration
 import com.husnain.authy.utls.QRCodeAnalyzer
 import com.husnain.authy.utls.gone
@@ -50,6 +51,7 @@ import kotlinx.coroutines.withContext
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import javax.inject.Inject
+
 
 @AndroidEntryPoint
 @Suppress("DEPRECATION")
@@ -66,15 +68,14 @@ class AddAccountFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentAddAccountBinding.inflate(inflater, container, false)
+        binding.customOverlay.setFrameReference(binding.linearLayout)
         inIt()
         return binding.root
     }
 
     private fun inIt() {
-        //Warning don't change sequence of calling
-        setOnClickListener()
-        inItUiAndCamera()
         requestPermission()
+        setOnClickListener()
         getBundleDataAndSetUi()
         setUpObservers()
     }
@@ -105,6 +106,7 @@ class AddAccountFragment : Fragment() {
     private fun requestPermission() {
         requestCameraPermissionIfMissing { granted ->
             if (granted) {
+                inItUiAndCamera()
                 startCamera()
             }
         }
@@ -131,6 +133,7 @@ class AddAccountFragment : Fragment() {
                 }
 
                 is DataState.Success -> {
+                    Flags.isComingAfterAddingTotpData = true
                     navigate(R.id.action_addAccountFragment_to_homeFragment)
                 }
 

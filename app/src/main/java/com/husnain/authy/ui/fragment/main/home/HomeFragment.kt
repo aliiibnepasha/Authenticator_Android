@@ -21,6 +21,7 @@ import com.husnain.authy.utls.Constants
 import com.husnain.authy.utls.CustomDialogs
 import com.husnain.authy.utls.CustomToast.showCustomToast
 import com.husnain.authy.utls.DataState
+import com.husnain.authy.utls.Flags
 import com.husnain.authy.utls.PermissionUtils
 import com.husnain.authy.utls.gone
 import com.husnain.authy.utls.navigate
@@ -36,8 +37,10 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
     private lateinit var adapter: AdapterHomeTotp
-    @Inject lateinit var preferenceManager: PreferenceManager
-    @Inject lateinit var auth: FirebaseAuth
+    @Inject
+    lateinit var preferenceManager: PreferenceManager
+    @Inject
+    lateinit var auth: FirebaseAuth
     private val vmHome: VmHome by viewModels()
     var isDeleted = false
 
@@ -54,17 +57,17 @@ class HomeFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         inItUi()
-        if (preferenceManager.isFirstLoginAfterAppInstall() || Constants.isComingAfterRestore){
+        if (preferenceManager.isFirstLoginAfterAppInstall() || Constants.isComingAfterRestore) {
             Constants.isComingAfterRestore = false
             preferenceManager.saveIsFirstLoginAfterAppInstall(false)
             vmHome.fetchAllTotp()
         }
     }
 
-    private fun inItUi(){
-        if (!preferenceManager.isSubscriptionActive()){
+    private fun inItUi() {
+        if (!preferenceManager.isSubscriptionActive()) {
             binding.imgPremium.visible()
-        }else{
+        } else {
             binding.imgPremium.gone()
         }
     }
@@ -73,7 +76,11 @@ class HomeFragment : Fragment() {
         inItUi()
         askPermissions()
         if (!vmHome.isNavigationTriggered) {
-            autoScreensStartup()
+            if (Flags.isComingAfterAddingTotpData) {
+                Flags.isComingAfterAddingTotpData = false
+            } else {
+                autoScreensStartup()
+            }
             vmHome.isNavigationTriggered = true
         }
         setOnClickListener()
@@ -106,7 +113,8 @@ class HomeFragment : Fragment() {
         } else {
             return
         }
-        val isPermissionGranted = PermissionUtils.handlePermissions(requireActivity(), permissions, 1)
+        val isPermissionGranted =
+            PermissionUtils.handlePermissions(requireActivity(), permissions, 1)
         if (isPermissionGranted) return
     }
 
@@ -118,7 +126,7 @@ class HomeFragment : Fragment() {
                 }
 
                 is DataState.Success -> {
-                    binding.loadingView.stop()
+                        binding.loadingView.stop()
                     val data = state.data
                     if (data != null) {
                         setupAdapter(data)
@@ -138,7 +146,7 @@ class HomeFragment : Fragment() {
                 }
 
                 is DataState.Success -> {
-                    if (isDeleted){
+                    if (isDeleted) {
                         showCustomToast(getString(R.string.string_deleted_successfully))
                         vmHome.fetchAllTotp()
                         isDeleted = false
@@ -155,9 +163,11 @@ class HomeFragment : Fragment() {
             when (state) {
                 is DataState.Loading -> {
                 }
+
                 is DataState.Success -> {
 
                 }
+
                 is DataState.Error -> {
                     showCustomToast("Error: ${state.message}")
                 }
@@ -173,14 +183,24 @@ class HomeFragment : Fragment() {
             binding.lyLinearAddAccountFirstTime.gone()
 
             val dataList = data.map {
-                ModelTotp(secretKey = it.secretKey, serviceName = it.serviceName, firebaseDocId = it.docId)
+                ModelTotp(
+                    secretKey = it.secretKey,
+                    serviceName = it.serviceName,
+                    firebaseDocId = it.docId
+                )
             }
             adapter = AdapterHomeTotp(dataList)
 
             //Long click to show the delete bottom sheet
             adapter.setOnLongClickListener { totpData ->
                 showBottomSheetDialog(getString(R.string.string_delete), onPrimaryClick = {
-                    vmHome.insertToRecentlyDeleted(RecentlyDeleted(totpData.serviceName,totpData.secretKey,totpData.firebaseDocId))
+                    vmHome.insertToRecentlyDeleted(
+                        RecentlyDeleted(
+                            totpData.serviceName,
+                            totpData.secretKey,
+                            totpData.firebaseDocId
+                        )
+                    )
                     vmHome.deleteTotp(totpData.secretKey)
                     isDeleted = true
                 })
@@ -196,13 +216,14 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun autoScreensStartup(){
-        when{
-            isToShowSubscriptionScreen() ->{
+    private fun autoScreensStartup() {
+        when {
+            isToShowSubscriptionScreen() -> {
                 navigate(R.id.action_homeFragment_to_subscriptionFragment)
             }
-            isToShowSigninDialogForSync() ->{
-                CustomDialogs.dialogAuthForAutoSync(requireContext(),layoutInflater,
+
+            isToShowSigninDialogForSync() -> {
+                CustomDialogs.dialogAuthForAutoSync(requireContext(), layoutInflater,
                     login = {
                         Constants.isComingToAuthFromGuest = true
                         Constants.isComingToAuthFromGuestToSignIn = true
@@ -212,22 +233,24 @@ class HomeFragment : Fragment() {
                         Constants.isComingToAuthFromGuest = true
                         startActivity(AuthActivity::class.java)
                     }
-                    )
+                )
             }
+
             else -> return
         }
     }
-    private fun isToShowSubscriptionScreen() : Boolean{
-        return when{
-            !preferenceManager.isSubscriptionActive() && preferenceManager.isToShowSubsScreenAsDialog()  -> true
+
+    private fun isToShowSubscriptionScreen(): Boolean {
+        return when {
+            !preferenceManager.isSubscriptionActive() && preferenceManager.isToShowSubsScreenAsDialog() -> true
             else -> false
         }
     }
 
-    private fun isToShowSigninDialogForSync(): Boolean{
+    private fun isToShowSigninDialogForSync(): Boolean {
         val uid = auth.currentUser?.uid
         val isUserLoggedIn = uid != null
-        return when{
+        return when {
             preferenceManager.isSubscriptionActive() && !isUserLoggedIn -> true
             else -> false
         }

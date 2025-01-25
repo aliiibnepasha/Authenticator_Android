@@ -1,21 +1,38 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
 
-    <androidx.appcompat.widget.AppCompatImageView
+    <androidx.camera.view.PreviewView
+        android:id="@+id/preview_view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/img_bg_qr" />
+
+    <View
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:srcCompat="@drawable/img_bg_qr"
-        android:scaleType="fitXY"/>
+        android:layout_height="0dp"
+        android:alpha="0.627"
+        android:background="@color/black"
+        app:layout_constraintBottom_toTopOf="@+id/button_close"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/preview_view" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout3"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:alpha="0.7"
-        android:background="@color/black" />
-
+    <com.husnain.authy.utls.CustomOverlay
+        android:id="@+id/customOverlay"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/button_close" />
     <!-- Close Button -->
     <ImageView
         android:id="@+id/button_close"
@@ -24,8 +41,8 @@
         android:layout_marginTop="@dimen/_38sdp"
         android:layout_marginEnd="24dp"
         android:src="@drawable/ic_cross"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:tint="@color/white" />
 
     <androidx.appcompat.widget.AppCompatTextView
@@ -40,48 +57,30 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button_close" />
-    <!-- Camera Preview -->
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/camera_preview"
-        android:layout_width="333dp"
-        android:layout_height="333dp"
-        android:layout_marginHorizontal="33dp"
-        android:layout_marginTop="47dp"
-        app:cardCornerRadius="14dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/appCompatTextView12">
-
-        <!-- Placeholder for CameraX preview -->
-        <androidx.camera.view.PreviewView
-            android:id="@+id/preview_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </com.google.android.material.card.MaterialCardView>
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="336dp"
         android:layout_height="336dp"
-        android:background="@drawable/bg_rect_white"
-        app:layout_constraintBottom_toBottomOf="@+id/camera_preview"
-        app:layout_constraintEnd_toEndOf="@+id/camera_preview"
-        app:layout_constraintStart_toStartOf="@+id/camera_preview"
-        app:layout_constraintTop_toTopOf="@+id/camera_preview"
-        />
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/btnGallery"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appCompatTextView12" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/btnGallery"
         android:layout_width="0dp"
         android:layout_height="@dimen/edt_height"
         android:layout_marginHorizontal="24dp"
+        android:layout_marginBottom="@dimen/_20sdp"
         android:layout_weight="1"
         app:cardCornerRadius="14dp"
         app:cardElevation="@dimen/card_shadow"
-        android:layout_marginTop="123dp"
+        app:layout_constraintBottom_toTopOf="@+id/btnAddAccountManually"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/camera_preview">
+        app:layout_constraintStart_toStartOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -128,12 +127,12 @@
         android:id="@+id/btnAddAccountManually"
         android:layout_width="match_parent"
         android:layout_height="@dimen/btn_height_primary"
-        android:layout_marginTop="12dp"
         android:layout_marginHorizontal="24dp"
+        android:layout_marginBottom="@dimen/_100sdp"
         android:background="@drawable/bg_gradiant_button"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnGallery">
+        app:layout_constraintStart_toStartOf="parent">
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvLogin"
