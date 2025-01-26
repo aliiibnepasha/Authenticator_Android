@@ -108,4 +108,9 @@
     <string name="string_singup_desc2">Protege tu mundo digital fácilmente. ¡Regístrate ahora!</string>
     <string name="string_signin_desc2">¡Bienvenido! Accede a tu bóveda segura.</string>
     <string name="string_forgot_password_new">Olvidé mi contraseña</string>
+
+    <string name="string_forgot_pass_desc">¿Olvidaste tu contraseña? Recupérala rápido y seguro.</string>
+    <string name="string_please_select_at_least_one">Selecciona al menos uno</string>
+    <string name="string_lifetime_purchase_successful">Compra de por vida realizada</string>
+    <string name="string_subscription_successful">Suscripción exitosa</string>
 </resources>

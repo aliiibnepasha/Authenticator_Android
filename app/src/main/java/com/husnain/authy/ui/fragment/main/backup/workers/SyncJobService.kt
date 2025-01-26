@@ -2,8 +2,8 @@ package com.husnain.authy.ui.fragment.main.backup.workers
 
 import android.app.job.JobParameters
 import android.app.job.JobService
-import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
 import com.husnain.authy.data.room.SyncDatabase
 import com.husnain.authy.data.room.daos.DaoTotp
 import com.husnain.authy.preferences.PreferenceManager
@@ -30,9 +30,9 @@ class SyncJobService : JobService() {
             val userId = params?.extras?.getString("userId") ?: return@launch
 
             try {
-                val totpList = daoTotp.getAllTotpData()
+                val otpList = daoTotp.getAllTotpData()
 
-                if (totpList.isEmpty()) {
+                if (otpList.isEmpty()) {
                     jobFinished(params, false)
                     return@launch
                 }
@@ -40,25 +40,18 @@ class SyncJobService : JobService() {
                 notificationManager.showStartNotification()
                 val totpsCollectionRef = firestore.collection("totps").document(userId).collection("totps")
 
-                totpList.forEachIndexed { index, totp ->
-                    val existingDocs = totpsCollectionRef
-                        .whereEqualTo("secretKey", totp.secretKey) // Query for existing document
-                        .get()
-                        .await()
+                otpList.forEachIndexed { index, totp ->
+                    val totpData = hashMapOf(
+                        "uid" to totp.uid,
+                        "serviceName" to totp.serviceName,
+                        "secretKey" to totp.secretKey
+                    )
 
-                    if (existingDocs.isEmpty) {
-                        // Add new document
-                        val totpData = hashMapOf(
-                            "uid" to totp.uid,
-                            "serviceName" to totp.serviceName,
-                            "secretKey" to totp.secretKey
-                        )
-                        notificationManager.updateProgress(index + 1, totpList.size)
-                        totpsCollectionRef.add(totpData).await()
-                    } else {
-                        Log.d("SyncJobService", "Skipping duplicates")
-                    }
+                    val documentId = totp.secretKey // Use secretKey as the document ID
+                    notificationManager.updateProgress(index + 1, otpList.size)
 
+                    // Set the document with the specified ID
+                    totpsCollectionRef.document(documentId).set(totpData, SetOptions.merge()).await()
                 }
 
                 preferenceManager.saveLastSyncDateTime()

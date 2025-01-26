@@ -1,5 +1,8 @@
 package com.husnain.authy.ui.fragment.splash
 
+import android.graphics.Color
+import android.graphics.LinearGradient
+import android.graphics.Shader
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -13,6 +16,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.husnain.authy.R
+import com.husnain.authy.app.App
 import com.husnain.authy.databinding.FragmentSplashBinding
 import com.husnain.authy.preferences.PreferenceManager
 import com.husnain.authy.ui.activities.MainActivity
@@ -28,10 +32,8 @@ import javax.inject.Inject
 class SplashFragment : Fragment() {
     private var _binding: FragmentSplashBinding? = null
     private val binding get() = _binding!!
-
     @Inject
     lateinit var preferenceManager: PreferenceManager
-
     @Inject
     lateinit var auth: FirebaseAuth
 
@@ -42,9 +44,8 @@ class SplashFragment : Fragment() {
     ): View {
         _binding = FragmentSplashBinding.inflate(inflater, container, false)
         makeFragmentFullScreen()
+        setGradiantColorToTextView()
         init()
-        val isUserHavePremium = preferenceManager.isSubscriptionActive()
-        Log.d(Constants.TAG,"premium = $isUserHavePremium")
         return binding.root
     }
 
@@ -75,27 +76,48 @@ class SplashFragment : Fragment() {
                 }
 
                 else -> {
-                    delayAndNavigate()
+                    if (!preferenceManager.isSubscriptionActive()){
+                        showAdBeforeNavigation {
+                            delayAndNavigate()
+                        }
+                    }else{
+                        delayAndNavigate()
+                    }
                 }
             }
         } else {
-            delayAndNavigate()
+            if (!preferenceManager.isSubscriptionActive()){
+                showAdBeforeNavigation {
+                    delayAndNavigate()
+                }
+            }else{
+                delayAndNavigate()
+            }
         }
     }
 
     private fun delayAndNavigate() {
         binding.root.postDelayed({
-            if (preferenceManager.isGuestUser()) {
-                goToMainActivity()
-            } else {
-                if (isUserLogedIn()) {
-                    goToMainActivity()
-                } else {
-                    navigate(R.id.action_splashFragment_to_signupFragment)
-                }
-            }
+//            if (preferenceManager.isGuestUser()) {
+//                goToMainActivity()
+//            } else {
+//                if (isUserLogedIn()) {
+//                    goToMainActivity()
+//                } else {
+//                    navigate(R.id.action_splashFragment_to_signupFragment)
+//                }
+//            }
+            goToMainActivity()
 
         }, 500)
+    }
+
+    private fun showAdBeforeNavigation(navigateAction: () -> Unit) {
+        (requireActivity().application as App).appOpenAdManager.showAdIfAvailableFromFragment(
+            requireActivity()
+        ) {
+            navigateAction.invoke()
+        }
     }
 
     private fun checkForBiometricLogin() {
@@ -205,7 +227,15 @@ class SplashFragment : Fragment() {
         return timeDifference > delayInMillis
     }
 
-
+    private fun setGradiantColorToTextView(){
+        val gradient = LinearGradient(
+            0f, 0f, 0f, binding.tvAppName.textSize,
+            intArrayOf(Color.parseColor("#5D7CF6"), Color.parseColor("#4E3CF4")),
+            null,
+            Shader.TileMode.CLAMP
+        )
+        binding.tvAppName.paint.shader = gradient
+    }
     override fun onDestroyView() {
         super.onDestroyView()
         requireActivity().window.apply {

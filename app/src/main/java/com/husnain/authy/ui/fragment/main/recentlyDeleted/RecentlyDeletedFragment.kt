@@ -109,10 +109,6 @@ class RecentlyDeletedFragment : Fragment() {
                     //Fetch here again to refresh the list
                     vmRecentlyDeleted.fetchRecentlyDeleted()
                     Constants.isComingAfterRestore = true
-//                    //Fetch for home so that when user go back to home user can see the data
-//                    //Note(you can also do it in home fragment onRestart
-//                    vmRecentlyDeleted.fetchAllTotp()
-                    showCustomToast("Action completed successfully")
                 }
 
                 is DataState.Error -> {
@@ -124,7 +120,8 @@ class RecentlyDeletedFragment : Fragment() {
 
     private fun setupAdapter(data: List<RecentlyDeleted>) {
         if (data.isNotEmpty()) {
-            binding.tvNoDataFound.gone()
+            binding.lottieAnimationViewNoData.gone()
+            binding.lottieAnimationViewNoData.cancelAnimation()
             binding.lyForOneSelection.gone()
             binding.lyForAll.visible()
 
@@ -136,7 +133,8 @@ class RecentlyDeletedFragment : Fragment() {
             }
             binding.rvRecentlyDeleted.adapter = adapter
         } else {
-            binding.tvNoDataFound.visible()
+            binding.lottieAnimationViewNoData.visible()
+            binding.lottieAnimationViewNoData.playAnimation()
             binding.lyForOneSelection.gone()
             binding.lyForAll.gone()
             binding.rvRecentlyDeleted.gone()

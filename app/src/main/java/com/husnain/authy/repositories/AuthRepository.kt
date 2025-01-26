@@ -45,7 +45,17 @@ class AuthRepository @Inject constructor(
         if (user != null) {
             deleteUserData(user.uid) { isDataDeleted, errorMessage ->
                 if (isDataDeleted) {
-                    deleteFirebaseAccount(user)
+                    deleteUserTotpCollection(user.uid) { isTotpDeleted ->
+                        if (isTotpDeleted) {
+                            deleteFirebaseAccount(user)
+                        } else {
+                            _deleteAccountStatus.postValue(
+                                DataState.Error(
+                                    context.getString(R.string.string_something_went_wrong_please_try_again)
+                                )
+                            )
+                        }
+                    }
                 } else {
                     _deleteAccountStatus.postValue(
                         DataState.Error(
@@ -55,7 +65,9 @@ class AuthRepository @Inject constructor(
                 }
             }
         } else {
-            _deleteAccountStatus.postValue(DataState.Error(context.getString(R.string.string_no_user_is_currently_logged_in)))
+            _deleteAccountStatus.postValue(
+                DataState.Error(context.getString(R.string.string_no_user_is_currently_logged_in))
+            )
         }
     }
 
@@ -66,8 +78,30 @@ class AuthRepository @Inject constructor(
             .addOnSuccessListener {
                 callback(true, null) // User data deleted successfully
             }
-            .addOnFailureListener { exception ->
+            .addOnFailureListener {
                 callback(false, context.getString(R.string.string_something_went_wrong_please_try_again))
+            }
+    }
+
+    private fun deleteUserTotpCollection(userId: String, callback: (Boolean) -> Unit) {
+        val collectionRef = db.collection("totps").document(userId).collection("totps")
+        collectionRef.get()
+            .addOnSuccessListener { querySnapshot ->
+                val batch = db.batch()
+                for (document in querySnapshot.documents) {
+                    batch.delete(document.reference)
+                }
+
+                batch.commit()
+                    .addOnSuccessListener {
+                        callback(true) // TOTP collection deleted successfully
+                    }
+                    .addOnFailureListener {
+                        callback(false) // Failed to delete TOTP collection
+                    }
+            }
+            .addOnFailureListener {
+                callback(false) // Failed to fetch TOTP documents
             }
     }
 
@@ -77,12 +111,13 @@ class AuthRepository @Inject constructor(
                 preferenceManager.saveGuestUser(true)
                 _deleteAccountStatus.postValue(DataState.Success())
             }
-            .addOnFailureListener { exception ->
+            .addOnFailureListener {
                 _deleteAccountStatus.postValue(
                     DataState.Error(context.getString(R.string.string_something_went_wrong_please_try_again))
                 )
             }
     }
+
 
     fun signUpWithEmailPass(user: ModelUser) {
         _signUpStatus.postValue(DataState.Loading())

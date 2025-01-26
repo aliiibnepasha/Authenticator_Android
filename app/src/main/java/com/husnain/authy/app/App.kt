@@ -4,38 +4,46 @@ import android.app.Activity
 import android.app.Application
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.app.job.JobInfo
-import android.app.job.JobScheduler
-import android.content.ComponentName
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Bundle
-import android.util.Log
 import android.view.WindowManager
 import com.akexorcist.localizationactivity.ui.LocalizationApplication
+import com.google.android.gms.ads.MobileAds
 import com.husnain.authy.preferences.PreferenceManager
-import com.husnain.authy.ui.fragment.main.backup.workers.SyncJobService
 import com.husnain.authy.utls.Constants
+import com.husnain.authy.utls.admob.AppOpenAdManager
 import dagger.hilt.android.HiltAndroidApp
 import java.util.Locale
 import javax.inject.Inject
 
 @HiltAndroidApp
-class App : LocalizationApplication() {
-
+class App : LocalizationApplication(),Application.ActivityLifecycleCallbacks  {
+    lateinit var appOpenAdManager: AppOpenAdManager
     private val activityList: MutableList<Activity> = mutableListOf()
     var isScreenshotRestricted: Boolean = false
-
     @Inject lateinit var preferenceManager: PreferenceManager
 
     override fun getDefaultLanguage(context: Context): Locale = Locale.ENGLISH
+
     override fun onCreate() {
         super.onCreate()
         inItNotificationChannel()
         setupActivityListener()
         isScreenshotRestricted = preferenceManager.isAllowScreenShots()
+
+        //Admob
+        MobileAds.initialize(this)
+        appOpenAdManager = AppOpenAdManager(this)
+
+        if (!preferenceManager.isSubscriptionActive()){
+            appOpenAdManager.loadAd()
+        }
+        registerActivityLifecycleCallbacks(this)
     }
+
+    //Admob open app ad
 
     private fun inItNotificationChannel() {
         val channelId = Constants.SYNC_CHANNEL_ID
@@ -89,30 +97,19 @@ class App : LocalizationApplication() {
         }
     }
 
-    private fun scheduleSyncJob() {
-        val jobScheduler = getSystemService(Context.JOB_SCHEDULER_SERVICE) as JobScheduler
-
-        val networkType = JobInfo.NETWORK_TYPE_ANY  // Run on either Wi-Fi or mobile data
-
-        val jobInfo = JobInfo.Builder(1, ComponentName(this, SyncJobService::class.java))
-            .setRequiredNetworkType(networkType)  // Specify network condition (Wi-Fi or mobile data)
-            .setPersisted(true)  // Persist across reboots
-            .setPeriodic(15 * 60 * 1000)  // Sync every 15 minutes
-            .build()
-
-        // Check if network is available before scheduling the job
-        if (isNetworkAvailable()) {
-            jobScheduler.schedule(jobInfo)
-            Log.d("SyncJob", "Job scheduled")
-        } else {
-            Log.d("SyncJob", "No network available, job not scheduled")
-        }
-    }
-
     private fun isNetworkAvailable(): Boolean {
         val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val network = connectivityManager.activeNetwork
         val capabilities = connectivityManager.getNetworkCapabilities(network)
         return capabilities?.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) == true
     }
+
+    //Lifecycle events for admob open app ad
+    override fun onActivityResumed(activity: Activity) {}
+    override fun onActivityPaused(activity: Activity) {}
+    override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {}
+    override fun onActivityStarted(activity: Activity) {}
+    override fun onActivityStopped(activity: Activity) {}
+    override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {}
+    override fun onActivityDestroyed(activity: Activity) {}
 }

@@ -108,4 +108,9 @@
     <string name="string_singup_desc2">أمّن عالمك الرقمي بسهولة—اشترك لحماية ما يهمك!</string>
     <string name="string_signin_desc2">مرحبًا بك مجددًا! سجل الدخول للوصول إلى خزانتك الآمنة والبقاء محميًا.</string>
     <string name="string_forgot_password_new">نسيت كلمة المرور</string>
+
+    <string name="string_forgot_pass_desc">نسيت كلمة المرور؟ دعنا نعيدك إلى المسار بأمان وسرعة!</string>
+    <string name="string_please_select_at_least_one">يرجى اختيار واحد على الأقل</string>
+    <string name="string_lifetime_purchase_successful">تمت عملية الشراء مدى الحياة بنجاح</string>
+    <string name="string_subscription_successful">تم الاشتراك بنجاح</string>
 </resources>

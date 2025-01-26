@@ -108,4 +108,10 @@
     <string name="string_singup_desc2">اپنی ڈیجیٹل دنیا کو آسانی سے محفوظ کریں—جو اہم ہے اسے محفوظ کرنے کے لیے سائن اپ کریں!</string>
     <string name="string_signin_desc2">خوش آمدید! اپنے محفوظ والٹ تک رسائی حاصل کرنے کے لیے سائن ان کریں اور محفوظ رہیں۔</string>
     <string name="string_forgot_password_new">پاس ورڈ بھول گئے</string>
+
+    //new3
+    <string name="string_forgot_pass_desc">اپنا پاس ورڈ بھول گئے ہیں؟ آئیں، آپ کو محفوظ اور تیزی سے دوبارہ درست کریں!</string>
+    <string name="string_please_select_at_least_one">براہ کرم کم از کم ایک منتخب کریں</string>
+    <string name="string_lifetime_purchase_successful">زندگی بھر کی خریداری کامیاب ہوگئی</string>
+    <string name="string_subscription_successful">سبسکرائب کامیابی کے ساتھ مکمل ہوگئی</string>
 </resources>

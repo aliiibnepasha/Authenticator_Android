@@ -15,8 +15,10 @@ import com.husnain.authy.databinding.FragmentSearchBinding
 import com.husnain.authy.ui.fragment.main.home.AdapterHomeTotp
 import com.husnain.authy.ui.fragment.main.home.VmHome
 import com.husnain.authy.utls.DataState
+import com.husnain.authy.utls.gone
 import com.husnain.authy.utls.popBack
 import com.husnain.authy.utls.setupKeyboardDismissListener
+import com.husnain.authy.utls.visible
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -35,6 +37,7 @@ class SearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupKeyboardDismissListener(view)
+        setupKeyboardDismissListener(binding.lottieAnimationViewNoData)
     }
 
     private fun inIt() {
@@ -94,6 +97,19 @@ class SearchFragment : Fragment() {
 
             adapter = AdapterHomeTotp(dataList)
             binding.rvTotp.adapter = adapter
+
+            adapter.emptyStateListener {
+                if (it){
+                    binding.lottieAnimationViewNoData.visible()
+                    binding.lottieAnimationViewNoData.playAnimation()
+                }else{
+                    binding.lottieAnimationViewNoData.gone()
+                    binding.lottieAnimationViewNoData.cancelAnimation()
+                }
+            }
+        }else{
+            binding.lottieAnimationViewNoData.visible()
+            binding.lottieAnimationViewNoData.playAnimation()
         }
     }
     override fun onDestroyView() {

@@ -18,6 +18,7 @@ import com.husnain.authy.utls.showSnackBar
 class AdapterHomeTotp(private var items: List<ModelTotp>) :
     RecyclerView.Adapter<AdapterHomeTotp.ViewHolder>() {
     private var longClickCallBack: (ModelTotp) -> Unit = {}
+    private var onEmptyCallback: (Boolean) -> Unit = {}
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding =
@@ -49,10 +50,15 @@ class AdapterHomeTotp(private var items: List<ModelTotp>) :
     fun setItems(newItems: List<ModelTotp>) {
         items = newItems
         notifyDataSetChanged()
+        onEmptyCallback(items.isEmpty())
     }
 
     fun setOnLongClickListener(callback: (ModelTotp) -> Unit) {
         longClickCallBack = callback
+    }
+
+    fun emptyStateListener(callback: (Boolean) -> Unit) {
+        onEmptyCallback = callback
     }
 
     inner class ViewHolder(val binding: ItemHomeTotpBinding) :

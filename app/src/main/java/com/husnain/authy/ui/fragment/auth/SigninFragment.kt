@@ -16,6 +16,7 @@ import com.husnain.authy.utls.BackPressedExtensions.goBackPressed
 import com.husnain.authy.utls.Constants
 import com.husnain.authy.utls.CustomToast.showCustomToast
 import com.husnain.authy.utls.DataState
+import com.husnain.authy.utls.Flags
 import com.husnain.authy.utls.getTextFromEdit
 import com.husnain.authy.utls.navigate
 import com.husnain.authy.utls.popBack
@@ -141,6 +142,7 @@ class SigninFragment : Fragment() {
 
     private fun startMainActivityFromGuestToLogin(){
         Constants.isComingToAuthFromGuestToSignIn = false
+        Flags.isComingBackFromAuth = true
         val intent = Intent(requireActivity(), MainActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
         startActivity(intent)

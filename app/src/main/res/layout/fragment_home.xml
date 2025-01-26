@@ -48,14 +48,13 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginHorizontal="@dimen/_10sdp"
-        tools:listitem="@layout/item_home_totp"
         android:layout_marginTop="@dimen/_10sdp"
         android:layoutDirection="ltr"
-        android:layout_marginBottom="@dimen/_20sdp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/btnAddNewAccountWhenSomeAccountAdded"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        tools:listitem="@layout/item_home_totp"
         app:layout_constraintTop_toBottomOf="@+id/appCompatTextView2" />
 
     <LinearLayout
@@ -108,7 +107,7 @@
         android:background="@drawable/bg_gradiant_button"
         android:fontFamily="@font/poppins_medium"
         android:layout_marginHorizontal="24dp"
-        android:layout_marginBottom="40dp"
+        android:layout_marginBottom="@dimen/_15sdp"
         android:text="@string/string_add_new_account"
         android:textAllCaps="false"
         android:visibility="gone"

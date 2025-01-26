@@ -133,7 +133,7 @@ class TotpRepository @Inject constructor(
     private fun isUserValidToFetchDataFromFirebase(): Boolean {
         return when {
             auth.currentUser?.uid != null &&
-                    (preferenceManager.isSubscriptionActive() || preferenceManager.isLifeTimeAccessActive()) -> true
+                    (preferenceManager.isSubscriptionActive()) -> true
 
             else -> false
         }

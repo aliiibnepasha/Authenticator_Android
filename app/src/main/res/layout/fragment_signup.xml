@@ -112,9 +112,9 @@
                     android:id="@+id/tvGoogle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
                     android:fontFamily="@font/poppins_medium"
                     android:text="@string/string_google"
-                    android:layout_marginStart="5dp"
                     android:textColor="#61677D"
                     android:textSize="16sp"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -193,10 +193,10 @@
                 android:background="@drawable/bg_edt"
                 android:fontFamily="@font/poppins_regular"
                 android:hint="@string/string_name"
-                android:textSize="16sp"
-                android:textAlignment="viewStart"
                 android:paddingHorizontal="@dimen/_15sdp"
-                android:textColor="@color/black" />
+                android:textAlignment="viewStart"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView
@@ -218,11 +218,11 @@
                 android:background="@drawable/bg_edt"
                 android:fontFamily="@font/poppins_regular"
                 android:hint="@string/string_email"
-                android:textSize="16sp"
-                android:textAlignment="viewStart"
                 android:inputType="textEmailAddress"
                 android:paddingHorizontal="@dimen/_15sdp"
-                android:textColor="@color/black" />
+                android:textAlignment="viewStart"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView
@@ -244,11 +244,11 @@
                 android:background="@drawable/bg_edt"
                 android:fontFamily="@font/poppins_regular"
                 android:hint="@string/string_password"
-                android:textAlignment="viewStart"
-                android:textSize="16sp"
                 android:inputType="textPassword"
                 android:paddingHorizontal="@dimen/_15sdp"
-                android:textColor="@color/black" />
+                android:textAlignment="viewStart"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
         </com.google.android.material.card.MaterialCardView>
 
 
@@ -258,11 +258,58 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_15sdp"
             android:fontFamily="@font/poppins_regular"
-            android:text="I'm agree to The Terms of Service and Privacy Policy"
+            android:text="I'm agree to The"
             android:textColor="@color/black"
             android:textSize="12sp"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/tvTermsOfService"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cardView2" />
+
+        <TextView
+            android:id="@+id/tvTermsOfService"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:fontFamily="@font/poppins_regular"
+            android:text="Terms of service"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:textColor="@color/colorPrimary"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toStartOf="@+id/textView2"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/terms_privacy_text"
+            app:layout_constraintTop_toBottomOf="@+id/cardView2" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:fontFamily="@font/poppins_regular"
+            android:text="And"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:textColor="@color/black"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toStartOf="@+id/tvPrivacyPolicy"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/tvTermsOfService"
+            app:layout_constraintTop_toBottomOf="@+id/cardView2" />
+
+        <TextView
+            android:id="@+id/tvPrivacyPolicy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:fontFamily="@font/poppins_regular"
+            android:text="Privacy policy"
+            android:textColor="@color/colorPrimary"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/textView2"
             app:layout_constraintTop_toBottomOf="@+id/cardView2" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -318,10 +365,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_regular"
-            android:text="@string/string_sign_in"
-            android:textSize="14sp"
             android:paddingStart="@dimen/_2sdp"
+            android:text="@string/string_sign_in"
             android:textColor="@color/colorPrimary"
+            android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="@+id/appCompatTextView"
             app:layout_constraintStart_toEndOf="@+id/appCompatTextView"
             app:layout_constraintTop_toTopOf="@+id/appCompatTextView" />

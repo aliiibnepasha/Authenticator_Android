@@ -1,11 +1,17 @@
 <resources>
     //Admob Testing
-    <string name="admob_banner_id_test" translatable="false">ca-app-pub-3940256099942544/9214589741</string>
     <string name="admob_app_id_test" translatable="false"> ca-app-pub-3940256099942544~3347511713</string>
+    <string name="admob_banner_id_test" translatable="false">ca-app-pub-3940256099942544/9214589741</string>
+    <string name="admob_app_open_ad_unit_id_test" translatable="false">ca-app-pub-3940256099942544/9257395921</string>
+    <string name="admob_interstitial_ad_id_test" translatable="false">ca-app-pub-3940256099942544/1033173712</string>
 
     //Admob release
-    <string name="admob_banner_id_release" translatable="false">ca-app-pub-9844943887550892/7808160688</string>
     <string name="admob_app_id_release" translatable="false">ca-app-pub-9844943887550892~3638913015</string>
+    <string name="admob_banner_id_release" translatable="false">ca-app-pub-9844943887550892/7808160688</string>
+    <string name="admob_app_open_ad_unit_id_release" translatable="false">ca-app-pub-9844943887550892/7014889545</string>
+    <string name="admob_interstitial_ad_id_release" translatable="false">ca-app-pub-9844943887550892/9233858779</string>
+
+    //Google play licence key
     <string name="string_licence_key_google_play" translatable="false">MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAuwd2Y2BhXOr7LqSdbMrlB6R3ROdrOoHkQAmWYNzhCQtmRr4rfoDXB0ykMHqlEaN4HpEIpG8Pt6pQO8wi++kVDtZe/V4kiBq+eQTv3BL4l0LHw469/MA1IkIdEOhSwo3kNCaOgLdLTC5eIAzCOJU50QLMib2x18VmgfqjD+UonfMKkbaK3SXfOXw7y42H2zwn9mweBgCCgntAM8/+TztK8lLZqX1eXSqD+VeFuie5nqkr47qWAocECGmTpXniRYKe30K51wWx1eUNdoa9mKY14sAoMosuvgVHd1+jybRq3rQTqQGKGx+cSMN3OTj+yHhXn1zx5ve0ij9htN5cElgFXQIDAQAB</string>
 
     //Login Signup
@@ -118,10 +124,11 @@
     <string name="string_singup_desc2">Secure your digital world with ease—sign up to protect what matters most!”</string>
     <string name="string_signin_desc2">Welcome back! Sign in to access your secure vault and stay protected.</string>
     <string name="string_forgot_password_new">Forgot Password</string>
+
+    //new2
     <string name="string_forgot_pass_desc">Forgot your password? Let’s get you back on track securely and quickly!</string>
     <string name="string_please_select_at_least_one">Please select at least one</string>
     <string name="string_lifetime_purchase_successful">Lifetime purchase is successful</string>
     <string name="string_subscription_successful">Subscribed successfully</string>
-
 
 </resources>

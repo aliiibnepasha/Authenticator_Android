@@ -1,10 +1,12 @@
 package com.husnain.authy.ui.fragment.auth
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.browser.customtabs.CustomTabsIntent
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -18,6 +20,7 @@ import com.husnain.authy.utls.BackPressedExtensions.goBackPressed
 import com.husnain.authy.utls.Constants
 import com.husnain.authy.utls.CustomToast.showCustomToast
 import com.husnain.authy.utls.DataState
+import com.husnain.authy.utls.Flags
 import com.husnain.authy.utls.getTextFromEdit
 import com.husnain.authy.utls.navigate
 import com.husnain.authy.utls.setupKeyboardDismissListener
@@ -60,6 +63,13 @@ class SignupFragment : Fragment() {
     private fun setOnClickListener() {
         if (Constants.isComingToAuthFromGuestToSignIn) {
             navigate(R.id.action_signupFragment_to_signinFragment)
+        }
+
+        binding.tvTermsOfService.setOnClickListener {
+            openLink("https://sites.google.com/view/authenticatorapp-termofuse/home")
+        }
+        binding.tvPrivacyPolicy.setOnClickListener {
+            openLink("https://sites.google.com/view/authenticatorapp-privacypolicy/home")
         }
 
         binding.tvSignin.setOnClickListener {
@@ -115,6 +125,7 @@ class SignupFragment : Fragment() {
 
     private fun startMainActivityFromGuestToLogin() {
         Constants.isComingToAuthFromGuestToSignIn = false
+        Flags.isComingBackFromAuth = true
         val intent = Intent(requireActivity(), MainActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
         startActivity(intent)
@@ -186,6 +197,17 @@ class SignupFragment : Fragment() {
     private fun handleSystemNavBackPressed() {
         goBackPressed {
             startMainActivityFromGuestToLogin()
+        }
+    }
+
+    private fun openLink(url: String) {
+        try {
+            val customTabsIntent = CustomTabsIntent.Builder().build()
+            customTabsIntent.launchUrl(requireContext(), Uri.parse(url))
+        } catch (e: Exception) {
+            // If Chrome Custom Tabs is not available, open in default browser
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+            startActivity(intent)
         }
     }
 

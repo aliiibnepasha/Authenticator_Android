@@ -1,12 +1,10 @@
 package com.husnain.authy.ui.fragment.main.settings
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.result.ActivityResultLauncher
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -18,16 +16,11 @@ import com.husnain.authy.ui.activities.AuthActivity
 import com.husnain.authy.utls.Constants
 import com.husnain.authy.utls.CustomToast.showCustomToast
 import com.husnain.authy.utls.DataState
-import com.husnain.authy.utls.decodeQRCode
 import com.husnain.authy.utls.gone
-import com.husnain.authy.utls.handleTOTPURI
 import com.husnain.authy.utls.navigate
-import com.husnain.authy.utls.openGallery
 import com.husnain.authy.utls.popBack
 import com.husnain.authy.utls.progress.showBottomSheetDialog
 import com.husnain.authy.utls.progress.showDeleteAccountConfirmationBottomSheet
-import com.husnain.authy.utls.setupGalleryPicker
-import com.husnain.authy.utls.showBottomSheetDialog
 import com.husnain.authy.utls.startActivity
 import com.husnain.authy.utls.visible
 import dagger.hilt.android.AndroidEntryPoint
@@ -86,10 +79,12 @@ class SettingFragment : Fragment() {
             // Handle login state
             if (!isUserLoggedIn) {
                 btnLogout.gone()
+                lyDeleteAccount.gone()
                 tvDontHaveAndAccount.visible()
                 tvSignup.visible()
                 btnLogin.visible()
             } else {
+                lyDeleteAccount.visible()
                 btnLogout.visible()
                 tvDontHaveAndAccount.gone()
                 tvSignup.gone()
@@ -212,13 +207,16 @@ class SettingFragment : Fragment() {
         vmSettings.deleteAccountState.observe(viewLifecycleOwner, Observer { state ->
             when (state) {
                 is DataState.Loading -> {
+                    binding.loadingViewMain.start()
                 }
 
                 is DataState.Success -> {
+                    binding.loadingViewMain.stop()
                     popBack()
                 }
 
                 is DataState.Error -> {
+                    binding.loadingViewMain.stop()
                     Log.e(Constants.TAG, "Error: ${state.message}")
                     showCustomToast(resources.getString(R.string.string_something_went_wrong_please_try_again))
                 }
@@ -242,17 +240,6 @@ class SettingFragment : Fragment() {
         })
     }
 
-//    private fun processTOTPURI(qrContent: String) {
-//        handleTOTPURI(
-//            uri = qrContent,
-//            onInsertSecret = { entity ->
-//                vmSettings.insertSecretData(entity)
-//            },
-//            onError = { error ->
-//                showCustomToast(error)
-//            },
-//        )
-//    }
 
     //info navigations
     private fun navToTermsAndConditions() {

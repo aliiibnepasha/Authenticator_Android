@@ -107,4 +107,9 @@
     <string name="string_singup_desc2">Protégez facilement vos données—inscrivez-vous !</string>
     <string name="string_signin_desc2">Bienvenue ! Connectez-vous pour accéder.</string>
     <string name="string_forgot_password_new">Mot de passe oublié</string>
+
+    <string name="string_forgot_pass_desc">Mot de passe oublié ? Récupérez-le rapidement et en toute sécurité !</string>
+    <string name="string_please_select_at_least_one">Sélectionnez au moins un</string>
+    <string name="string_lifetime_purchase_successful">Achat à vie réussi</string>
+    <string name="string_subscription_successful">Abonnement réussi</string>
 </resources>

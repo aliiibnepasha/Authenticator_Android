@@ -147,7 +147,6 @@ class HomeFragment : Fragment() {
 
                 is DataState.Success -> {
                     if (isDeleted) {
-                        showCustomToast(getString(R.string.string_deleted_successfully))
                         vmHome.fetchAllTotp()
                         isDeleted = false
                     }

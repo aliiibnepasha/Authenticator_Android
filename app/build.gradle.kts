@@ -17,8 +17,8 @@ android {
         minSdk = 26
         //noinspection EditedTargetSdkVersion,OldTargetApi
         targetSdk = 35
-        versionCode = 4
-        versionName = "1.0.3"
+        versionCode = 5
+        versionName = "1.0.4"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -161,6 +161,8 @@ dependencies {
     val work_version = "2.10.0"
     implementation("androidx.work:work-runtime-ktx:$work_version")
     implementation("androidx.work:work-runtime-ktx:2.10.0")
+
+    implementation("com.airbnb.android:lottie:6.4.0")
 
     //To read google authenticator data
     implementation("com.google.protobuf:protobuf-javalite:3.21.12")

@@ -121,14 +121,12 @@ class RecentlyDeletedRepository @Inject constructor(
                 val querySnapshot = collectionRef.get().await()
                 var documentDeleted = false
 
-                for (document in querySnapshot.documents) {
-                    val secretKey = document.getString("secretKey")
-                    if (secretKey == data.secret) {
-                        document.reference.delete().await()
-                        documentDeleted = true
-                        Log.d(Constants.TAG, "Document deleted from Firestore")
-                        break
-                    }
+                querySnapshot.documents.firstOrNull { document ->
+                    document.getString("secretKey") == data.secret
+                }?.let { document ->
+                    document.reference.delete().await()
+                    documentDeleted = true
+                    Log.d(Constants.TAG, "Document deleted from Firestore")
                 }
 
                 if (!documentDeleted) {
@@ -138,16 +136,18 @@ class RecentlyDeletedRepository @Inject constructor(
                 daoRecentlyDeleted.deleteRecentBySecret(data.secret)
                 _restoreState.postValue(DataState.Success(Unit))
             } catch (e: Exception) {
-                e.message?.let { Log.d(Constants.TAG, it) }
-                _restoreState.postValue(DataState.Error(context.getString(R.string.string_something_went_wrong_please_try_again)))
+                Log.d(Constants.TAG, e.message ?: "Unknown error")
+                _restoreState.postValue(
+                    DataState.Error(
+                        context.getString(R.string.string_something_went_wrong_please_try_again)
+                    )
+                )
             }
         } else {
             daoRecentlyDeleted.deleteRecentBySecret(data.secret)
             _restoreState.postValue(DataState.Success())
         }
     }
-
-
 
     private suspend fun deleteAllDocumentsFromFirebase() {
         val userId = auth.currentUser?.uid
@@ -159,27 +159,28 @@ class RecentlyDeletedRepository @Inject constructor(
                     .collection("totps")
 
                 val querySnapshot = collectionRef.get().await()
+
                 allRecentlyDeleted.forEach { item ->
-                    for (document in querySnapshot.documents) {
-                        val secretKey = document.getString("secretKey")
-                        if (secretKey == item.secret) {
-                            document.reference.delete().await()
-                            break
-                        }
+                    querySnapshot.documents.firstOrNull { document ->
+                        document.getString("secretKey") == item.secret
+                    }?.let { document ->
+                        document.reference.delete().await()
                     }
                 }
+
                 daoRecentlyDeleted.clearAllRecentlyDeletedTable()
                 _restoreState.postValue(DataState.Success(Unit))
             } catch (e: Exception) {
-                e.message?.let { Log.d(Constants.TAG, it) }
-                _restoreState.postValue(DataState.Error(context.getString(R.string.string_something_went_wrong_please_try_again)))
+                Log.d(Constants.TAG, e.message ?: "Unknown error")
+                _restoreState.postValue(
+                    DataState.Error(
+                        context.getString(R.string.string_something_went_wrong_please_try_again)
+                    )
+                )
             }
-        }else{
+        } else {
             daoRecentlyDeleted.clearAllRecentlyDeletedTable()
             _restoreState.postValue(DataState.Success())
         }
     }
-
-
-
 }

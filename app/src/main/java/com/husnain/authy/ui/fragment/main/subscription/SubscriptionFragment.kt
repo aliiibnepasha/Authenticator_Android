@@ -21,8 +21,11 @@ import com.husnain.authy.data.models.ModelSubscription
 import com.husnain.authy.databinding.FragmentSubscriptionBinding
 import com.husnain.authy.preferences.PreferenceManager
 import com.husnain.authy.ui.fragment.main.subscription.adapter.AdapterSubscription
+import com.husnain.authy.utls.BackPressedExtensions.goBackPressed
 import com.husnain.authy.utls.Constants
 import com.husnain.authy.utls.CustomToast.showCustomToast
+import com.husnain.authy.utls.Flags
+import com.husnain.authy.utls.admob.AdUtils
 import com.husnain.authy.utls.popBack
 import com.husnain.authy.utls.progress.ProgressDialogUtil.dismissProgressDialog
 import com.husnain.authy.utls.progress.ProgressDialogUtil.showProgressDialog
@@ -51,14 +54,34 @@ class SubscriptionFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentSubscriptionBinding.inflate(inflater, container, false)
+        if (!preferenceManager.isSubscriptionActive()){
+            AdUtils.loadInterstitialAd(requireActivity(), getString(R.string.admob_interstitial_ad_id_release))
+        }
         setupBillingClient()
         setOnClickListener()
+        goBackPressed {
+            if (!preferenceManager.isSubscriptionActive()){
+                AdUtils.showInterstitialAdWithCallback(requireActivity()){
+                    Flags.isComingBackFromAuth = true
+                    popBack()
+                }
+            }else{
+                popBack()
+            }
+        }
         return binding.root
     }
 
     private fun setOnClickListener() {
         binding.imgCross.setOnClickListener {
-            popBack()
+            if (!preferenceManager.isSubscriptionActive()){
+                AdUtils.showInterstitialAdWithCallback(requireActivity()){
+                    Flags.isComingBackFromAuth = true
+                    popBack()
+                }
+            }else{
+                popBack()
+            }
         }
         binding.btnCheckout.setOnClickListener {
             if (selectedProductId == Constants.lifeTimePorductId) {
@@ -102,22 +125,6 @@ class SubscriptionFragment : Fragment() {
                 }
             }
         })
-    }
-
-    private fun getSubscriptionData() {
-//        val modelList = preferenceManager.getSubscriptionDataList()
-//
-//        Log.d("SubscriptionFragment", "Fetched model list: $modelList")
-//
-//        if (!modelList.isNullOrEmpty()) {
-//            if (billingClient.isReady) {
-//                initAdapter(modelList)
-//            } else {
-//                showCustomToast("Billing client is not ready.")
-//            }
-//        } else {
-        queryProductDetails()
-//        }
     }
 
     private fun queryProductDetails() {
@@ -243,7 +250,7 @@ class SubscriptionFragment : Fragment() {
         if (billingResult.responseCode == BillingClient.BillingResponseCode.OK && purchases != null) {
             for (purchase in purchases) {
                 when (purchase.products.firstOrNull()) {
-                    "lifetime_pro" -> handleLifetimePurchase(purchase)
+                    Constants.lifeTimePorductId -> handleLifetimePurchase(purchase)
                     else -> handleSubscribe(purchase)
                 }
 
@@ -254,7 +261,6 @@ class SubscriptionFragment : Fragment() {
     private fun handleSubscribe(purchase: Purchase) {
         if (purchase.purchaseState == Purchase.PurchaseState.PURCHASED) {
             preferenceManager.saveSubscriptionActive(true)
-            showCustomToast("Subscription is successfully activated")
             popBack()
         }
     }
@@ -283,8 +289,7 @@ class SubscriptionFragment : Fragment() {
 
     private fun handleLifetimePurchase(purchase: Purchase) {
         if (purchase.purchaseState == Purchase.PurchaseState.PURCHASED) {
-            preferenceManager.saveLifeTimeAccessActive(true)
-            showCustomToast("Lifetime purchase completed successfully!")
+            preferenceManager.saveSubscriptionActive(true)
             popBack()
         } else {
             showCustomToast(resources.getString(R.string.string_something_went_wrong_please_try_again))
