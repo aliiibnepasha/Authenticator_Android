@@ -1,29 +1,0 @@
-
-ù	
-;
-android*http://schemas.android.com/apk/res/androidBmenu*ÿ
-öitem"
-*http://schemas.android.com/apk/res/androidtitle@string/string_bottom_home"(áƒ„2%
-#â‚Ğøstring/string_bottom_home0"‚
-*http://schemas.android.com/apk/res/androidicon@drawable/icon_home_selector"(‚€„2'
-%Æ‚ ødrawable/icon_home_selector0"h
-*http://schemas.android.com/apk/res/androidid@id/homeFragment"(Ğ„2
-ç‚¨øid/homeFragment06*œ
-“item"‰
-*http://schemas.android.com/apk/res/androidtitle@string/string_bottom_new_tools"
-(áƒ„2*
-(ã‚Ğøstring/string_bottom_new_tools0"Œ
-*http://schemas.android.com/apk/res/androidicon!@drawable/icon_new_tools_selector"
-(‚€„2,
-*Ç‚ ø drawable/icon_new_tools_selector0"p
-*http://schemas.android.com/apk/res/androidid@id/newToolsFragment"
-(Ğ„2
-şƒ¨øid/newToolsFragment0
-;*’
-‰item"…
-*http://schemas.android.com/apk/res/androidtitle@string/string_bottom_setting"(áƒ„2(
-&ä‚Ğøstring/string_bottom_setting0"ˆ
-*http://schemas.android.com/apk/res/androidicon@drawable/icon_setting_selector"(‚€„2*
-(È‚ ødrawable/icon_setting_selector0"n
-*http://schemas.android.com/apk/res/androidid@id/settingFragment"(Ğ„2
-î„¨øid/settingFragment09B

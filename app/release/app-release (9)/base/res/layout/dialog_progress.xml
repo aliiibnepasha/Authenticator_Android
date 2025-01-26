@@ -1,18 +1,0 @@
-
-í
-;
-android*http://schemas.android.com/apk/res/android
-4
-app'http://schemas.android.com/apk/res-autoLinearLayout"L
-*http://schemas.android.com/apk/res/androidgravitycenter"(¯„2:8"K
-*http://schemas.android.com/apk/res/androidpadding16dp"(Õ„2:h "`
-*http://schemas.android.com/apk/res/androidlayout_widthmatch_parent"(ô„2:0ÿÿÿÿÿÿÿÿÿ"a
-*http://schemas.android.com/apk/res/androidlayout_heightmatch_parent"(õ„2:0ÿÿÿÿÿÿÿÿÿ"R
-*http://schemas.android.com/apk/res/androidorientationvertical"(Ä„2:0*µ
-¬"com.husnain.authy.utls.LoadingView"P
-*http://schemas.android.com/apk/res/androidlayout_width50dp"(ô„2:hd"Q
-*http://schemas.android.com/apk/res/androidlayout_height50dp"(õ„2:hd"g
-*http://schemas.android.com/apk/res/androidid@+id/progressBar"(Ğ„2
-º„¨øid/progressBar0"x
-'http://schemas.android.com/apk/res-autoindicatorColor@color/colorPrimary"(å„ø2
-µ€˜øcolor/colorPrimary0
