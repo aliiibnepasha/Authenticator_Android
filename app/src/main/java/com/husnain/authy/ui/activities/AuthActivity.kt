@@ -3,14 +3,24 @@ package com.husnain.authy.ui.activities
 import android.os.Bundle
 import android.util.Log
 import androidx.core.text.layoutDirection
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
 import com.akexorcist.localizationactivity.ui.LocalizationActivity
 import com.android.billingclient.api.BillingClient
 import com.android.billingclient.api.BillingClientStateListener
 import com.android.billingclient.api.BillingResult
 import com.android.billingclient.api.QueryPurchasesParams
+import com.google.android.gms.ads.AdListener
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.LoadAdError
+import com.google.firebase.auth.FirebaseAuth
+import com.husnain.authy.R
 import com.husnain.authy.databinding.ActivityAuthBinding
 import com.husnain.authy.preferences.PreferenceManager
 import com.husnain.authy.utls.Constants
+import com.husnain.authy.utls.NetworkUtils
+import com.husnain.authy.utls.gone
+import com.husnain.authy.utls.visible
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Locale
 import javax.inject.Inject
@@ -18,23 +28,48 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class AuthActivity : LocalizationActivity() {
     private lateinit var binding: ActivityAuthBinding
-    @Inject lateinit var preferenceManager: PreferenceManager
     private lateinit var billingClient: BillingClient
+    private lateinit var navController: NavController
+    @Inject
+    lateinit var auth: FirebaseAuth
+    @Inject
+    lateinit var preferenceManager: PreferenceManager
+    private lateinit var adRequest: AdRequest
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAuthBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        adRequest = AdRequest.Builder().build()
+
+        if (NetworkUtils.isNetworkAvailable(this)) {
+            binding.mainBannerAdView.loadAd(adRequest)
+        } else {
+            stopShimmer()
+            binding.mainBannerAdView.gone()
+        }
         inIt()
     }
 
     private fun inIt() {
         setupBillingClient()
-        setOnClickListener()
+//        AdUtils.loadInterstitialAd(this, getString(R.string.admob_interstitial_ad_id_test))
+        setupNavController()
     }
 
-    private fun setOnClickListener() {
+    private fun setupNavController() {
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.auth_nav_host_fragment) as NavHostFragment
+        navController = navHostFragment.navController
 
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            if (destination.id == R.id.onboardingFragment) {
+                inItAdmob()
+            } else {
+                stopShimmer()
+                binding.mainBannerAdView.gone()
+            }
+        }
     }
 
     private fun setupBillingClient() {
@@ -60,6 +95,7 @@ class AuthActivity : LocalizationActivity() {
             }
         })
     }
+
     private fun checkSubscriptionStatus() {
         if (!billingClient.isReady) {
             Log.e("LOG_AUTHY", "BillingClient is not ready")
@@ -104,7 +140,9 @@ class AuthActivity : LocalizationActivity() {
                 Log.d(Constants.TAG, purchaseList.toString())
 
                 val subscribedProduct = purchaseList.firstOrNull { purchase ->
-                    purchase.products.contains(Constants.weaklySubId) || purchase.products.contains(Constants.monthlySubId)
+                    purchase.products.contains(Constants.weaklySubId) || purchase.products.contains(
+                        Constants.monthlySubId
+                    )
                 }
 
                 if (subscribedProduct != null) {
@@ -114,7 +152,10 @@ class AuthActivity : LocalizationActivity() {
                         Log.d("LOG_AUTHY", "Subscription is active. autoRenewing = $isAutoRenewing")
                         preferenceManager.saveSubscriptionActive(true)
                     } else {
-                        Log.d("LOG_AUTHY", "Subscription is not active. autoRenewing = $isAutoRenewing")
+                        Log.d(
+                            "LOG_AUTHY",
+                            "Subscription is not active. autoRenewing = $isAutoRenewing"
+                        )
                         preferenceManager.saveSubscriptionActive(false)
                     }
                 } else {
@@ -126,6 +167,41 @@ class AuthActivity : LocalizationActivity() {
                 preferenceManager.saveSubscriptionActive(false)
             }
         }
+    }
+
+    private fun inItAdmob() {
+        if (!preferenceManager.isSubscriptionActive()) {
+            adRequest = AdRequest.Builder().build()
+
+            if (NetworkUtils.isNetworkAvailable(this)) {
+                binding.mainBannerAdView.loadAd(adRequest)
+            } else {
+                stopShimmer()
+                binding.mainBannerAdView.gone()
+                return
+            }
+
+            binding.mainBannerAdView.adListener = object : AdListener() {
+                override fun onAdLoaded() {
+                    stopShimmer()
+                    binding.mainBannerAdView.visible()
+                }
+
+                override fun onAdFailedToLoad(adError: LoadAdError) {
+                    Log.d(Constants.TAG, adError.message)
+                    stopShimmer()
+                    binding.mainBannerAdView.gone()
+                }
+            }
+        } else {
+            stopShimmer()
+            binding.mainBannerAdView.gone()
+        }
+    }
+
+    private fun stopShimmer() {
+        binding.adShimmer.stopShimmer()
+        binding.adShimmer.gone()
     }
 
     override fun onAttachedToWindow() {

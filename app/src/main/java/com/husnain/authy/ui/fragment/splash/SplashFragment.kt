@@ -55,7 +55,7 @@ class SplashFragment : Fragment() {
             navigate(R.id.action_splashFragment_to_signupFragment)
         } else {
             if (!preferenceManager.isOnboardingFinished()) {
-                navigate(R.id.action_splashFragment_to_onboardingFragment)
+                navigate(R.id.action_splashFragment_to_subscriptionFragmentAuth)
             } else {
                 preferenceManager.saveIsToShowSubsScreenAsDialog(true)
                 handleUser()

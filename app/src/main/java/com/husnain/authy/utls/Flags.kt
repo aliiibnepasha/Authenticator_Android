@@ -4,3 +4,4 @@ object Flags {
     var isComingAfterAddingTotpData = false
     var isComingBackFromAuth = true
 }
+

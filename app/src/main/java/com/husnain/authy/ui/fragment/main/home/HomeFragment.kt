@@ -113,8 +113,7 @@ class HomeFragment : Fragment() {
         } else {
             return
         }
-        val isPermissionGranted =
-            PermissionUtils.handlePermissions(requireActivity(), permissions, 1)
+        val isPermissionGranted = PermissionUtils.handlePermissions(requireActivity(), permissions, 1)
         if (isPermissionGranted) return
     }
 

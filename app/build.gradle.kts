@@ -146,6 +146,7 @@ dependencies {
 
     //Admob
     implementation("com.google.android.gms:play-services-ads:23.6.0")
+    implementation("androidx.lifecycle:lifecycle-process:2.8.7")
 
     //shimmer
     implementation("com.facebook.shimmer:shimmer:0.5.0")

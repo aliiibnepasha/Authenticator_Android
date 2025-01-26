@@ -26,6 +26,7 @@ import com.husnain.authy.utls.Constants
 import com.husnain.authy.utls.CustomToast.showCustomToast
 import com.husnain.authy.utls.Flags
 import com.husnain.authy.utls.admob.AdUtils
+import com.husnain.authy.utls.navigate
 import com.husnain.authy.utls.popBack
 import com.husnain.authy.utls.progress.ProgressDialogUtil.dismissProgressDialog
 import com.husnain.authy.utls.progress.ProgressDialogUtil.showProgressDialog
@@ -54,18 +55,25 @@ class SubscriptionFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentSubscriptionBinding.inflate(inflater, container, false)
-        if (!preferenceManager.isSubscriptionActive()){
-            AdUtils.loadInterstitialAd(requireActivity(), getString(R.string.admob_interstitial_ad_id_release))
+        if (!preferenceManager.isSubscriptionActive()) {
+            AdUtils.loadInterstitialAd(
+                requireActivity(),
+                getString(R.string.admob_interstitial_ad_id_test)
+            )
         }
         setupBillingClient()
         setOnClickListener()
         goBackPressed {
-            if (!preferenceManager.isSubscriptionActive()){
-                AdUtils.showInterstitialAdWithCallback(requireActivity()){
-                    Flags.isComingBackFromAuth = true
-                    popBack()
+            if (!preferenceManager.isSubscriptionActive()) {
+                AdUtils.showInterstitialAdWithCallback(requireActivity()) {
+                    if (!preferenceManager.isOnboardingFinished()) {
+                        navigate(R.id.action_subscriptionFragment2_to_onboardingFragment)
+                    }else{
+                        Flags.isComingBackFromAuth = true
+                        popBack()
+                    }
                 }
-            }else{
+            } else {
                 popBack()
             }
         }
@@ -74,12 +82,16 @@ class SubscriptionFragment : Fragment() {
 
     private fun setOnClickListener() {
         binding.imgCross.setOnClickListener {
-            if (!preferenceManager.isSubscriptionActive()){
-                AdUtils.showInterstitialAdWithCallback(requireActivity()){
-                    Flags.isComingBackFromAuth = true
-                    popBack()
+            if (!preferenceManager.isSubscriptionActive()) {
+                AdUtils.showInterstitialAdWithCallback(requireActivity()) {
+                    if (!preferenceManager.isOnboardingFinished()) {
+                        navigate(R.id.action_subscriptionFragment2_to_onboardingFragment)
+                    }else{
+                        Flags.isComingBackFromAuth = true
+                        popBack()
+                    }
                 }
-            }else{
+            } else {
                 popBack()
             }
         }

@@ -22,7 +22,7 @@ class AppOpenAdManager(private val application: Application) {
 
         AppOpenAd.load(
             application,
-            application.resources.getString(R.string.admob_app_open_ad_unit_id_release),
+            application.resources.getString(R.string.admob_app_open_ad_unit_id_test),
             AdRequest.Builder().build(),
             object : AppOpenAdLoadCallback() {
                 override fun onAdLoaded(ad: AppOpenAd) {

@@ -32,11 +32,7 @@
         android:id="@+id/onboardingFragment"
         android:name="com.husnain.authy.ui.fragment.onboarding.OnboardingFragment"
         android:label="fragment_onboarding"
-        tools:layout="@layout/fragment_onboarding" >
-        <action
-            android:id="@+id/action_onboardingFragment_to_signupFragment"
-            app:destination="@id/signupFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_onboarding" />
     <fragment
         android:id="@+id/setPinFragment2"
         android:name="com.husnain.authy.ui.fragment.main.setPin.SetPinFragment"
@@ -52,13 +48,22 @@
         android:label="fragment_splash"
         tools:layout="@layout/fragment_splash" >
         <action
-            android:id="@+id/action_splashFragment_to_onboardingFragment"
-            app:destination="@id/onboardingFragment" />
-        <action
             android:id="@+id/action_splashFragment_to_signupFragment"
             app:destination="@id/signupFragment" />
         <action
             android:id="@+id/action_splashFragment_to_setPinFragment2"
             app:destination="@id/setPinFragment2" />
+        <action
+            android:id="@+id/action_splashFragment_to_subscriptionFragmentAuth"
+            app:destination="@id/subscriptionFragmentAuth" />
+    </fragment>
+    <fragment
+        android:id="@+id/subscriptionFragmentAuth"
+        android:name="com.husnain.authy.ui.fragment.main.subscription.SubscriptionFragment"
+        android:label="fragment_subscription"
+        tools:layout="@layout/fragment_subscription" >
+        <action
+            android:id="@+id/action_subscriptionFragment2_to_onboardingFragment"
+            app:destination="@id/onboardingFragment" />
     </fragment>
 </navigation>

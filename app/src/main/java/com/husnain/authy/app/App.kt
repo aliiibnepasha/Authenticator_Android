@@ -15,15 +15,19 @@ import com.husnain.authy.preferences.PreferenceManager
 import com.husnain.authy.utls.Constants
 import com.husnain.authy.utls.admob.AppOpenAdManager
 import dagger.hilt.android.HiltAndroidApp
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.util.Locale
 import javax.inject.Inject
 
 @HiltAndroidApp
-class App : LocalizationApplication(),Application.ActivityLifecycleCallbacks  {
+class App : LocalizationApplication(), Application.ActivityLifecycleCallbacks {
     lateinit var appOpenAdManager: AppOpenAdManager
     private val activityList: MutableList<Activity> = mutableListOf()
     var isScreenshotRestricted: Boolean = false
-    @Inject lateinit var preferenceManager: PreferenceManager
+    @Inject
+    lateinit var preferenceManager: PreferenceManager
 
     override fun getDefaultLanguage(context: Context): Locale = Locale.ENGLISH
 
@@ -34,12 +38,12 @@ class App : LocalizationApplication(),Application.ActivityLifecycleCallbacks  {
         isScreenshotRestricted = preferenceManager.isAllowScreenShots()
 
         //Admob
-        MobileAds.initialize(this)
-        appOpenAdManager = AppOpenAdManager(this)
-
-        if (!preferenceManager.isSubscriptionActive()){
-            appOpenAdManager.loadAd()
+        val backgroundScope = CoroutineScope(Dispatchers.IO)
+        backgroundScope.launch {
+            MobileAds.initialize(this@App) {}
         }
+        appOpenAdManager = AppOpenAdManager(this)
+        appOpenAdManager.loadAd()
         registerActivityLifecycleCallbacks(this)
     }
 
@@ -54,7 +58,8 @@ class App : LocalizationApplication(),Application.ActivityLifecycleCallbacks  {
         }
 
         channel.setSound(null, null);
-        val notificationManager: NotificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val notificationManager: NotificationManager =
+            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.createNotificationChannel(channel)
     }
 
@@ -98,7 +103,8 @@ class App : LocalizationApplication(),Application.ActivityLifecycleCallbacks  {
     }
 
     private fun isNetworkAvailable(): Boolean {
-        val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val connectivityManager =
+            getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val network = connectivityManager.activeNetwork
         val capabilities = connectivityManager.getNetworkCapabilities(network)
         return capabilities?.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) == true

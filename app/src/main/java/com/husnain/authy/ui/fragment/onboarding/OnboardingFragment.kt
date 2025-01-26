@@ -6,8 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.fragment.app.Fragment
-import androidx.navigation.NavOptions
-import androidx.navigation.fragment.findNavController
 import com.husnain.authy.R
 import com.husnain.authy.databinding.FragmentOnboardingBinding
 import com.husnain.authy.preferences.PreferenceManager
@@ -21,7 +19,8 @@ class OnboardingFragment : Fragment() {
     private var _binding: FragmentOnboardingBinding? = null
     private val binding get() = _binding!!
     private lateinit var adapter: OnboardingAdapter
-    @Inject lateinit var preferenceManager: PreferenceManager
+    @Inject
+    lateinit var preferenceManager: PreferenceManager
 
 
     override fun onCreateView(
@@ -73,17 +72,9 @@ class OnboardingFragment : Fragment() {
     private fun movePageNext() {
         val currentItem = binding.viewPager.currentItem
         if (currentItem == adapter.itemCount - 1) {
-            val navOptions = NavOptions.Builder()
-                .setPopUpTo(R.id.onboardingFragment, true)  // Remove OnboardingFragment from the back stack
-                .build()
-
             preferenceManager.saveOnboardingFinished(true)
-            if (preferenceManager.isGuestUser()){
-                startActivity(MainActivity::class.java)
-                requireActivity().finish()
-            }else{
-                findNavController().navigate(R.id.action_onboardingFragment_to_signupFragment, null, navOptions)
-            }
+            startActivity(MainActivity::class.java)
+            requireActivity().finish()
         } else {
             binding.viewPager.setCurrentItem(currentItem + 1, true)
         }
@@ -104,7 +95,8 @@ class OnboardingFragment : Fragment() {
         // Reset the flags to restore the default UI behavior
         requireActivity().window.apply {
             clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
-            decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_VISIBLE // Reset the system UI visibility
+            decorView.systemUiVisibility =
+                View.SYSTEM_UI_FLAG_VISIBLE // Reset the system UI visibility
         }
         _binding = null
     }

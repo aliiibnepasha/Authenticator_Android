@@ -2,7 +2,6 @@ package com.husnain.authy.ui.activities
 
 import android.os.Bundle
 import android.util.Log
-import androidx.activity.viewModels
 import androidx.core.text.layoutDirection
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -36,8 +35,7 @@ class MainActivity : LocalizationActivity() {
     @Inject
     lateinit var preferenceManager: PreferenceManager
     private lateinit var adRequest: AdRequest
-    private val vmMain: VmMain by viewModels()
-
+    private var isAdLoaded = false // Track if the ad is loaded
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
@@ -55,37 +53,27 @@ class MainActivity : LocalizationActivity() {
     }
 
     private fun inIt() {
-        inItAdmob()
         setUpBottomBar()
         handleBackPressed()
+        preloadAd() // Preload the ad on initialization
     }
 
-    private fun inItAdmob() {
-        if (!preferenceManager.isSubscriptionActive()) {
+    private fun preloadAd() {
+        if (!preferenceManager.isSubscriptionActive() && NetworkUtils.isNetworkAvailable(this)) {
             adRequest = AdRequest.Builder().build()
-
-            if (NetworkUtils.isNetworkAvailable(this)) {
-                binding.mainBannerAdView.loadAd(adRequest)
-            } else {
-                stopShimmer()
-                binding.mainBannerAdView.gone()
-                return
-            }
-
+            binding.mainBannerAdView.loadAd(adRequest)
             binding.mainBannerAdView.adListener = object : AdListener() {
                 override fun onAdLoaded() {
-                    stopShimmer()
-                    binding.mainBannerAdView.visible()
+                    isAdLoaded = true
+                    Log.d(Constants.TAG, "Ad loaded successfully")
                 }
 
                 override fun onAdFailedToLoad(adError: LoadAdError) {
-                    Log.d(Constants.TAG,adError.message)
-                    stopShimmer()
-                    binding.mainBannerAdView.gone()
+                    isAdLoaded = false
+                    Log.d(Constants.TAG, "Ad failed to load: ${adError.message}")
                 }
             }
-        }else{
-            stopShimmer()
+        } else {
             binding.mainBannerAdView.gone()
         }
     }
@@ -97,17 +85,17 @@ class MainActivity : LocalizationActivity() {
         binding.bottomNavigationView.setupWithNavController(navHostFragment.findNavController())
 
         navHostFragment.findNavController().addOnDestinationChangedListener { _, destination, _ ->
-            if (destination.id == R.id.addAccountFragment || destination.id == R.id.webViewFragment) {
-                stopShimmer()
-                binding.mainBannerAdView.gone()
-            } else {
-                inItAdmob()
-            }
-
-            if (destination.id == R.id.homeFragment || destination.id == R.id.newToolsFragment || destination.id == R.id.settingFragment) {
-                binding.bottomNavigationView.visible()
-            } else {
-                binding.bottomNavigationView.gone()
+            when (destination.id) {
+                R.id.homeFragment, R.id.newToolsFragment, R.id.settingFragment -> {
+                    if (isAdLoaded) {
+                        binding.mainBannerAdView.visible()
+                    }
+                    binding.bottomNavigationView.visible()
+                }
+                else -> {
+                    binding.mainBannerAdView.gone()
+                    binding.bottomNavigationView.gone()
+                }
             }
         }
     }
@@ -122,16 +110,9 @@ class MainActivity : LocalizationActivity() {
         }
     }
 
-    private fun stopShimmer() {
-        binding.adShimmer.stopShimmer()
-        binding.adShimmer.gone()
-    }
-
     fun changeLanguage(language: String) {
         setLanguage(language)
     }
-
-
 
     override fun onResume() {
         super.onResume()
