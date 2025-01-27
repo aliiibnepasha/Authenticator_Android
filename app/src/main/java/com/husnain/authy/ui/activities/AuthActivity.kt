@@ -1,11 +1,13 @@
 package com.husnain.authy.ui.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.core.text.layoutDirection
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import com.akexorcist.localizationactivity.ui.LocalizationActivity
 import com.android.billingclient.api.BillingClient
 import com.android.billingclient.api.BillingClientStateListener
@@ -18,9 +20,12 @@ import com.google.firebase.auth.FirebaseAuth
 import com.husnain.authy.R
 import com.husnain.authy.databinding.ActivityAuthBinding
 import com.husnain.authy.preferences.PreferenceManager
+import com.husnain.authy.ui.fragment.auth.SigninFragment
+import com.husnain.authy.ui.fragment.auth.SignupFragment
 import com.husnain.authy.ui.fragment.main.subscription.SubscriptionFragment
 import com.husnain.authy.utls.BackPressedExtensions.goBackPressed
 import com.husnain.authy.utls.Constants
+import com.husnain.authy.utls.Flags
 import com.husnain.authy.utls.NetworkUtils
 import com.husnain.authy.utls.gone
 import com.husnain.authy.utls.visible
@@ -125,6 +130,7 @@ class AuthActivity : LocalizationActivity() {
                     // Lifetime purchase is always considered active
                     Log.d("LOG_AUTHY", "Lifetime purchase is active")
                     preferenceManager.saveSubscriptionActive(true)
+                    preferenceManager.saveLifeTimeAccessActive(true)
                 } else {
                     // No lifetime purchase, check for subscriptions
                     checkForSubscription()
@@ -214,12 +220,29 @@ class AuthActivity : LocalizationActivity() {
     private fun handleBackPressed() {
         navHostFragment = supportFragmentManager.findFragmentById(R.id.auth_nav_host_fragment)!!
         goBackPressed {
-            if (navHostFragment.childFragmentManager.fragments.first() is SubscriptionFragment) {
-
-            } else {
-                finishAffinity()
+            val currentFragment = navHostFragment.childFragmentManager.fragments.firstOrNull()
+            when(currentFragment){
+                is SubscriptionFragment -> {}
+                is SigninFragment ->{
+                    startMainActivityFromGuestToLogin()
+                }
+                is SignupFragment ->{
+                    startMainActivityFromGuestToLogin()
+                }
+                else -> {
+                    navHostFragment.findNavController().popBackStack()
+                }
             }
         }
+    }
+
+    private fun startMainActivityFromGuestToLogin(){
+        Constants.isComingToAuthFromGuestToSignIn = false
+        Flags.isComingBackFromAuth = true
+        val intent = Intent(this, MainActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+        startActivity(intent)
+        finish()
     }
 
     override fun onAttachedToWindow() {

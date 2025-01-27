@@ -16,6 +16,7 @@ import com.husnain.authy.app.App
 import com.husnain.authy.databinding.ActivityMainBinding
 import com.husnain.authy.preferences.PreferenceManager
 import com.husnain.authy.ui.fragment.main.home.HomeFragment
+import com.husnain.authy.ui.fragment.main.localization.LocalizeFragment
 import com.husnain.authy.ui.fragment.main.subscription.SubscriptionFragment
 import com.husnain.authy.utls.BackPressedExtensions.goBackPressed
 import com.husnain.authy.utls.Constants
@@ -71,7 +72,7 @@ class MainActivity : LocalizationActivity() {
         handleBackPressed()
     }
 
-    private fun preloadAd() {
+    fun preloadAd() {
         if (!preferenceManager.isSubscriptionActive() && NetworkUtils.isNetworkAvailable(this)) {
             // Initially hide the ad view
 
@@ -80,8 +81,11 @@ class MainActivity : LocalizationActivity() {
             binding.mainBannerAdView.adListener = object : AdListener() {
                 override fun onAdLoaded() {
                     isAdLoaded = true
-                    if (navHostFragment.childFragmentManager.fragments.first() !is SubscriptionFragment) {
+                    val currentFragment = navHostFragment.childFragmentManager.fragments.firstOrNull()
+                    if (currentFragment !is SubscriptionFragment && currentFragment !is LocalizeFragment) {
                         binding.mainBannerAdView.visible()
+                    } else {
+                        binding.mainBannerAdView.gone()
                     }
                     Log.d(Constants.TAG, "Ad loaded successfully")
                 }
@@ -92,6 +96,7 @@ class MainActivity : LocalizationActivity() {
                 }
             }
         } else {
+            isAdLoaded = false
             binding.mainBannerAdView.gone()
         }
     }

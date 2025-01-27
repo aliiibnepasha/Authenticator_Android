@@ -110,8 +110,11 @@ class PreferenceManager @Inject constructor(@ApplicationContext private val cont
         return gson.fromJson(json, ModelUser::class.java)
     }
 
-    fun saveSubscriptionActive(logedIn: Boolean) {
-        myPref.edit().putBoolean(KEY_IS_SUBSCRIPTION_ACTIVE, logedIn).apply()
+    fun saveSubscriptionActive(isActive: Boolean) {
+        if (!isActive){
+            saveLifeTimeAccessActive(false)
+        }
+        myPref.edit().putBoolean(KEY_IS_SUBSCRIPTION_ACTIVE, isActive).apply()
     }
 
     fun isSubscriptionActive(): Boolean {

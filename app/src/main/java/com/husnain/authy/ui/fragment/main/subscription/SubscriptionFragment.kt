@@ -20,6 +20,7 @@ import com.husnain.authy.R
 import com.husnain.authy.data.models.ModelSubscription
 import com.husnain.authy.databinding.FragmentSubscriptionBinding
 import com.husnain.authy.preferences.PreferenceManager
+import com.husnain.authy.ui.activities.MainActivity
 import com.husnain.authy.ui.fragment.main.subscription.adapter.AdapterSubscription
 import com.husnain.authy.utls.Constants
 import com.husnain.authy.utls.CustomToast.showCustomToast
@@ -256,6 +257,7 @@ class SubscriptionFragment : Fragment() {
     private fun handleSubscribe(purchase: Purchase) {
         if (purchase.purchaseState == Purchase.PurchaseState.PURCHASED) {
             preferenceManager.saveSubscriptionActive(true)
+            (activity as? MainActivity)?.preloadAd()
             popBack()
         }
     }
@@ -286,6 +288,7 @@ class SubscriptionFragment : Fragment() {
         if (purchase.purchaseState == Purchase.PurchaseState.PURCHASED) {
             preferenceManager.saveSubscriptionActive(true)
             preferenceManager.saveLifeTimeAccessActive(true)
+            (activity as? MainActivity)?.preloadAd()
             popBack()
         } else {
             showCustomToast(resources.getString(R.string.string_something_went_wrong_please_try_again))
