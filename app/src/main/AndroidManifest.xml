@@ -16,7 +16,7 @@
 
     <application
         android:name=".app.App"
-        android:allowBackup="true"
+        android:allowBackup="false"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
@@ -41,8 +41,8 @@
         <activity
             android:name=".ui.activities.MainActivity"
             android:exported="false"
+            android:configChanges="locale|screenSize|screenLayout|orientation|keyboardHidden"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"
             tools:ignore="DiscouragedApi,LockedOrientationActivity" />
 
         <meta-data

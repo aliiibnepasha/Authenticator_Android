@@ -3,6 +3,7 @@ package com.husnain.authy.ui.activities
 import android.os.Bundle
 import android.util.Log
 import androidx.core.text.layoutDirection
+import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.akexorcist.localizationactivity.ui.LocalizationActivity
@@ -17,6 +18,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.husnain.authy.R
 import com.husnain.authy.databinding.ActivityAuthBinding
 import com.husnain.authy.preferences.PreferenceManager
+import com.husnain.authy.ui.fragment.main.subscription.SubscriptionFragment
+import com.husnain.authy.utls.BackPressedExtensions.goBackPressed
 import com.husnain.authy.utls.Constants
 import com.husnain.authy.utls.NetworkUtils
 import com.husnain.authy.utls.gone
@@ -30,8 +33,11 @@ class AuthActivity : LocalizationActivity() {
     private lateinit var binding: ActivityAuthBinding
     private lateinit var billingClient: BillingClient
     private lateinit var navController: NavController
+    private lateinit var navHostFragment: Fragment
+
     @Inject
     lateinit var auth: FirebaseAuth
+
     @Inject
     lateinit var preferenceManager: PreferenceManager
     private lateinit var adRequest: AdRequest
@@ -53,8 +59,8 @@ class AuthActivity : LocalizationActivity() {
 
     private fun inIt() {
         setupBillingClient()
-//        AdUtils.loadInterstitialAd(this, getString(R.string.admob_interstitial_ad_id_test))
         setupNavController()
+        handleBackPressed()
     }
 
     private fun setupNavController() {
@@ -202,6 +208,18 @@ class AuthActivity : LocalizationActivity() {
     private fun stopShimmer() {
         binding.adShimmer.stopShimmer()
         binding.adShimmer.gone()
+    }
+
+
+    private fun handleBackPressed() {
+        navHostFragment = supportFragmentManager.findFragmentById(R.id.auth_nav_host_fragment)!!
+        goBackPressed {
+            if (navHostFragment.childFragmentManager.fragments.first() is SubscriptionFragment) {
+
+            } else {
+                finishAffinity()
+            }
+        }
     }
 
     override fun onAttachedToWindow() {

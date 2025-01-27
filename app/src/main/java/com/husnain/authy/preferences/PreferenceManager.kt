@@ -23,6 +23,7 @@ class PreferenceManager @Inject constructor(@ApplicationContext private val cont
         private const val KEY_BIOMETRIC_LOCK = "biometric_lock"
         private const val KEY_USER = "key_user"
         private const val KEY_IS_SUBSCRIPTION_ACTIVE = "keyIsSubscriptionActive"
+        private const val KEY_IS_LIFE_TIME_ACCESS_ACTIVE = "lifeTimeAccess"
         private const val KEY_LAST_APP_OPEN_TIME = "last_app_open_time"
         private const val KEY_GUEST_USER = "keyGuestUser"
         private const val KEY_LAST_SYNC_TIME = "lastSyncTime"
@@ -115,6 +116,14 @@ class PreferenceManager @Inject constructor(@ApplicationContext private val cont
 
     fun isSubscriptionActive(): Boolean {
         return myPref.getBoolean(KEY_IS_SUBSCRIPTION_ACTIVE, false)
+    }
+
+    fun saveLifeTimeAccessActive(isLifeTimeAccess: Boolean) {
+        myPref.edit().putBoolean(KEY_IS_LIFE_TIME_ACCESS_ACTIVE, isLifeTimeAccess).apply()
+    }
+
+    fun isLifeTimeAccessActive(): Boolean {
+        return myPref.getBoolean(KEY_IS_LIFE_TIME_ACCESS_ACTIVE, false)
     }
 
     fun saveGuestUser(isGuest: Boolean) {

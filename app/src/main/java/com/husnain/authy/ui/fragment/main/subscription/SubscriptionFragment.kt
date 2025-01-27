@@ -21,7 +21,6 @@ import com.husnain.authy.data.models.ModelSubscription
 import com.husnain.authy.databinding.FragmentSubscriptionBinding
 import com.husnain.authy.preferences.PreferenceManager
 import com.husnain.authy.ui.fragment.main.subscription.adapter.AdapterSubscription
-import com.husnain.authy.utls.BackPressedExtensions.goBackPressed
 import com.husnain.authy.utls.Constants
 import com.husnain.authy.utls.CustomToast.showCustomToast
 import com.husnain.authy.utls.Flags
@@ -55,28 +54,12 @@ class SubscriptionFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentSubscriptionBinding.inflate(inflater, container, false)
-        if (!preferenceManager.isSubscriptionActive()) {
-            AdUtils.loadInterstitialAd(
-                requireActivity(),
-                getString(R.string.admob_interstitial_ad_id_test)
-            )
-        }
+        AdUtils.loadInterstitialAd(
+            requireActivity(),
+            getString(R.string.admob_interstitial_ad_id_test)
+        )
         setupBillingClient()
         setOnClickListener()
-        goBackPressed {
-            if (!preferenceManager.isSubscriptionActive()) {
-                AdUtils.showInterstitialAdWithCallback(requireActivity()) {
-                    if (!preferenceManager.isOnboardingFinished()) {
-                        navigate(R.id.action_subscriptionFragment2_to_onboardingFragment)
-                    }else{
-                        Flags.isComingBackFromAuth = true
-                        popBack()
-                    }
-                }
-            } else {
-                popBack()
-            }
-        }
         return binding.root
     }
 
@@ -86,7 +69,7 @@ class SubscriptionFragment : Fragment() {
                 AdUtils.showInterstitialAdWithCallback(requireActivity()) {
                     if (!preferenceManager.isOnboardingFinished()) {
                         navigate(R.id.action_subscriptionFragment2_to_onboardingFragment)
-                    }else{
+                    } else {
                         Flags.isComingBackFromAuth = true
                         popBack()
                     }
@@ -302,6 +285,7 @@ class SubscriptionFragment : Fragment() {
     private fun handleLifetimePurchase(purchase: Purchase) {
         if (purchase.purchaseState == Purchase.PurchaseState.PURCHASED) {
             preferenceManager.saveSubscriptionActive(true)
+            preferenceManager.saveLifeTimeAccessActive(true)
             popBack()
         } else {
             showCustomToast(resources.getString(R.string.string_something_went_wrong_please_try_again))

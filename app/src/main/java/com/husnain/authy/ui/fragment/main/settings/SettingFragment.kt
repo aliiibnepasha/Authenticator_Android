@@ -65,10 +65,11 @@ class SettingFragment : Fragment() {
         val userId = auth.currentUser?.uid
         val isUserLoggedIn = userId != null
         val isUserHavePremium = preferenceManager.isSubscriptionActive()
+        val isUserLifeTimePremium = preferenceManager.isLifeTimeAccessActive()
 
         binding.apply {
             // Handle premium state
-            if (isUserHavePremium) {
+            if (isUserLifeTimePremium) {
                 lyGetPremium.gone()
                 imgSyncPremium.gone()
             } else {

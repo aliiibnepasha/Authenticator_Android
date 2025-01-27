@@ -8,16 +8,23 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Bundle
+import android.util.Log
 import android.view.WindowManager
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.ProcessLifecycleOwner
 import com.akexorcist.localizationactivity.ui.LocalizationApplication
 import com.google.android.gms.ads.MobileAds
 import com.husnain.authy.preferences.PreferenceManager
+import com.husnain.authy.ui.activities.MainActivity
+import com.husnain.authy.ui.fragment.main.subscription.SubscriptionFragment
 import com.husnain.authy.utls.Constants
 import com.husnain.authy.utls.admob.AppOpenAdManager
 import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.lang.ref.WeakReference
 import java.util.Locale
 import javax.inject.Inject
 
@@ -26,6 +33,7 @@ class App : LocalizationApplication(), Application.ActivityLifecycleCallbacks {
     lateinit var appOpenAdManager: AppOpenAdManager
     private val activityList: MutableList<Activity> = mutableListOf()
     var isScreenshotRestricted: Boolean = false
+    private var currentActivity: WeakReference<MainActivity>? = null
     @Inject
     lateinit var preferenceManager: PreferenceManager
 
@@ -33,6 +41,7 @@ class App : LocalizationApplication(), Application.ActivityLifecycleCallbacks {
 
     override fun onCreate() {
         super.onCreate()
+        ProcessLifecycleOwner.get().lifecycle.addObserver(AppLifecycleListener())
         inItNotificationChannel()
         setupActivityListener()
         isScreenshotRestricted = preferenceManager.isAllowScreenShots()
@@ -47,6 +56,37 @@ class App : LocalizationApplication(), Application.ActivityLifecycleCallbacks {
         registerActivityLifecycleCallbacks(this)
     }
 
+    fun registerMainActivity(activity: MainActivity) {
+        currentActivity = WeakReference(activity)
+    }
+
+    fun unregisterMainActivity() {
+        currentActivity = null
+    }
+
+    inner class AppLifecycleListener : DefaultLifecycleObserver {
+        override fun onStart(owner: LifecycleOwner) {
+            super.onStart(owner)
+            Log.d(Constants.TAG, "foreground")
+
+            currentActivity?.get()?.let { mainActivity ->
+                if (!mainActivity.preferenceManager.isSubscriptionActive() &&
+                    mainActivity.navHostFragment.isAdded &&
+                    mainActivity.navHostFragment.childFragmentManager.fragments.isNotEmpty() &&
+                    mainActivity.navHostFragment.childFragmentManager.fragments.first() !is SubscriptionFragment
+                ) {
+                    mainActivity.runOnUiThread {
+                        appOpenAdManager.showAdIfAvailableFromFragment(mainActivity) {}
+                    }
+                }
+            }
+        }
+
+        override fun onStop(owner: LifecycleOwner) {
+            super.onStop(owner)
+            Log.d(Constants.TAG, "background")
+        }
+    }
     //Admob open app ad
 
     private fun inItNotificationChannel() {

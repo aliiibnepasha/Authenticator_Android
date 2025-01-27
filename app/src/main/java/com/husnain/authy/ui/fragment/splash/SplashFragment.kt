@@ -23,6 +23,7 @@ import com.husnain.authy.ui.activities.MainActivity
 import com.husnain.authy.utls.Constants
 import com.husnain.authy.utls.CustomToast.showCustomToast
 import com.husnain.authy.utls.DelayOption
+import com.husnain.authy.utls.admob.AdUtils
 import com.husnain.authy.utls.navigate
 import com.husnain.authy.utls.startActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -43,6 +44,10 @@ class SplashFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentSplashBinding.inflate(inflater, container, false)
+        AdUtils.loadInterstitialAd(
+            requireActivity(),
+            getString(R.string.admob_interstitial_ad_id_test)
+        )
         makeFragmentFullScreen()
         setGradiantColorToTextView()
         init()
@@ -55,7 +60,9 @@ class SplashFragment : Fragment() {
             navigate(R.id.action_splashFragment_to_signupFragment)
         } else {
             if (!preferenceManager.isOnboardingFinished()) {
-                navigate(R.id.action_splashFragment_to_subscriptionFragmentAuth)
+                binding.root.postDelayed({
+                    navigate(R.id.action_splashFragment_to_subscriptionFragmentAuth)
+                },500)
             } else {
                 preferenceManager.saveIsToShowSubsScreenAsDialog(true)
                 handleUser()
