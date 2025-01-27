@@ -10,6 +10,7 @@ import com.akexorcist.localizationactivity.ui.LocalizationActivity
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.LoadAdError
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
 import com.husnain.authy.R
 import com.husnain.authy.app.App
@@ -33,6 +34,7 @@ class MainActivity : LocalizationActivity() {
     lateinit var navHostFragment: Fragment
     @Inject lateinit var auth: FirebaseAuth
     @Inject lateinit var preferenceManager: PreferenceManager
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
     private lateinit var adRequest: AdRequest
     private var isAdLoaded = false
 
@@ -57,6 +59,7 @@ class MainActivity : LocalizationActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
+        firebaseAnalytics = FirebaseAnalytics.getInstance(this)
         setContentView(binding.root)
         inIt()
     }
