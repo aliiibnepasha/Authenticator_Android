@@ -1,4 +1,4 @@
-package com.husnain.authy.data.room
+package com.husnain.authy.data.room.database
 
 import android.content.Context
 import androidx.room.Database

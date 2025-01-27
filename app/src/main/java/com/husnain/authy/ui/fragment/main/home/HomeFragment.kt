@@ -59,7 +59,6 @@ class HomeFragment : Fragment() {
         super.onResume()
         AdUtils.loadInterstitialAd(
             requireActivity(),
-            getString(R.string.admob_interstitial_ad_id_test)
         )
         inItUi()
         if (preferenceManager.isFirstLoginAfterAppInstall() || Constants.isComingAfterRestore) {

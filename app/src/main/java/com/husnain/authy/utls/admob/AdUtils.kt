@@ -6,15 +6,16 @@ import com.google.android.gms.ads.FullScreenContentCallback
 import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
+import com.husnain.authy.R
 
 object AdUtils {
     private var interstitialAd: InterstitialAd? = null
 
     // Preload the ad
-    fun loadInterstitialAd(activity: Activity, adUnitId: String) {
+    fun loadInterstitialAd(activity: Activity) {
         InterstitialAd.load(
             activity,
-            adUnitId,
+            activity.resources.getString(R.string.admob_interstitial_ad_id_release),
             AdRequest.Builder().build(),
             object : InterstitialAdLoadCallback() {
                 override fun onAdLoaded(ad: InterstitialAd) {

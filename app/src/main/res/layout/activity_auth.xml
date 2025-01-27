@@ -78,7 +78,7 @@
         android:layout_height="76dp"
         app:adSize="SMART_BANNER"
         android:visibility="invisible"
-        app:adUnitId="@string/admob_banner_id_test"
+        app:adUnitId="@string/admob_banner_id_release"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

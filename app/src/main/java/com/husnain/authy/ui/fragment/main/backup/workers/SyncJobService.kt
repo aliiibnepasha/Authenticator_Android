@@ -4,8 +4,8 @@ import android.app.job.JobParameters
 import android.app.job.JobService
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
-import com.husnain.authy.data.room.SyncDatabase
 import com.husnain.authy.data.room.daos.DaoTotp
+import com.husnain.authy.data.room.database.SyncDatabase
 import com.husnain.authy.preferences.PreferenceManager
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers

@@ -57,7 +57,6 @@ class SubscriptionFragment : Fragment() {
         _binding = FragmentSubscriptionBinding.inflate(inflater, container, false)
         AdUtils.loadInterstitialAd(
             requireActivity(),
-            getString(R.string.admob_interstitial_ad_id_test)
         )
         setupBillingClient()
         setOnClickListener()

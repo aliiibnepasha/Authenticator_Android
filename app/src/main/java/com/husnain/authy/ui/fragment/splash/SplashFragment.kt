@@ -46,7 +46,6 @@ class SplashFragment : Fragment() {
         _binding = FragmentSplashBinding.inflate(inflater, container, false)
         AdUtils.loadInterstitialAd(
             requireActivity(),
-            getString(R.string.admob_interstitial_ad_id_test)
         )
         makeFragmentFullScreen()
         setGradiantColorToTextView()
