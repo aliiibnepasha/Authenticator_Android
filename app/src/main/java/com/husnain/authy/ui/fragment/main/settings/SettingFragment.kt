@@ -1,5 +1,8 @@
 package com.husnain.authy.ui.fragment.main.settings
 
+import android.content.ActivityNotFoundException
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -186,7 +189,14 @@ class SettingFragment : Fragment() {
         binding.lyPrivacyPolicy.setOnClickListener {
             navToPrivacyPolicy()
         }
+        binding.lyRateUs.setOnClickListener {
+            rateApp()
+        }
+        binding.lyShareOurApp.setOnClickListener {
+            shareApp()
+        }
     }
+
 
     private fun setUpObserver() {
         vmSettings.logoutState.observe(viewLifecycleOwner, Observer { state ->
@@ -259,6 +269,38 @@ class SettingFragment : Fragment() {
             putString(KEY_LINK_TO_LOAD, url)
         }
         navigate(R.id.action_settingFragment_to_webViewFragment, bundle)
+    }
+
+    private fun shareApp() {
+        val shareIntent = Intent(Intent.ACTION_SEND).apply {
+            type = "text/plain"
+            putExtra(Intent.EXTRA_SUBJECT, "Check out this app!")
+            putExtra(Intent.EXTRA_TEXT, "Hey there! \uD83D\uDC4B\n" +
+                    "\n" +
+                    "Stay secure with Authenticator, the simple and reliable app for generating 2FA codes to protect your accounts.\n" +
+                    "\n" +
+                    "✨ Key Features:\n" +
+                    "✅ Easy to use.\n" +
+                    "✅ Works offline.\n" +
+                    "✅ Backup & restore made simple.\n" +
+                    "✅ Your data, your privacy.\n ${Constants.PLAY_STORE_URL}")
+        }
+        startActivity(Intent.createChooser(shareIntent, "Share via"))
+    }
+
+    private fun rateApp() {
+        try {
+            val uri = Uri.parse("market://details?id=com.theswiftvision.authenticatorapp")
+            val rateIntent = Intent(Intent.ACTION_VIEW, uri)
+            rateIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            startActivity(rateIntent)
+        } catch (e: ActivityNotFoundException) {
+            // If Play Store is unavailable, open in a web browser
+            val webUri = Uri.parse(Constants.PLAY_STORE_URL)
+            val webIntent = Intent(Intent.ACTION_VIEW, webUri)
+            webIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            startActivity(webIntent)
+        }
     }
 
     override fun onDestroyView() {

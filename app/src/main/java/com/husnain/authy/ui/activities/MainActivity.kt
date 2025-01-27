@@ -31,12 +31,8 @@ import javax.inject.Inject
 class MainActivity : LocalizationActivity() {
     private lateinit var binding: ActivityMainBinding
     lateinit var navHostFragment: Fragment
-
-    @Inject
-    lateinit var auth: FirebaseAuth
-
-    @Inject
-    lateinit var preferenceManager: PreferenceManager
+    @Inject lateinit var auth: FirebaseAuth
+    @Inject lateinit var preferenceManager: PreferenceManager
     private lateinit var adRequest: AdRequest
     private var isAdLoaded = false
 

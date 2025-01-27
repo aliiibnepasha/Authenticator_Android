@@ -42,6 +42,7 @@ class App : LocalizationApplication(), Application.ActivityLifecycleCallbacks {
     override fun onCreate() {
         super.onCreate()
         ProcessLifecycleOwner.get().lifecycle.addObserver(AppLifecycleListener())
+
         inItNotificationChannel()
         setupActivityListener()
         isScreenshotRestricted = preferenceManager.isAllowScreenShots()

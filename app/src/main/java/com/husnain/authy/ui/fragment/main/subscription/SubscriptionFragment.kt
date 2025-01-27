@@ -254,11 +254,30 @@ class SubscriptionFragment : Fragment() {
         }
     }
 
+    private fun handleLifetimePurchase(purchase: Purchase) {
+        if (purchase.purchaseState == Purchase.PurchaseState.PURCHASED) {
+            preferenceManager.saveSubscriptionActive(true)
+            preferenceManager.saveLifeTimeAccessActive(true)
+            if (!preferenceManager.isOnboardingFinished()) {
+                navigate(R.id.action_subscriptionFragment2_to_onboardingFragment)
+            }else{
+                (activity as? MainActivity)?.preloadAd()
+                popBack()
+            }
+        } else {
+            showCustomToast(resources.getString(R.string.string_something_went_wrong_please_try_again))
+        }
+    }
+
     private fun handleSubscribe(purchase: Purchase) {
         if (purchase.purchaseState == Purchase.PurchaseState.PURCHASED) {
             preferenceManager.saveSubscriptionActive(true)
-            (activity as? MainActivity)?.preloadAd()
-            popBack()
+            if (!preferenceManager.isOnboardingFinished()) {
+                navigate(R.id.action_subscriptionFragment2_to_onboardingFragment)
+            }else{
+                (activity as? MainActivity)?.preloadAd()
+                popBack()
+            }
         }
     }
 
@@ -284,16 +303,6 @@ class SubscriptionFragment : Fragment() {
         }
     }
 
-    private fun handleLifetimePurchase(purchase: Purchase) {
-        if (purchase.purchaseState == Purchase.PurchaseState.PURCHASED) {
-            preferenceManager.saveSubscriptionActive(true)
-            preferenceManager.saveLifeTimeAccessActive(true)
-            (activity as? MainActivity)?.preloadAd()
-            popBack()
-        } else {
-            showCustomToast(resources.getString(R.string.string_something_went_wrong_please_try_again))
-        }
-    }
 
     private fun getSubscriptionDurationAndLabel(productId: String): Pair<String, String> {
         return when (productId) {

@@ -12,4 +12,5 @@ object Constants {
     const val monthlySubId = "monthly_plan"
     const val lifeTimePorductId = "lifetime_pro"
     var isComingAfterRestore = false
+    const val PLAY_STORE_URL = "https://play.google.com/store/apps/details?id=com.theswiftvision.authenticatorapp"
 }
