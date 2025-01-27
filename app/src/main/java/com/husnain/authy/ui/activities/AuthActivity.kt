@@ -16,6 +16,7 @@ import com.android.billingclient.api.QueryPurchasesParams
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.LoadAdError
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
 import com.husnain.authy.R
 import com.husnain.authy.databinding.ActivityAuthBinding
@@ -38,6 +39,7 @@ class AuthActivity : LocalizationActivity() {
     private lateinit var binding: ActivityAuthBinding
     private lateinit var billingClient: BillingClient
     private lateinit var navController: NavController
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
     private lateinit var navHostFragment: Fragment
 
     @Inject
@@ -50,6 +52,7 @@ class AuthActivity : LocalizationActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAuthBinding.inflate(layoutInflater)
+        firebaseAnalytics = FirebaseAnalytics.getInstance(this)
         setContentView(binding.root)
         adRequest = AdRequest.Builder().build()
 
