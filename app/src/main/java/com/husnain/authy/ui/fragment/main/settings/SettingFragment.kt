@@ -281,7 +281,6 @@ class SettingFragment : Fragment() {
                     "\n" +
                     "✨ Key Features:\n" +
                     "✅ Easy to use.\n" +
-                    "✅ Works offline.\n" +
                     "✅ Backup & restore made simple.\n" +
                     "✅ Your data, your privacy.\n ${Constants.PLAY_STORE_URL}")
         }

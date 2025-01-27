@@ -88,6 +88,7 @@ class MainActivity : LocalizationActivity() {
 
                 override fun onAdFailedToLoad(adError: LoadAdError) {
                     isAdLoaded = false
+                    binding.mainBannerAdView.gone()
                     Log.d(Constants.TAG, "Ad failed to load: ${adError.message}")
                 }
             }
