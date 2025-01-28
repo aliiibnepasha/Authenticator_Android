@@ -1,4 +1,7 @@
 {
+  "analytics_service": {
+    "status": "ENABLED"
+  },
   "project_info": {
     "project_number": "250275436359",
     "project_id": "authenticator-c11e1",

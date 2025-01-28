@@ -1,8 +1,5 @@
 package com.husnain.authy.ui.fragment.splash
 
-import android.graphics.Color
-import android.graphics.LinearGradient
-import android.graphics.Shader
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -23,6 +20,7 @@ import com.husnain.authy.ui.activities.MainActivity
 import com.husnain.authy.utls.Constants
 import com.husnain.authy.utls.CustomToast.showCustomToast
 import com.husnain.authy.utls.DelayOption
+import com.husnain.authy.utls.Flags
 import com.husnain.authy.utls.admob.AdUtils
 import com.husnain.authy.utls.navigate
 import com.husnain.authy.utls.startActivity
@@ -33,8 +31,10 @@ import javax.inject.Inject
 class SplashFragment : Fragment() {
     private var _binding: FragmentSplashBinding? = null
     private val binding get() = _binding!!
+
     @Inject
     lateinit var preferenceManager: PreferenceManager
+
     @Inject
     lateinit var auth: FirebaseAuth
 
@@ -44,28 +44,28 @@ class SplashFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentSplashBinding.inflate(inflater, container, false)
-        AdUtils.loadInterstitialAd(
-            requireActivity(),
-        )
-        makeFragmentFullScreen()
-        setGradiantColorToTextView()
-        init()
+        if (Constants.isComingToAuthFromGuest) {
+            Constants.isComingToAuthFromGuest = false
+            navigate(R.id.action_splashFragment_to_signupFragment)
+        }else{
+            AdUtils.loadInterstitialAd(requireActivity()) { isAdLoaded ->
+                if (isAdLoaded) {
+                    init()
+                } else {
+                    init()
+                }
+            }
+        }
         return binding.root
     }
 
     private fun init() {
-        if (Constants.isComingToAuthFromGuest) {
-            Constants.isComingToAuthFromGuest = false
-            navigate(R.id.action_splashFragment_to_signupFragment)
+        Flags.isComingFromSplash = true
+        if (!preferenceManager.isOnboardingFinished()) {
+            navigate(R.id.action_splashFragment_to_subscriptionFragmentAuth)
         } else {
-            if (!preferenceManager.isOnboardingFinished()) {
-                binding.root.postDelayed({
-                    navigate(R.id.action_splashFragment_to_subscriptionFragmentAuth)
-                },500)
-            } else {
-                preferenceManager.saveIsToShowSubsScreenAsDialog(true)
-                handleUser()
-            }
+            preferenceManager.saveIsToShowSubsScreenAsDialog(true)
+            handleUser()
         }
     }
 
@@ -82,28 +82,28 @@ class SplashFragment : Fragment() {
                 }
 
                 else -> {
-                    if (!preferenceManager.isSubscriptionActive()){
+                    if (!preferenceManager.isSubscriptionActive()) {
                         showAdBeforeNavigation {
                             delayAndNavigate()
                         }
-                    }else{
+                    } else {
                         delayAndNavigate()
                     }
                 }
             }
         } else {
-            if (!preferenceManager.isSubscriptionActive()){
+            if (!preferenceManager.isSubscriptionActive()) {
                 showAdBeforeNavigation {
                     delayAndNavigate()
                 }
-            }else{
+            } else {
                 delayAndNavigate()
             }
         }
     }
 
     private fun delayAndNavigate() {
-        binding.root.postDelayed({
+//        binding.root.postDelayed({
 //            if (preferenceManager.isGuestUser()) {
 //                goToMainActivity()
 //            } else {
@@ -113,9 +113,9 @@ class SplashFragment : Fragment() {
 //                    navigate(R.id.action_splashFragment_to_signupFragment)
 //                }
 //            }
-            goToMainActivity()
+        goToMainActivity()
 
-        }, 500)
+//        }, 1500)
     }
 
     private fun showAdBeforeNavigation(navigateAction: () -> Unit) {
@@ -233,22 +233,8 @@ class SplashFragment : Fragment() {
         return timeDifference > delayInMillis
     }
 
-    private fun setGradiantColorToTextView(){
-        val gradient = LinearGradient(
-            0f, 0f, 0f, binding.tvAppName.textSize,
-            intArrayOf(Color.parseColor("#5D7CF6"), Color.parseColor("#4E3CF4")),
-            null,
-            Shader.TileMode.CLAMP
-        )
-        binding.tvAppName.paint.shader = gradient
-    }
     override fun onDestroyView() {
         super.onDestroyView()
-        requireActivity().window.apply {
-            clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
-            decorView.systemUiVisibility =
-                View.SYSTEM_UI_FLAG_VISIBLE
-        }
         _binding = null
     }
 }

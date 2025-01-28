@@ -127,7 +127,7 @@
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:visibility="gone"
-                    app:indicatorColor="@color/black"
+                    app:indicatorColor="@color/colorPrimary"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

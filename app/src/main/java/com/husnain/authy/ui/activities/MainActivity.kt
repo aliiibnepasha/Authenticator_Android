@@ -1,7 +1,10 @@
 package com.husnain.authy.ui.activities
 
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.WindowInsets
+import android.view.WindowInsetsController
 import androidx.core.text.layoutDirection
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -67,7 +70,6 @@ class MainActivity : LocalizationActivity() {
     private fun inIt() {
         preloadAd()
         setUpBottomBar()
-//        ProcessLifecycleOwner.get().lifecycle.addObserver(AppLifecycleListener())
         handleBackPressed()
     }
 
@@ -108,6 +110,11 @@ class MainActivity : LocalizationActivity() {
         binding.bottomNavigationView.setupWithNavController(navHostFragment.findNavController())
 
         navHostFragment.findNavController().addOnDestinationChangedListener { _, destination, _ ->
+            if (destination.id == R.id.subscriptionFragment) {
+                hideNavigationBar()
+            }else{
+                showNavigationBar()
+            }
             when (destination.id) {
                 R.id.homeFragment, R.id.newToolsFragment, R.id.settingFragment -> {
                     if (isAdLoaded) {
@@ -121,6 +128,21 @@ class MainActivity : LocalizationActivity() {
                     binding.bottomNavigationView.gone()
                 }
             }
+        }
+    }
+
+    private fun hideNavigationBar() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            window.insetsController?.let { controller ->
+                controller.hide(WindowInsets.Type.navigationBars())
+                controller.systemBarsBehavior = WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+            }
+        }
+    }
+
+    private fun showNavigationBar() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            window.insetsController?.show(WindowInsets.Type.navigationBars())
         }
     }
 
@@ -139,27 +161,4 @@ class MainActivity : LocalizationActivity() {
     fun changeLanguage(language: String) {
         setLanguage(language)
     }
-
-    override fun onResume() {
-        super.onResume()
-    }
-
-//    inner class AppLifecycleListener : DefaultLifecycleObserver {
-//        override fun onStart(owner: LifecycleOwner) {
-//            super.onStart(owner)
-//            if (navHostFragment.isAdded && navHostFragment.childFragmentManager.fragments.isNotEmpty()) {
-//                if (!preferenceManager.isSubscriptionActive() && navHostFragment.childFragmentManager.fragments.first() !is SubscriptionFragment) {
-//                    (application as App).appOpenAdManager.showAdIfAvailableFromFragment(this@MainActivity) {}
-//                }
-//            }
-//
-//            Log.d(Constants.TAG, "foreground")
-//        }
-//
-//        override fun onStop(owner: LifecycleOwner) {
-//            super.onStop(owner)
-//            isAppComingToForeground = false
-//            Log.d(Constants.TAG, "background")
-//        }
-//    }
 }

@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
+import androidx.core.view.WindowCompat
 import androidx.fragment.app.Fragment
 import com.husnain.authy.R
 import com.husnain.authy.databinding.FragmentOnboardingBinding
@@ -29,7 +29,6 @@ class OnboardingFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentOnboardingBinding.inflate(inflater, container, false)
-        makeFragmentFullScreen()
         inIt()
         setUpViewPagerAdapter();
         return binding.root
@@ -80,24 +79,8 @@ class OnboardingFragment : Fragment() {
         }
     }
 
-    private fun makeFragmentFullScreen() {
-        requireActivity().window.apply {
-            addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
-            decorView.systemUiVisibility = (
-                    View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                            or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                    )
-        }
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
-        // Reset the flags to restore the default UI behavior
-        requireActivity().window.apply {
-            clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
-            decorView.systemUiVisibility =
-                View.SYSTEM_UI_FLAG_VISIBLE // Reset the system UI visibility
-        }
         _binding = null
     }
 }

@@ -23,7 +23,6 @@ import com.husnain.authy.utls.CustomToast.showCustomToast
 import com.husnain.authy.utls.DataState
 import com.husnain.authy.utls.Flags
 import com.husnain.authy.utls.PermissionUtils
-import com.husnain.authy.utls.admob.AdUtils
 import com.husnain.authy.utls.gone
 import com.husnain.authy.utls.navigate
 import com.husnain.authy.utls.progress.showBottomSheetDialog
@@ -57,9 +56,6 @@ class HomeFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        AdUtils.loadInterstitialAd(
-            requireActivity(),
-        )
         inItUi()
         if (preferenceManager.isFirstLoginAfterAppInstall() || Constants.isComingAfterRestore) {
             Constants.isComingAfterRestore = false

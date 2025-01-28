@@ -1,9 +1,13 @@
 package com.husnain.authy.ui.activities
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.WindowInsets
+import android.view.WindowInsetsController
 import androidx.core.text.layoutDirection
+import androidx.core.view.WindowCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -41,6 +45,7 @@ class AuthActivity : LocalizationActivity() {
     private lateinit var navController: NavController
     private lateinit var firebaseAnalytics: FirebaseAnalytics
     private lateinit var navHostFragment: Fragment
+    private var isAdLoaded = false
 
     @Inject
     lateinit var auth: FirebaseAuth
@@ -52,20 +57,15 @@ class AuthActivity : LocalizationActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAuthBinding.inflate(layoutInflater)
-        firebaseAnalytics = FirebaseAnalytics.getInstance(this)
         setContentView(binding.root)
-        adRequest = AdRequest.Builder().build()
 
-        if (NetworkUtils.isNetworkAvailable(this)) {
-            binding.mainBannerAdView.loadAd(adRequest)
-        } else {
-            stopShimmer()
-            binding.mainBannerAdView.gone()
-        }
+        firebaseAnalytics = FirebaseAnalytics.getInstance(this)
+        adRequest = AdRequest.Builder().build()
         inIt()
     }
 
     private fun inIt() {
+        inItAdmob()
         setupBillingClient()
         setupNavController()
         handleBackPressed()
@@ -77,12 +77,40 @@ class AuthActivity : LocalizationActivity() {
         navController = navHostFragment.navController
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            if (destination.id == R.id.onboardingFragment) {
-                inItAdmob()
+            if (destination.id == R.id.signinFragment || destination.id == R.id.signupFragment || destination.id == R.id.forgotPasswordFragment) {
+                showNavigationBar()
             } else {
+                hideNavigationBar()
+            }
+            if (destination.id == R.id.onboardingFragment) {
+                setStatusBarColor(R.color.colorPrimary)
+                if (isAdLoaded){
+                    stopShimmer()
+                    binding.mainBannerAdView.visible()
+                }
+            } else if (destination.id == R.id.splashFragment) {
+                setStatusBarColor(R.color.colorPrimary)
+            } else {
+                setStatusBarColor(R.color.white)
                 stopShimmer()
                 binding.mainBannerAdView.gone()
             }
+        }
+    }
+
+    private fun hideNavigationBar() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            window.insetsController?.let { controller ->
+                controller.hide(WindowInsets.Type.navigationBars())
+                controller.systemBarsBehavior =
+                    WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+            }
+        }
+    }
+
+    private fun showNavigationBar() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            window.insetsController?.show(WindowInsets.Type.navigationBars())
         }
     }
 
@@ -185,12 +213,11 @@ class AuthActivity : LocalizationActivity() {
     }
 
     private fun inItAdmob() {
+        stopShimmer()
         if (!preferenceManager.isSubscriptionActive()) {
-            adRequest = AdRequest.Builder().build()
+            binding.mainBannerAdView.loadAd(adRequest)
 
-            if (NetworkUtils.isNetworkAvailable(this)) {
-                binding.mainBannerAdView.loadAd(adRequest)
-            } else {
+            if (!NetworkUtils.isNetworkAvailable(this)) {
                 stopShimmer()
                 binding.mainBannerAdView.gone()
                 return
@@ -198,17 +225,18 @@ class AuthActivity : LocalizationActivity() {
 
             binding.mainBannerAdView.adListener = object : AdListener() {
                 override fun onAdLoaded() {
-                    stopShimmer()
-                    binding.mainBannerAdView.visible()
+                    isAdLoaded = true
                 }
 
                 override fun onAdFailedToLoad(adError: LoadAdError) {
+                    isAdLoaded = false
                     Log.d(Constants.TAG, adError.message)
                     stopShimmer()
                     binding.mainBannerAdView.gone()
                 }
             }
         } else {
+            isAdLoaded = false
             stopShimmer()
             binding.mainBannerAdView.gone()
         }
@@ -224,14 +252,16 @@ class AuthActivity : LocalizationActivity() {
         navHostFragment = supportFragmentManager.findFragmentById(R.id.auth_nav_host_fragment)!!
         goBackPressed {
             val currentFragment = navHostFragment.childFragmentManager.fragments.firstOrNull()
-            when(currentFragment){
+            when (currentFragment) {
                 is SubscriptionFragment -> {}
-                is SigninFragment ->{
+                is SigninFragment -> {
                     startMainActivityFromGuestToLogin()
                 }
-                is SignupFragment ->{
+
+                is SignupFragment -> {
                     startMainActivityFromGuestToLogin()
                 }
+
                 else -> {
                     navHostFragment.findNavController().popBackStack()
                 }
@@ -239,7 +269,7 @@ class AuthActivity : LocalizationActivity() {
         }
     }
 
-    private fun startMainActivityFromGuestToLogin(){
+    private fun startMainActivityFromGuestToLogin() {
         Constants.isComingToAuthFromGuestToSignIn = false
         Flags.isComingBackFromAuth = true
         val intent = Intent(this, MainActivity::class.java)
@@ -254,5 +284,10 @@ class AuthActivity : LocalizationActivity() {
         val locale = Locale(lang)
         Locale.setDefault(locale)
         window.decorView.layoutDirection = locale.layoutDirection
+    }
+
+    private fun setStatusBarColor(colorResId: Int) {
+        WindowCompat.setDecorFitsSystemWindows(window, true)
+        window.statusBarColor = getColor(colorResId)
     }
 }

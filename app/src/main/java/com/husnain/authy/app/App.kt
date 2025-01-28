@@ -23,7 +23,6 @@ import com.husnain.authy.utls.admob.AppOpenAdManager
 import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import java.lang.ref.WeakReference
 import java.util.Locale
 import javax.inject.Inject
@@ -34,6 +33,7 @@ class App : LocalizationApplication(), Application.ActivityLifecycleCallbacks {
     private val activityList: MutableList<Activity> = mutableListOf()
     var isScreenshotRestricted: Boolean = false
     private var currentActivity: WeakReference<MainActivity>? = null
+
     @Inject
     lateinit var preferenceManager: PreferenceManager
 
@@ -49,9 +49,7 @@ class App : LocalizationApplication(), Application.ActivityLifecycleCallbacks {
 
         //Admob
         val backgroundScope = CoroutineScope(Dispatchers.IO)
-        backgroundScope.launch {
-            MobileAds.initialize(this@App) {}
-        }
+        MobileAds.initialize(this@App) {}
         appOpenAdManager = AppOpenAdManager(this)
         appOpenAdManager.loadAd()
         registerActivityLifecycleCallbacks(this)
@@ -85,6 +83,7 @@ class App : LocalizationApplication(), Application.ActivityLifecycleCallbacks {
 
         override fun onStop(owner: LifecycleOwner) {
             super.onStop(owner)
+            appOpenAdManager.loadAd()
             Log.d(Constants.TAG, "background")
         }
     }

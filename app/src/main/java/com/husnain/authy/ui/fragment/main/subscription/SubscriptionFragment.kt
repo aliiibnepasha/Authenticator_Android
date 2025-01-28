@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.android.billingclient.api.BillingClient
 import com.android.billingclient.api.BillingClientStateListener
@@ -48,6 +49,8 @@ class SubscriptionFragment : Fragment() {
     private lateinit var adapter: AdapterSubscription
     private var selectedProductId = Constants.weaklySubId
     private val productDetailsMap = mutableMapOf<String, ProductDetails>()
+    private val vmSubscription: VmSubscription by viewModels()
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -55,17 +58,18 @@ class SubscriptionFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentSubscriptionBinding.inflate(inflater, container, false)
-        AdUtils.loadInterstitialAd(
-            requireActivity(),
-        )
+        if (!Flags.isComingFromSplash){
+            vmSubscription.loadAd(requireActivity())
+        }
         setupBillingClient()
         setOnClickListener()
         return binding.root
     }
 
-    private fun setOnClickListener() {
-        binding.imgCross.setOnClickListener {
-            if (!preferenceManager.isSubscriptionActive()) {
+    private fun setUpObservers() {
+        if (!preferenceManager.isSubscriptionActive()) {
+            if (Flags.isComingFromSplash){
+                Flags.isComingFromSplash = false
                 AdUtils.showInterstitialAdWithCallback(requireActivity()) {
                     if (!preferenceManager.isOnboardingFinished()) {
                         navigate(R.id.action_subscriptionFragment2_to_onboardingFragment)
@@ -74,9 +78,40 @@ class SubscriptionFragment : Fragment() {
                         popBack()
                     }
                 }
-            } else {
-                popBack()
+            }else{
+                vmSubscription.isAdLoaded.observe(viewLifecycleOwner) { isAdLoaded ->
+                    when (isAdLoaded) {
+                        null -> {
+                            binding.mainLoadingView.start()
+                        }
+
+                        true -> {
+                            binding.mainLoadingView.stop()
+                            AdUtils.showInterstitialAdWithCallback(requireActivity()) {
+                                if (!preferenceManager.isOnboardingFinished()) {
+                                    navigate(R.id.action_subscriptionFragment2_to_onboardingFragment)
+                                } else {
+                                    Flags.isComingBackFromAuth = true
+                                    popBack()
+                                }
+                            }
+                        }
+
+                        false -> {
+                            binding.mainLoadingView.stop()
+                            popBack()
+                        }
+                    }
+                }
             }
+        } else {
+            popBack()
+        }
+    }
+
+    private fun setOnClickListener() {
+        binding.imgCross.setOnClickListener {
+            setUpObservers()
         }
         binding.btnCheckout.setOnClickListener {
             if (selectedProductId == Constants.lifeTimePorductId) {
@@ -259,7 +294,7 @@ class SubscriptionFragment : Fragment() {
             preferenceManager.saveLifeTimeAccessActive(true)
             if (!preferenceManager.isOnboardingFinished()) {
                 navigate(R.id.action_subscriptionFragment2_to_onboardingFragment)
-            }else{
+            } else {
                 (activity as? MainActivity)?.preloadAd()
                 popBack()
             }
@@ -273,7 +308,7 @@ class SubscriptionFragment : Fragment() {
             preferenceManager.saveSubscriptionActive(true)
             if (!preferenceManager.isOnboardingFinished()) {
                 navigate(R.id.action_subscriptionFragment2_to_onboardingFragment)
-            }else{
+            } else {
                 (activity as? MainActivity)?.preloadAd()
                 popBack()
             }

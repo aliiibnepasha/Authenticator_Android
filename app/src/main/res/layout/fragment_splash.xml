@@ -4,29 +4,51 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/img_colored_bg"
+    android:background="@color/colorPrimary"
     tools:context=".ui.fragment.splash.SplashFragment">
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/appCompatImageView13"
-        android:layout_width="130dp"
-        android:layout_height="130dp"
-        android:layout_marginTop="@dimen/_220sdp"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/_300sdp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_splash_logo" />
+        app:srcCompat="@drawable/img_bg_icons_splash" />
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_app_name"
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/appCompatImageView14"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/poppins_bold"
-        android:text="Authenticator"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:textColor="@color/colorPrimary"
-        android:textSize="@dimen/_23ssp"
+        android:layout_marginTop="@dimen/_85sdp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/appCompatImageView13" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/img_top_splash" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/appCompatTextView16"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-40dp"
+        android:fontFamily="@font/poppins_semibold"
+        android:gravity="center"
+        android:text="Protect your accounts"
+        android:textColor="@color/white"
+        android:textSize="40sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appCompatImageView14" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/lottieAnimationViewNoData"
+        android:layout_width="@dimen/_100sdp"
+        android:layout_height="@dimen/_100sdp"
+        android:layout_marginHorizontal="@dimen/_5sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appCompatTextView16"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/anim_splash_loading" />
 </androidx.constraintlayout.widget.ConstraintLayout>
