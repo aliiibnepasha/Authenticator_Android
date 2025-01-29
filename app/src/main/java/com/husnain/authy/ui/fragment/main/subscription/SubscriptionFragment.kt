@@ -58,7 +58,7 @@ class SubscriptionFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentSubscriptionBinding.inflate(inflater, container, false)
-        if (!Flags.isComingFromSplash){
+        if (!Flags.isComingFromSplash && !preferenceManager.isSubscriptionActive()) {
             vmSubscription.loadAd(requireActivity())
         }
         setupBillingClient()
@@ -68,17 +68,26 @@ class SubscriptionFragment : Fragment() {
 
     private fun setUpObservers() {
         if (!preferenceManager.isSubscriptionActive()) {
-            if (Flags.isComingFromSplash){
+            /**
+             * - Shows the preloaded ad if launched from the splash screen.
+             * - Loads the ad in `onCreateView()` if not coming from the splash screen.
+             */
+            if (Flags.isComingFromSplash) {
                 Flags.isComingFromSplash = false
-                AdUtils.showInterstitialAdWithCallback(requireActivity()) {
+                AdUtils.showInterstitialAdWithCallback(requireActivity(), failureCallback = {
                     if (!preferenceManager.isOnboardingFinished()) {
                         navigate(R.id.action_subscriptionFragment2_to_onboardingFragment)
                     } else {
-                        Flags.isComingBackFromAuth = true
                         popBack()
                     }
-                }
-            }else{
+                })
+            } else {
+                /**
+                 * Observes the `isAdLoaded` status and performs actions based on its value.
+                 * - `null`: Shows loading indicator.
+                 * - `true`: Stops loading and shows the interstitial ad.
+                 * - `false`: Stops loading and navigates back.
+                 */
                 vmSubscription.isAdLoaded.observe(viewLifecycleOwner) { isAdLoaded ->
                     when (isAdLoaded) {
                         null -> {
@@ -87,14 +96,13 @@ class SubscriptionFragment : Fragment() {
 
                         true -> {
                             binding.mainLoadingView.stop()
-                            AdUtils.showInterstitialAdWithCallback(requireActivity()) {
+                            AdUtils.showInterstitialAdWithCallback(requireActivity(), failureCallback = {
                                 if (!preferenceManager.isOnboardingFinished()) {
                                     navigate(R.id.action_subscriptionFragment2_to_onboardingFragment)
                                 } else {
-                                    Flags.isComingBackFromAuth = true
                                     popBack()
                                 }
-                            }
+                            })
                         }
 
                         false -> {

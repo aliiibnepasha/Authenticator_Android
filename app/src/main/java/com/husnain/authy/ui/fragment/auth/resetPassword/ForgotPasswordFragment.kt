@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import com.google.firebase.auth.FirebaseAuth
 import com.husnain.authy.databinding.FragmentForgotPasswordBinding
 import com.husnain.authy.utls.CustomToast.showCustomToast
+import com.husnain.authy.utls.popBack
 import com.husnain.authy.utls.setupKeyboardDismissListener
 
 class ForgotPasswordFragment : Fragment() {
@@ -34,6 +35,9 @@ class ForgotPasswordFragment : Fragment() {
     }
 
     private fun setOnClickListener() {
+        binding.backButton.setOnClickListener {
+            popBack()
+        }
         binding.continueButton.setOnClickListener {
             if (isValidInput()) {
                 showLoader()

@@ -13,7 +13,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.husnain.authy.R
-import com.husnain.authy.app.App
 import com.husnain.authy.databinding.FragmentSplashBinding
 import com.husnain.authy.preferences.PreferenceManager
 import com.husnain.authy.ui.activities.MainActivity
@@ -25,6 +24,7 @@ import com.husnain.authy.utls.admob.AdUtils
 import com.husnain.authy.utls.navigate
 import com.husnain.authy.utls.startActivity
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Runnable
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -48,12 +48,18 @@ class SplashFragment : Fragment() {
             Constants.isComingToAuthFromGuest = false
             navigate(R.id.action_splashFragment_to_signupFragment)
         }else{
-            AdUtils.loadInterstitialAd(requireActivity()) { isAdLoaded ->
-                if (isAdLoaded) {
-                    init()
-                } else {
-                    init()
+            if (!preferenceManager.isSubscriptionActive()){
+                AdUtils.loadInterstitialAd(requireActivity()) { isAdLoaded ->
+                    if (isAdLoaded) {
+                        init()
+                    } else {
+                        init()
+                    }
                 }
+            }else{
+                binding.root.postDelayed(Runnable {
+                    init()
+                }, 1500)
             }
         }
         return binding.root
@@ -82,23 +88,11 @@ class SplashFragment : Fragment() {
                 }
 
                 else -> {
-                    if (!preferenceManager.isSubscriptionActive()) {
-                        showAdBeforeNavigation {
-                            delayAndNavigate()
-                        }
-                    } else {
-                        delayAndNavigate()
-                    }
+                    delayAndNavigate()
                 }
             }
         } else {
-            if (!preferenceManager.isSubscriptionActive()) {
-                showAdBeforeNavigation {
-                    delayAndNavigate()
-                }
-            } else {
-                delayAndNavigate()
-            }
+            delayAndNavigate()
         }
     }
 
@@ -116,14 +110,6 @@ class SplashFragment : Fragment() {
         goToMainActivity()
 
 //        }, 1500)
-    }
-
-    private fun showAdBeforeNavigation(navigateAction: () -> Unit) {
-        (requireActivity().application as App).appOpenAdManager.showAdIfAvailableFromFragment(
-            requireActivity()
-        ) {
-            navigateAction.invoke()
-        }
     }
 
     private fun checkForBiometricLogin() {

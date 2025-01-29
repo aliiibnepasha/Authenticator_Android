@@ -18,8 +18,8 @@ android {
         minSdk = 26
         //noinspection EditedTargetSdkVersion,OldTargetApi
         targetSdk = 35
-        versionCode = 7
-        versionName = "1.1.5"
+        versionCode = 8
+        versionName = "1.1.6"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -43,7 +43,7 @@ android {
             )
             signingConfig = signingConfigs.getByName("release")
         }
-        getByName("debug") {
+        debug {
             signingConfig = signingConfigs.getByName("debug")
         }
     }
@@ -56,6 +56,10 @@ android {
     }
     kotlinOptions {
         jvmTarget = "1.8"
+    }
+
+    buildFeatures {
+        buildConfig = true
     }
 }
 

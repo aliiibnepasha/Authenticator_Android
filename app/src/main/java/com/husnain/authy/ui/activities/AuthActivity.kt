@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.WindowInsets
 import android.view.WindowInsetsController
+import android.view.WindowMetrics
 import androidx.core.text.layoutDirection
 import androidx.core.view.WindowCompat
 import androidx.fragment.app.Fragment
@@ -19,6 +20,8 @@ import com.android.billingclient.api.BillingResult
 import com.android.billingclient.api.QueryPurchasesParams
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdSize
+import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.LoadAdError
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
@@ -32,6 +35,7 @@ import com.husnain.authy.utls.BackPressedExtensions.goBackPressed
 import com.husnain.authy.utls.Constants
 import com.husnain.authy.utls.Flags
 import com.husnain.authy.utls.NetworkUtils
+import com.husnain.authy.utls.admob.AdUtils
 import com.husnain.authy.utls.gone
 import com.husnain.authy.utls.visible
 import dagger.hilt.android.AndroidEntryPoint
@@ -45,6 +49,7 @@ class AuthActivity : LocalizationActivity() {
     private lateinit var navController: NavController
     private lateinit var firebaseAnalytics: FirebaseAnalytics
     private lateinit var navHostFragment: Fragment
+    private lateinit var adView: AdView
     private var isAdLoaded = false
 
     @Inject
@@ -58,7 +63,6 @@ class AuthActivity : LocalizationActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityAuthBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         firebaseAnalytics = FirebaseAnalytics.getInstance(this)
         adRequest = AdRequest.Builder().build()
         inIt()
@@ -84,16 +88,14 @@ class AuthActivity : LocalizationActivity() {
             }
             if (destination.id == R.id.onboardingFragment) {
                 setStatusBarColor(R.color.colorPrimary)
-                if (isAdLoaded){
-                    stopShimmer()
-                    binding.mainBannerAdView.visible()
+                if (isAdLoaded) {
+                    binding.adContainer.visible()
                 }
             } else if (destination.id == R.id.splashFragment) {
                 setStatusBarColor(R.color.colorPrimary)
             } else {
                 setStatusBarColor(R.color.white)
-                stopShimmer()
-                binding.mainBannerAdView.gone()
+                binding.adContainer.gone()
             }
         }
     }
@@ -213,38 +215,33 @@ class AuthActivity : LocalizationActivity() {
     }
 
     private fun inItAdmob() {
-        stopShimmer()
         if (!preferenceManager.isSubscriptionActive()) {
-            binding.mainBannerAdView.loadAd(adRequest)
+            //make and set the adView
+            adView = AdView(this);
+            adView.adUnitId = AdUtils.getBannerAdId(this);
+            adView.setAdSize(adSize);
+            binding.adContainer.removeAllViews()
+            binding.adContainer.addView(adView)
 
-            if (!NetworkUtils.isNetworkAvailable(this)) {
-                stopShimmer()
-                binding.mainBannerAdView.gone()
-                return
-            }
+            //Request ad
+            adRequest = AdRequest.Builder().build()
+            adView.loadAd(adRequest)
 
-            binding.mainBannerAdView.adListener = object : AdListener() {
+            adView.adListener = object : AdListener() {
                 override fun onAdLoaded() {
                     isAdLoaded = true
                 }
 
                 override fun onAdFailedToLoad(adError: LoadAdError) {
                     isAdLoaded = false
+                    binding.adContainer.gone()
                     Log.d(Constants.TAG, adError.message)
-                    stopShimmer()
-                    binding.mainBannerAdView.gone()
                 }
             }
         } else {
             isAdLoaded = false
-            stopShimmer()
-            binding.mainBannerAdView.gone()
+            binding.adContainer.gone()
         }
-    }
-
-    private fun stopShimmer() {
-        binding.adShimmer.stopShimmer()
-        binding.adShimmer.gone()
     }
 
 
@@ -271,7 +268,6 @@ class AuthActivity : LocalizationActivity() {
 
     private fun startMainActivityFromGuestToLogin() {
         Constants.isComingToAuthFromGuestToSignIn = false
-        Flags.isComingBackFromAuth = true
         val intent = Intent(this, MainActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
         startActivity(intent)
@@ -290,4 +286,34 @@ class AuthActivity : LocalizationActivity() {
         WindowCompat.setDecorFitsSystemWindows(window, true)
         window.statusBarColor = getColor(colorResId)
     }
+
+    override fun onResume() {
+        super.onResume()
+        //this flag is being set to true in AdUtils.kt when ad is called for show
+        if (Flags.isComingFromInterstitialAdClose) {
+            Flags.isComingFromInterstitialAdClose = false
+            onInterstitialAdClosed()
+        }
+    }
+
+    private fun onInterstitialAdClosed() {
+        //As the subscription fragment only come on auth activity when user is onboarding first time
+        //so we now this only going to happen in above stated way we are navigation to onboarding fragment
+        navHostFragment.findNavController().navigate(R.id.action_subscriptionFragment2_to_onboardingFragment)
+    }
+
+    private val adSize: AdSize
+        get() {
+            val displayMetrics = resources.displayMetrics
+            val adWidthPixels =
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                    val windowMetrics: WindowMetrics = this.windowManager.currentWindowMetrics
+                    windowMetrics.bounds.width()
+                } else {
+                    displayMetrics.widthPixels
+                }
+            val density = displayMetrics.density
+            val adWidth = (adWidthPixels / density).toInt()
+            return AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(this, adWidth)
+        }
 }

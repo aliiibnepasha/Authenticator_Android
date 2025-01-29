@@ -9,7 +9,6 @@ import com.google.android.gms.ads.FullScreenContentCallback
 import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.appopen.AppOpenAd
 import com.google.android.gms.ads.appopen.AppOpenAd.AppOpenAdLoadCallback
-import com.husnain.authy.R
 import com.husnain.authy.utls.Constants
 import java.util.concurrent.TimeUnit
 
@@ -24,7 +23,7 @@ class AppOpenAdManager(private val application: Application) {
 
         AppOpenAd.load(
             application,
-            application.resources.getString(R.string.admob_app_open_ad_unit_id_release),
+            AdUtils.getAppOpenAdId(application),
             AdRequest.Builder().build(),
             object : AppOpenAdLoadCallback() {
                 override fun onAdLoaded(ad: AppOpenAd) {
@@ -34,7 +33,6 @@ class AppOpenAdManager(private val application: Application) {
 
                 override fun onAdFailedToLoad(loadAdError: LoadAdError) {
                     Log.d(Constants.TAG,"app open ad error = ${loadAdError.message}")
-                    // Optional: Log error for debugging
                 }
             }
         )

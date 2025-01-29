@@ -5,8 +5,6 @@ import android.app.Application
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
-import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
 import android.os.Bundle
 import android.util.Log
 import android.view.WindowManager
@@ -21,19 +19,17 @@ import com.husnain.authy.ui.fragment.main.subscription.SubscriptionFragment
 import com.husnain.authy.utls.Constants
 import com.husnain.authy.utls.admob.AppOpenAdManager
 import dagger.hilt.android.HiltAndroidApp
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import java.lang.ref.WeakReference
 import java.util.Locale
 import javax.inject.Inject
 
 @HiltAndroidApp
-class App : LocalizationApplication(), Application.ActivityLifecycleCallbacks {
+class App : LocalizationApplication(){
     lateinit var appOpenAdManager: AppOpenAdManager
     private val activityList: MutableList<Activity> = mutableListOf()
     var isScreenshotRestricted: Boolean = false
     private var currentActivity: WeakReference<MainActivity>? = null
-
+    var isFreshStart: Boolean = true
     @Inject
     lateinit var preferenceManager: PreferenceManager
 
@@ -48,11 +44,11 @@ class App : LocalizationApplication(), Application.ActivityLifecycleCallbacks {
         isScreenshotRestricted = preferenceManager.isAllowScreenShots()
 
         //Admob
-        val backgroundScope = CoroutineScope(Dispatchers.IO)
         MobileAds.initialize(this@App) {}
         appOpenAdManager = AppOpenAdManager(this)
-        appOpenAdManager.loadAd()
-        registerActivityLifecycleCallbacks(this)
+        if (!preferenceManager.isSubscriptionActive()){
+            appOpenAdManager.loadAd()
+        }
     }
 
     fun registerMainActivity(activity: MainActivity) {
@@ -63,11 +59,23 @@ class App : LocalizationApplication(), Application.ActivityLifecycleCallbacks {
         currentActivity = null
     }
 
+    /**
+     * AppLifecycleListener is responsible for observing the app's lifecycle events.
+     * It manages actions based on whether the app is starting fresh or coming back from the background.
+     *
+     * - onStart: Checks if the app is starting fresh or resuming from the background. If not fresh, it shows the app open ad
+     *   if conditions (e.g., subscription not active) are met.
+     * - onStop: Loads a new app open ad when the app is sent to the background.
+     */
+
     inner class AppLifecycleListener : DefaultLifecycleObserver {
         override fun onStart(owner: LifecycleOwner) {
             super.onStart(owner)
-            Log.d(Constants.TAG, "foreground")
-
+            Log.d(Constants.TAG, "isFreshStart = $isFreshStart")
+            if (isFreshStart){
+                isFreshStart = false
+                return
+            }
             currentActivity?.get()?.let { mainActivity ->
                 if (!mainActivity.preferenceManager.isSubscriptionActive() &&
                     mainActivity.navHostFragment.isAdded &&
@@ -75,7 +83,9 @@ class App : LocalizationApplication(), Application.ActivityLifecycleCallbacks {
                     mainActivity.navHostFragment.childFragmentManager.fragments.first() !is SubscriptionFragment
                 ) {
                     mainActivity.runOnUiThread {
-                        appOpenAdManager.showAdIfAvailableFromFragment(mainActivity) {}
+                        appOpenAdManager.showAdIfAvailableFromFragment(mainActivity) {
+                            appOpenAdManager.loadAd()
+                        }
                     }
                 }
             }
@@ -83,7 +93,6 @@ class App : LocalizationApplication(), Application.ActivityLifecycleCallbacks {
 
         override fun onStop(owner: LifecycleOwner) {
             super.onStop(owner)
-            appOpenAdManager.loadAd()
             Log.d(Constants.TAG, "background")
         }
     }
@@ -141,21 +150,4 @@ class App : LocalizationApplication(), Application.ActivityLifecycleCallbacks {
             }
         }
     }
-
-    private fun isNetworkAvailable(): Boolean {
-        val connectivityManager =
-            getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val network = connectivityManager.activeNetwork
-        val capabilities = connectivityManager.getNetworkCapabilities(network)
-        return capabilities?.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) == true
-    }
-
-    //Lifecycle events for admob open app ad
-    override fun onActivityResumed(activity: Activity) {}
-    override fun onActivityPaused(activity: Activity) {}
-    override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {}
-    override fun onActivityStarted(activity: Activity) {}
-    override fun onActivityStopped(activity: Activity) {}
-    override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {}
-    override fun onActivityDestroyed(activity: Activity) {}
 }

@@ -20,10 +20,14 @@ class WebViewFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentWebViewBinding.inflate(inflater, container, false)
-        setupUI()
+
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setupUI()
+    }
     private fun setupUI() {
         setupHeader()
         setupWebView()
@@ -64,9 +68,11 @@ class WebViewFragment : Fragment() {
     }
 
     private fun updateProgressIndicator(progress: Int) {
-        binding.linearProgressIndicator.apply {
-            visibility = if (progress == 100) View.GONE else View.VISIBLE
-            this.progress = progress
+        if (isAdded && _binding != null){
+            binding.linearProgressIndicator.apply {
+                visibility = if (progress == 100) View.GONE else View.VISIBLE
+                this.progress = progress
+            }
         }
     }
 
