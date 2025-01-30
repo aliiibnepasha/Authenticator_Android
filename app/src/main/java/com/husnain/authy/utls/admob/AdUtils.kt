@@ -32,6 +32,7 @@ object AdUtils {
             AdRequest.Builder().build(),
             object : InterstitialAdLoadCallback() {
                 override fun onAdLoaded(ad: InterstitialAd) {
+                    Log.d(Constants.TAG, "interstial ad on success")
                     interstitialAd = ad
                     onAdLoadStatus(true)
                 }

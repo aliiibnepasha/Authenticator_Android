@@ -11,6 +11,7 @@ import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
+import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.husnain.authy.R
 import com.husnain.authy.databinding.FragmentSplashBinding
@@ -47,8 +48,8 @@ class SplashFragment : Fragment() {
         if (Constants.isComingToAuthFromGuest) {
             Constants.isComingToAuthFromGuest = false
             navigate(R.id.action_splashFragment_to_signupFragment)
-        }else{
-            if (!preferenceManager.isSubscriptionActive()){
+        } else {
+            if (!preferenceManager.isSubscriptionActive()) {
                 AdUtils.loadInterstitialAd(requireActivity()) { isAdLoaded ->
                     if (isAdLoaded) {
                         init()
@@ -56,7 +57,7 @@ class SplashFragment : Fragment() {
                         init()
                     }
                 }
-            }else{
+            } else {
                 binding.root.postDelayed(Runnable {
                     init()
                 }, 1500)
@@ -68,7 +69,7 @@ class SplashFragment : Fragment() {
     private fun init() {
         Flags.isComingFromSplash = true
         if (!preferenceManager.isOnboardingFinished()) {
-            navigate(R.id.action_splashFragment_to_subscriptionFragmentAuth)
+            findNavController().navigate(R.id.action_splashFragment_to_subscriptionFragmentAuth)
         } else {
             preferenceManager.saveIsToShowSubsScreenAsDialog(true)
             handleUser()
@@ -88,28 +89,12 @@ class SplashFragment : Fragment() {
                 }
 
                 else -> {
-                    delayAndNavigate()
+                    goToMainActivity()
                 }
             }
         } else {
-            delayAndNavigate()
+            goToMainActivity()
         }
-    }
-
-    private fun delayAndNavigate() {
-//        binding.root.postDelayed({
-//            if (preferenceManager.isGuestUser()) {
-//                goToMainActivity()
-//            } else {
-//                if (isUserLogedIn()) {
-//                    goToMainActivity()
-//                } else {
-//                    navigate(R.id.action_splashFragment_to_signupFragment)
-//                }
-//            }
-        goToMainActivity()
-
-//        }, 1500)
     }
 
     private fun checkForBiometricLogin() {
@@ -117,15 +102,7 @@ class SplashFragment : Fragment() {
             showBiometricPrompt(
                 activity = requireActivity(),
                 onSuccess = {
-                    if (preferenceManager.isGuestUser()) {
-                        goToMainActivity()
-                    } else {
-                        if (isUserLogedIn()) {
-                            goToMainActivity()
-                        } else {
-                            navigate(R.id.action_splashFragment_to_signupFragment)
-                        }
-                    }
+                    goToMainActivity()
                 },
                 onFailure = {
                     showCustomToast("Something went wrong!")

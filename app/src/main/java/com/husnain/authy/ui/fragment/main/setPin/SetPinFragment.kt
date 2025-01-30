@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
 import com.google.firebase.auth.FirebaseAuth
 import com.husnain.authy.R
 import com.husnain.authy.databinding.FragmentSetPinBinding
@@ -15,12 +14,9 @@ import com.husnain.authy.ui.activities.MainActivity
 import com.husnain.authy.utls.BackPressedExtensions.goBackPressed
 import com.husnain.authy.utls.Constants
 import com.husnain.authy.utls.CustomToast.showCustomToast
-import com.husnain.authy.utls.navigate
 import com.husnain.authy.utls.popBack
 import com.husnain.authy.utls.startActivity
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import java.util.Locale
 import javax.inject.Inject
 
@@ -30,8 +26,10 @@ class SetPinFragment : Fragment() {
     private val binding get() = _binding!!
     private var enteredPin = ""
     private lateinit var pinDots: List<ImageView>
+
     @Inject
     lateinit var preferenceManager: PreferenceManager
+
     @Inject
     lateinit var auth: FirebaseAuth
     private var isFromSignupToPin: Boolean = false
@@ -123,17 +121,8 @@ class SetPinFragment : Fragment() {
     private fun onPinEntered(pin: String) {
         if (isFromSignupToPin) {
             if (pin == preferenceManager.getPin()) {
-                if (preferenceManager.isGuestUser()){
-                    startActivity(MainActivity::class.java)
-                    requireActivity().finish()
-                }else{
-                    if (auth.currentUser != null){
-                        startActivity(MainActivity::class.java)
-                        requireActivity().finish()
-                    }else{
-                        navigate(R.id.action_setPinFragment2_to_signupFragment)
-                    }
-                }
+                startActivity(MainActivity::class.java)
+                requireActivity().finish()
             } else {
                 handleWrongPin()
             }

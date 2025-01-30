@@ -31,10 +31,10 @@ import com.husnain.authy.preferences.PreferenceManager
 import com.husnain.authy.ui.fragment.auth.SigninFragment
 import com.husnain.authy.ui.fragment.auth.SignupFragment
 import com.husnain.authy.ui.fragment.main.subscription.SubscriptionFragment
+import com.husnain.authy.ui.fragment.onboarding.OnboardingFragment
 import com.husnain.authy.utls.BackPressedExtensions.goBackPressed
 import com.husnain.authy.utls.Constants
 import com.husnain.authy.utls.Flags
-import com.husnain.authy.utls.NetworkUtils
 import com.husnain.authy.utls.admob.AdUtils
 import com.husnain.authy.utls.gone
 import com.husnain.authy.utls.visible
@@ -259,6 +259,10 @@ class AuthActivity : LocalizationActivity() {
                     startMainActivityFromGuestToLogin()
                 }
 
+                is OnboardingFragment -> {
+                    moveTaskToBack(true)
+                }
+
                 else -> {
                     navHostFragment.findNavController().popBackStack()
                 }
@@ -289,7 +293,6 @@ class AuthActivity : LocalizationActivity() {
 
     override fun onResume() {
         super.onResume()
-        //this flag is being set to true in AdUtils.kt when ad is called for show
         if (Flags.isComingFromInterstitialAdClose) {
             Flags.isComingFromInterstitialAdClose = false
             onInterstitialAdClosed()
@@ -297,10 +300,20 @@ class AuthActivity : LocalizationActivity() {
     }
 
     private fun onInterstitialAdClosed() {
-        //As the subscription fragment only come on auth activity when user is onboarding first time
-        //so we now this only going to happen in above stated way we are navigation to onboarding fragment
-        navHostFragment.findNavController().navigate(R.id.action_subscriptionFragment2_to_onboardingFragment)
+        try {
+            val navController = navHostFragment.findNavController()
+            val action = navController.currentDestination?.getAction(R.id.action_subscriptionFragment2_to_onboardingFragment)
+
+            if (action != null) {
+                navController.navigate(R.id.action_subscriptionFragment2_to_onboardingFragment)
+            } else {
+                navController.navigate(R.id.onboardingFragment)
+            }
+        } catch (e: Exception) {
+            navHostFragment.findNavController().navigate(R.id.onboardingFragment)
+        }
     }
+
 
     private val adSize: AdSize
         get() {

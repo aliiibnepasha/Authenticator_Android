@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.android.billingclient.api.BillingClient
 import com.android.billingclient.api.BillingClientStateListener
 import com.android.billingclient.api.BillingFlowParams
@@ -58,6 +59,7 @@ class SubscriptionFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentSubscriptionBinding.inflate(inflater, container, false)
+        Log.d(Constants.TAG, "landed on subscription fragment")
         if (!Flags.isComingFromSplash && !preferenceManager.isSubscriptionActive()) {
             vmSubscription.loadAd(requireActivity())
         }
@@ -74,9 +76,10 @@ class SubscriptionFragment : Fragment() {
              */
             if (Flags.isComingFromSplash) {
                 Flags.isComingFromSplash = false
+                Log.d(Constants.TAG, "interstial ad on showed")
                 AdUtils.showInterstitialAdWithCallback(requireActivity(), failureCallback = {
                     if (!preferenceManager.isOnboardingFinished()) {
-                        navigate(R.id.action_subscriptionFragment2_to_onboardingFragment)
+                        findNavController().navigate(R.id.action_subscriptionFragment2_to_onboardingFragment)
                     } else {
                         popBack()
                     }
@@ -355,8 +358,22 @@ class SubscriptionFragment : Fragment() {
         }
     }
 
+    override fun onPause() {
+        Log.d(Constants.TAG, "Subscription screen onPause")
+        super.onPause()
+    }
+
+    override fun onResume() {
+        super.onResume()
+    }
+
+    override fun onStop() {
+        Log.d(Constants.TAG, "Subscription screen onStop")
+        super.onStop()
+    }
     override fun onDestroyView() {
         super.onDestroyView()
+        Log.d(Constants.TAG, "Subscription screen onDestroy")
         if (::billingClient.isInitialized) {
             billingClient.endConnection()
         }

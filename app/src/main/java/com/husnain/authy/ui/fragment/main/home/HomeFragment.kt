@@ -3,6 +3,7 @@ package com.husnain.authy.ui.fragment.main.home
 import android.Manifest
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -217,6 +218,7 @@ class HomeFragment : Fragment() {
     private fun autoScreensStartup() {
         when {
             isToShowSubscriptionScreen() -> {
+                Log.d(Constants.TAG, "Going to subscription screen form home")
                 navigate(R.id.action_homeFragment_to_subscriptionFragment)
             }
 
