@@ -68,7 +68,7 @@ class SubscriptionFragment : Fragment() {
         return binding.root
     }
 
-    private fun setUpObservers() {
+    private fun onCrossClick() {
         if (!preferenceManager.isSubscriptionActive()) {
             /**
              * - Shows the preloaded ad if launched from the splash screen.
@@ -122,7 +122,7 @@ class SubscriptionFragment : Fragment() {
 
     private fun setOnClickListener() {
         binding.imgCross.setOnClickListener {
-            setUpObservers()
+            onCrossClick()
         }
         binding.btnCheckout.setOnClickListener {
             if (selectedProductId == Constants.lifeTimePorductId) {
