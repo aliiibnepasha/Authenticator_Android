@@ -24,6 +24,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.zxing.BinaryBitmap
 import com.google.zxing.LuminanceSource
@@ -59,8 +60,8 @@ class AddAccountFragment : Fragment() {
     private var _binding: FragmentAddAccountBinding? = null
     private val binding get() = _binding!!
     private lateinit var cameraExecutor: ExecutorService
-    @Inject
-    lateinit var preferenceManager: PreferenceManager
+    @Inject lateinit var preferenceManager: PreferenceManager
+    @Inject lateinit var firebaseAnalytics: FirebaseAnalytics
     private val vmAddAccount: VmAddAccount by viewModels()
     private var isComingFromSetting = false
 
@@ -188,8 +189,17 @@ class AddAccountFragment : Fragment() {
         }
     }
 
+    private fun logQRCodeScanned() {
+        val bundle = Bundle().apply {
+            putString("scan_result", "success")
+        }
+        firebaseAnalytics.logEvent("qr_code_scanned", bundle)
+    }
+
+
     private fun handleQrContent(qrContent: String?) {
         if (qrContent != null) {
+            logQRCodeScanned()
             if (qrContent.startsWith("otpauth://") || qrContent.startsWith("otpauth-migration://")) {
                 handleTOTPUri(qrContent)
             } else {

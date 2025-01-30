@@ -1,12 +1,15 @@
 package com.husnain.authy.repositories
 
 import android.content.Context
+import android.os.Bundle
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.ktx.Firebase
 import com.husnain.authy.R
 import com.husnain.authy.data.room.daos.DaoRecentlyDeleted
 import com.husnain.authy.data.room.daos.DaoTotp
@@ -28,6 +31,7 @@ class TotpRepository @Inject constructor(
     private val auth: FirebaseAuth,
     private val preferenceManager: PreferenceManager
 ) {
+    val firebaseAnalytics = Firebase.analytics
     private val _totpListState = MutableLiveData<DataState<List<EntityTotp>>>()
     val totpListState: LiveData<DataState<List<EntityTotp>>> = _totpListState
 
@@ -56,11 +60,19 @@ class TotpRepository @Inject constructor(
         _insertStateForSync.postValue(DataState.Loading())
         try {
             daoTotp.insertOrReplaceTotpData(data)
+            logTOTPAdded()
             _insertState.postValue(DataState.Success(Unit))
             SyncServiceUtil.syncIfUserValidForSyncing(context,auth.currentUser?.uid,preferenceManager)
         } catch (e: Exception) {
             _insertState.postValue(DataState.Error(context.getString(R.string.string_something_went_wrong_please_try_again)))
         }
+    }
+
+    private fun logTOTPAdded() {
+        val bundle = Bundle().apply {
+            putString("totp_status", "success")
+        }
+        firebaseAnalytics.logEvent("totp_added", bundle)
     }
 
     suspend fun deleteTotp(secret: String) {
