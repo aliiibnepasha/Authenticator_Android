@@ -18,6 +18,7 @@ import com.android.billingclient.api.Purchase
 import com.android.billingclient.api.PurchasesUpdatedListener
 import com.android.billingclient.api.QueryProductDetailsParams
 import com.android.billingclient.api.queryProductDetails
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.husnain.authy.R
 import com.husnain.authy.data.models.ModelSubscription
 import com.husnain.authy.databinding.FragmentSubscriptionBinding
@@ -48,6 +49,7 @@ class SubscriptionFragment : Fragment() {
     lateinit var preferenceManager: PreferenceManager
     private lateinit var billingClient: BillingClient
     private lateinit var adapter: AdapterSubscription
+    @Inject lateinit var firebaseAnalytics: FirebaseAnalytics
     private var selectedProductId = Constants.weaklySubId
     private val productDetailsMap = mutableMapOf<String, ProductDetails>()
     private val vmSubscription: VmSubscription by viewModels()
@@ -301,6 +303,7 @@ class SubscriptionFragment : Fragment() {
 
     private fun handleLifetimePurchase(purchase: Purchase) {
         if (purchase.purchaseState == Purchase.PurchaseState.PURCHASED) {
+            logPurchaseSuccess()
             preferenceManager.saveSubscriptionActive(true)
             preferenceManager.saveLifeTimeAccessActive(true)
             if (!preferenceManager.isOnboardingFinished()) {
@@ -316,6 +319,7 @@ class SubscriptionFragment : Fragment() {
 
     private fun handleSubscribe(purchase: Purchase) {
         if (purchase.purchaseState == Purchase.PurchaseState.PURCHASED) {
+            logSubscriptionSuccess()
             preferenceManager.saveSubscriptionActive(true)
             if (!preferenceManager.isOnboardingFinished()) {
                 navigate(R.id.action_subscriptionFragment2_to_onboardingFragment)
@@ -370,6 +374,19 @@ class SubscriptionFragment : Fragment() {
     override fun onStop() {
         Log.d(Constants.TAG, "Subscription screen onStop")
         super.onStop()
+    }
+
+    private fun logSubscriptionSuccess() {
+        val bundle = Bundle().apply {
+            putString("subscription_result", "success")
+        }
+        firebaseAnalytics.logEvent("subscription_activated", bundle)
+    }
+    private fun logPurchaseSuccess() {
+        val bundle = Bundle().apply {
+            putString("lifetime_pro_result", "success")
+        }
+        firebaseAnalytics.logEvent("life_pro_purchases", bundle)
     }
     override fun onDestroyView() {
         super.onDestroyView()
