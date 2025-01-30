@@ -52,7 +52,7 @@ object AdUtils {
      * indicating the app is resuming after the ad.
      */
 
-    fun showInterstitialAdWithCallback(activity: Activity,failureCallback:() -> Unit) {
+    fun showInterstitialAdWithCallback(activity: Activity,failureCallback:() -> Unit,showCallback:() -> Unit) {
         if (interstitialAd != null) {
             interstitialAd?.fullScreenContentCallback = object : FullScreenContentCallback() {
                 override fun onAdDismissedFullScreenContent() {
@@ -67,6 +67,7 @@ object AdUtils {
 
                 override fun onAdShowedFullScreenContent() {
                     Flags.isComingFromInterstitialAdClose = true
+                    showCallback()
                 }
             }
             interstitialAd?.show(activity)

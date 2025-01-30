@@ -83,7 +83,10 @@ class SubscriptionFragment : Fragment() {
                     } else {
                         popBack()
                     }
-                })
+                }, showCallback = {
+                    popBack()
+                }
+                )
             } else {
                 /**
                  * Observes the `isAdLoaded` status and performs actions based on its value.
@@ -105,7 +108,10 @@ class SubscriptionFragment : Fragment() {
                                 } else {
                                     popBack()
                                 }
-                            })
+                            }, showCallback = {
+                                popBack()
+                            }
+                            )
                         }
 
                         false -> {
