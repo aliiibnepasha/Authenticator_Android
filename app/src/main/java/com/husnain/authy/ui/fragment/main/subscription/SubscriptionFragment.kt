@@ -49,7 +49,8 @@ class SubscriptionFragment : Fragment() {
     lateinit var preferenceManager: PreferenceManager
     private lateinit var billingClient: BillingClient
     private lateinit var adapter: AdapterSubscription
-    @Inject lateinit var firebaseAnalytics: FirebaseAnalytics
+    @Inject
+    lateinit var firebaseAnalytics: FirebaseAnalytics
     private var selectedProductId = Constants.weaklySubId
     private val productDetailsMap = mutableMapOf<String, ProductDetails>()
     private val vmSubscription: VmSubscription by viewModels()
@@ -79,14 +80,12 @@ class SubscriptionFragment : Fragment() {
             if (Flags.isComingFromSplash) {
                 Flags.isComingFromSplash = false
                 Log.d(Constants.TAG, "interstial ad on showed")
-                AdUtils.showInterstitialAdWithCallback(requireActivity(), failureCallback = {
+                AdUtils.showInterstitialAdWithCallback(requireActivity(), failureShowCallback = {
                     if (!preferenceManager.isOnboardingFinished()) {
-                        findNavController().navigate(R.id.action_subscriptionFragment2_to_onboardingFragment)
+                        findNavController().navigate(R.id.onboardingFragment)
                     } else {
                         popBack()
                     }
-                }, showCallback = {
-                    popBack()
                 }
                 )
             } else {
@@ -104,15 +103,15 @@ class SubscriptionFragment : Fragment() {
 
                         true -> {
                             binding.mainLoadingView.stop()
-                            AdUtils.showInterstitialAdWithCallback(requireActivity(), failureCallback = {
-                                if (!preferenceManager.isOnboardingFinished()) {
-                                    navigate(R.id.action_subscriptionFragment2_to_onboardingFragment)
-                                } else {
-                                    popBack()
+                            AdUtils.showInterstitialAdWithCallback(
+                                requireActivity(),
+                                failureShowCallback = {
+                                    if (!preferenceManager.isOnboardingFinished()) {
+                                        navigate(R.id.onboardingFragment)
+                                    } else {
+                                        popBack()
+                                    }
                                 }
-                            }, showCallback = {
-                                popBack()
-                            }
                             )
                         }
 
@@ -388,12 +387,14 @@ class SubscriptionFragment : Fragment() {
         }
         firebaseAnalytics.logEvent("subscription_activated", bundle)
     }
+
     private fun logPurchaseSuccess() {
         val bundle = Bundle().apply {
             putString("lifetime_pro_result", "success")
         }
         firebaseAnalytics.logEvent("life_pro_purchases", bundle)
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         Log.d(Constants.TAG, "Subscription screen onDestroy")

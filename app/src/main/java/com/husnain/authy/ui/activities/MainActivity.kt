@@ -27,7 +27,6 @@ import com.husnain.authy.ui.fragment.main.localization.LocalizeFragment
 import com.husnain.authy.ui.fragment.main.subscription.SubscriptionFragment
 import com.husnain.authy.utls.BackPressedExtensions.goBackPressed
 import com.husnain.authy.utls.Constants
-import com.husnain.authy.utls.Flags
 import com.husnain.authy.utls.NetworkUtils
 import com.husnain.authy.utls.admob.AdUtils
 import com.husnain.authy.utls.gone
@@ -173,19 +172,6 @@ class MainActivity : LocalizationActivity() {
                 navHostFragment.findNavController().popBackStack()
             }
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        //This flag is being set to true in AdUtils.kt when ad is called for show
-        if (Flags.isComingFromInterstitialAdClose) {
-            Flags.isComingFromInterstitialAdClose = false
-            onInterstitialAdClosed()
-        }
-    }
-
-    private fun onInterstitialAdClosed() {
-        navHostFragment.findNavController().popBackStack()
     }
 
     fun changeLanguage(language: String) {

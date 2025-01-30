@@ -52,7 +52,7 @@ object AdUtils {
      * indicating the app is resuming after the ad.
      */
 
-    fun showInterstitialAdWithCallback(activity: Activity,failureCallback:() -> Unit,showCallback:() -> Unit) {
+    fun showInterstitialAdWithCallback(activity: Activity,failureShowCallback:() -> Unit) {
         if (interstitialAd != null) {
             interstitialAd?.fullScreenContentCallback = object : FullScreenContentCallback() {
                 override fun onAdDismissedFullScreenContent() {
@@ -62,22 +62,22 @@ object AdUtils {
                 override fun onAdFailedToShowFullScreenContent(adError: AdError) {
                     interstitialAd = null
                     Flags.isComingFromInterstitialAdClose = false
-                    failureCallback.invoke()
+                    failureShowCallback.invoke()
                 }
 
                 override fun onAdShowedFullScreenContent() {
                     Flags.isComingFromInterstitialAdClose = true
-                    showCallback()
+                    failureShowCallback()
                 }
             }
             interstitialAd?.show(activity)
         } else {
             Flags.isComingFromInterstitialAdClose = false
-            failureCallback.invoke()
+            failureShowCallback.invoke()
         }
     }
 
-    fun getInterstitialAdId(context: Context): String {
+    private fun getInterstitialAdId(context: Context): String {
         return if (isDebug) {
             context.getString(R.string.admob_interstitial_ad_id_test)
         } else {

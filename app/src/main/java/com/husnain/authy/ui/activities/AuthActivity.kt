@@ -34,7 +34,6 @@ import com.husnain.authy.ui.fragment.main.subscription.SubscriptionFragment
 import com.husnain.authy.ui.fragment.onboarding.OnboardingFragment
 import com.husnain.authy.utls.BackPressedExtensions.goBackPressed
 import com.husnain.authy.utls.Constants
-import com.husnain.authy.utls.Flags
 import com.husnain.authy.utls.admob.AdUtils
 import com.husnain.authy.utls.gone
 import com.husnain.authy.utls.visible
@@ -289,29 +288,6 @@ class AuthActivity : LocalizationActivity() {
     private fun setStatusBarColor(colorResId: Int) {
         WindowCompat.setDecorFitsSystemWindows(window, true)
         window.statusBarColor = getColor(colorResId)
-    }
-
-    override fun onResume() {
-        super.onResume()
-        if (Flags.isComingFromInterstitialAdClose) {
-            Flags.isComingFromInterstitialAdClose = false
-            onInterstitialAdClosed()
-        }
-    }
-
-    private fun onInterstitialAdClosed() {
-        try {
-            val navController = navHostFragment.findNavController()
-            val action = navController.currentDestination?.getAction(R.id.action_subscriptionFragment2_to_onboardingFragment)
-
-            if (action != null) {
-                navController.navigate(R.id.action_subscriptionFragment2_to_onboardingFragment)
-            } else {
-                navController.navigate(R.id.onboardingFragment)
-            }
-        } catch (e: Exception) {
-            navHostFragment.findNavController().navigate(R.id.onboardingFragment)
-        }
     }
 
 

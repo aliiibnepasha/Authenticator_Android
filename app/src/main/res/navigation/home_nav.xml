@@ -50,11 +50,11 @@
             android:id="@+id/action_homeFragment_to_searchFragment"
             app:destination="@id/searchFragment" />
         <action
-            android:id="@+id/action_homeFragment_to_subscriptionFragment"
-            app:destination="@id/subscriptionFragment" />
-        <action
             android:id="@+id/action_homeFragment_to_addAccountFragment"
             app:destination="@id/addAccountFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_subscriptionFragment"
+            app:destination="@id/subscriptionFragment" />
     </fragment>
     <fragment
         android:id="@+id/addAccountManuallyFragment"
