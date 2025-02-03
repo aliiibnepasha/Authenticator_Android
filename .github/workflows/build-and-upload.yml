@@ -3,7 +3,7 @@ name: Build and Upload Debug APK
 on:
   push:
     branches:
-      - master # Change this to your branch name if needed
+      - master  # Change this to your branch name if needed
 
 jobs:
   build:
@@ -26,8 +26,8 @@ jobs:
         run: ./gradlew assembleDebug
 
       - name: Upload APK to Google Drive
-        uses: satackey/action-google-drive-upload@v1
+        uses: marvinpinto/action-google-drive-upload@v1
         with:
-          credentials: ${{ secrets.GDRIVE_CREDENTIALS }}
-          folderId: "12eO5gP49IbeDTD_1TexBqcMxrc-jNiZJ" # Replace with your actual Google Drive folder ID
-          file: "app/build/outputs/apk/debug/app-debug.apk"
+          service_account_credentials: ${{ secrets.GDRIVE_CREDENTIALS }}
+          parent_folder_id: "12eO5gP49IbeDTD_1TexBqcMxrc-jNiZJ" # Replace with your Google Drive folder ID
+          files: "app/build/outputs/apk/debug/app-debug.apk"
