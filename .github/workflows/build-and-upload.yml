@@ -25,9 +25,16 @@ jobs:
       - name: Build Debug APK
         run: ./gradlew assembleDebug
 
+      - name: Install gdrive CLI
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y wget
+          wget -O gdrive.tar.gz https://github.com/prasmussen/gdrive/releases/download/2.1.1/gdrive-linux-x64
+          chmod +x gdrive-linux-x64
+          sudo mv gdrive-linux-x64 /usr/local/bin/gdrive
+
+      - name: Authenticate gdrive
+        run: echo "${{ secrets.GDRIVE_CREDENTIALS }}" > gdrive_service.json
+
       - name: Upload APK to Google Drive
-        uses: marvinpinto/action-google-drive-upload@v1
-        with:
-          service_account_credentials: ${{ secrets.GDRIVE_CREDENTIALS }}
-          parent_folder_id: "12eO5gP49IbeDTD_1TexBqcMxrc-jNiZJ" # Replace with your Google Drive folder ID
-          files: "app/build/outputs/apk/debug/app-debug.apk"
+        run: gdrive upload --parent 12eO5gP49IbeDTD_1TexBqcMxrc-jNiZJ app/build/outputs/apk/debug/app-debug.apk
