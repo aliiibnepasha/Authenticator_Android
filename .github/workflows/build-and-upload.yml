@@ -3,7 +3,7 @@ name: Build and Upload Debug APK
 on:
   push:
     branches:
-      - master
+      - master  # Change this to your branch name if needed
 
 jobs:
   build:
@@ -19,25 +19,19 @@ jobs:
           distribution: 'zulu'
           java-version: '17'
 
-      - name: Cache Gradle dependencies
-        uses: actions/cache@v3
-        with:
-          path: ~/.gradle/caches
-          key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-          restore-keys: |
-            gradle-${{ runner.os }}-
-
       - name: Grant execute permission to Gradle wrapper
         run: chmod +x gradlew
 
-      - name: Build Debug APK (Optimized)
-        run: ./gradlew assembleDebug --no-daemon --max-workers=2 --offline --quiet
+      - name: Build Debug APK
+        run: ./gradlew assembleDebug
 
-      - name: Cache gdrive CLI
-        uses: actions/cache@v3
-        with:
-          path: /usr/local/bin/gdrive
-          key: gdrive-${{ runner.os }}
+      - name: Install gdrive CLI
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y wget
+          wget -O gdrive.tar.gz https://github.com/prasmussen/gdrive/releases/download/2.1.1/gdrive-linux-x64
+          chmod +x gdrive-linux-x64
+          sudo mv gdrive-linux-x64 /usr/local/bin/gdrive
 
       - name: Authenticate gdrive
         run: echo "${{ secrets.GDRIVE_CREDENTIALS }}" > gdrive_service.json
