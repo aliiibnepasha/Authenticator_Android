@@ -35,9 +35,9 @@ class AdapterLanguages(private val items: List<ModelLanguage>, private val callB
             binding.tvLanguage.text = data.languageName
 
             if (data.langShortType == selectedLang) {
-                binding.tvLanguage.setTextColor(Color.BLUE) // Highlighted color
+                binding.lyLanguage.setBackgroundColor(Color.parseColor("#E6F4F1")) // Highlighted color
             } else {
-                binding.tvLanguage.setTextColor(Color.BLACK) // Default color
+                binding.lyLanguage.setBackgroundColor(Color.WHITE) // Default color
             }
 
             binding.lyLanguage.setOnClickListener {

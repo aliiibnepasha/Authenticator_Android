@@ -90,9 +90,7 @@ class HomeFragment : Fragment() {
 
 
     private fun setOnClickListener() {
-        binding.btnAddNewAccountWhenSomeAccountAdded.setOnClickListener {
-            navigate(R.id.action_homeFragment_to_addAccountFragment)
-        }
+
 
         binding.btnAddAccountFirstTime.setOnClickListener {
             navigate(R.id.action_homeFragment_to_addAccountFragment)
@@ -176,9 +174,9 @@ class HomeFragment : Fragment() {
 
     private fun setupAdapter(data: List<EntityTotp>) {
         if (data.isNotEmpty()) {
-            binding.btnAddAccountFirstTime.gone()
+//            binding.btnAddAccountFirstTime.gone()
             binding.rvHomeTotp.visible()
-            binding.btnAddNewAccountWhenSomeAccountAdded.visible()
+//            binding.btnAddNewAccountWhenSomeAccountAdded.visible()
             binding.lyLinearAddAccountFirstTime.gone()
 
             val dataList = data.map {
@@ -192,7 +190,7 @@ class HomeFragment : Fragment() {
 
             //Long click to show the delete bottom sheet
             adapter.setOnLongClickListener { totpData ->
-                showBottomSheetDialog(getString(R.string.string_delete), onPrimaryClick = {
+                showBottomSheetDialog("Remove this account","move to trash","Remove",true, onPrimaryClick = {
                     vmHome.insertToRecentlyDeleted(
                         RecentlyDeleted(
                             totpData.serviceName,
@@ -209,7 +207,7 @@ class HomeFragment : Fragment() {
             binding.rvHomeTotp.adapter = adapter
         } else {
             binding.rvHomeTotp.gone()
-            binding.btnAddNewAccountWhenSomeAccountAdded.gone()
+//            binding.btnAddNewAccountWhenSomeAccountAdded.gone()
             binding.btnAddAccountFirstTime.visible()
             binding.lyLinearAddAccountFirstTime.visible()
         }

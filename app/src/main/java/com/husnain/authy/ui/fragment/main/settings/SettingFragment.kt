@@ -84,15 +84,11 @@ class SettingFragment : Fragment() {
             if (!isUserLoggedIn) {
                 btnLogout.gone()
                 lyDeleteAccount.gone()
-                tvDontHaveAndAccount.visible()
-                tvSignup.visible()
-                btnLogin.visible()
+
             } else {
                 lyDeleteAccount.visible()
                 btnLogout.visible()
-                tvDontHaveAndAccount.gone()
-                tvSignup.gone()
-                btnLogin.gone()
+
             }
         }
     }
@@ -102,21 +98,6 @@ class SettingFragment : Fragment() {
             popBack()
         }
 
-        //Authentications
-        binding.tvSignup.setOnClickListener {
-            if (preferenceManager.isGuestUser()) {
-                Constants.isComingToAuthFromGuest = true
-                startActivity(AuthActivity::class.java)
-            }
-        }
-        binding.btnLogin.setOnClickListener {
-            if (preferenceManager.isGuestUser()) {
-                Constants.isComingToAuthFromGuest = true
-                //below flag is used to check at signup screen is to take user to login screen directly 
-                Constants.isComingToAuthFromGuestToSignIn = true
-                startActivity(AuthActivity::class.java)
-            }
-        }
 
         //Navto buy premium
         binding.lyGetPremium.setOnClickListener {
@@ -169,7 +150,7 @@ class SettingFragment : Fragment() {
 
         //logout
         binding.btnLogout.setOnClickListener {
-            showBottomSheetDialog(resources.getString(R.string.string_logout), onPrimaryClick = {
+            showBottomSheetDialog(resources.getString(R.string.string_logout),"Are you sure you want to logout","Yes",true, onPrimaryClick = {
                 vmSettings.logout()
             })
         }

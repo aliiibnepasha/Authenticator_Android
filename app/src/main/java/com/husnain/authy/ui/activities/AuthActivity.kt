@@ -90,9 +90,7 @@ class AuthActivity : LocalizationActivity() {
                 if (isAdLoaded) {
                     binding.adContainer.visible()
                 }
-            } else if (destination.id == R.id.splashFragment) {
-                setStatusBarColor(R.color.colorPrimary)
-            } else {
+            }  else {
                 setStatusBarColor(R.color.white)
                 binding.adContainer.gone()
             }

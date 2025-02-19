@@ -7,6 +7,7 @@ import android.view.WindowInsets
 import android.view.WindowInsetsController
 import android.view.WindowMetrics
 import androidx.core.text.layoutDirection
+import androidx.core.view.WindowCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
@@ -130,6 +131,13 @@ class MainActivity : LocalizationActivity() {
             } else {
                 showNavigationBar()
             }
+
+            if (destination.id == R.id.homeFragment) {
+                setStatusBarColor(R.color.colorPrimary)
+            } else {
+                setStatusBarColor(R.color.white)
+            }
+
             when (destination.id) {
                 R.id.homeFragment, R.id.newToolsFragment, R.id.settingFragment -> {
                     if (isAdLoaded) {
@@ -192,4 +200,9 @@ class MainActivity : LocalizationActivity() {
             val adWidth = (adWidthPixels / density).toInt()
             return AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(this, adWidth)
         }
+
+    private fun setStatusBarColor(colorResId: Int) {
+        WindowCompat.setDecorFitsSystemWindows(window, true)
+        window.statusBarColor = getColor(colorResId)
+    }
 }

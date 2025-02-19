@@ -4,51 +4,44 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary"
+    android:background="@color/white"
     tools:context=".ui.fragment.splash.SplashFragment">
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/appCompatImageView13"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/_300sdp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_marginStart="@dimen/_25sdp"
+        android:layout_marginBottom="@dimen/_150sdp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/img_bg_icons_splash" />
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/appCompatImageView14"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_85sdp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/img_top_splash" />
+        app:srcCompat="@drawable/ic_splash_new" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/appCompatTextView16"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="-40dp"
         android:fontFamily="@font/poppins_semibold"
         android:gravity="center"
+        android:layout_marginBottom="@dimen/_30sdp"
         android:text="Protect your accounts"
-        android:textColor="@color/white"
+        android:textColor="@color/colorPrimary"
         android:textSize="40sp"
+        app:layout_constraintBottom_toTopOf="@+id/linearProgressIndicator2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/appCompatImageView14" />
+        app:layout_constraintStart_toStartOf="parent" />
 
-    <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/lottieAnimationViewNoData"
-        android:layout_width="@dimen/_100sdp"
-        android:layout_height="@dimen/_100sdp"
-        android:layout_marginHorizontal="@dimen/_5sdp"
+
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:id="@+id/linearProgressIndicator2"
+        android:layout_width="200dp"
+        android:layout_height="40dp"
+        android:layout_marginBottom="@dimen/_80sdp"
+        android:indeterminate="true"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/appCompatTextView16"
-        app:lottie_autoPlay="true"
-        app:lottie_loop="true"
-        app:lottie_rawRes="@raw/anim_splash_loading" />
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -66,7 +66,7 @@ class AdapterHomeTotp(private var items: List<ModelTotp>) :
         private var updateHandler: Handler? = null
 
         fun bind(data: ModelTotp) {
-            binding.imgLogo.setImageResource(R.drawable.img_baby_brain)
+            binding.imgLogo.setImageResource(R.drawable.ic_otp_avatar)
             binding.tvServiceName.text = data.serviceName
 
             binding.root.setOnLongClickListener {
@@ -83,7 +83,7 @@ class AdapterHomeTotp(private var items: List<ModelTotp>) :
 
                         val remainingSeconds = TotpUtil.getRemainingSeconds()
                         binding.tvCounter.text = remainingSeconds.toString()
-
+                        binding.progressIndicator.progress = remainingSeconds
                         updateHandler?.postDelayed(this, 1000L)
                     } catch (e: Exception) {
                         e.printStackTrace()

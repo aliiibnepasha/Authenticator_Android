@@ -1,9 +1,12 @@
 package com.husnain.authy.ui.fragment.main.addNewAccount
 
 import android.Manifest.permission.CAMERA
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
+import android.hardware.camera2.CameraCharacteristics
+import android.hardware.camera2.CameraManager
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -14,6 +17,7 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.camera.core.Camera
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.Preview
@@ -62,6 +66,8 @@ class AddAccountFragment : Fragment() {
     private lateinit var cameraExecutor: ExecutorService
     @Inject lateinit var preferenceManager: PreferenceManager
     @Inject lateinit var firebaseAnalytics: FirebaseAnalytics
+    private lateinit var camera: Camera
+    private var isFlashOn = false
     private val vmAddAccount: VmAddAccount by viewModels()
     private var isComingFromSetting = false
 
@@ -82,6 +88,15 @@ class AddAccountFragment : Fragment() {
     }
 
     private fun setOnClickListener() {
+        binding.btnFlash.setOnClickListener {
+            if (::camera.isInitialized) {
+                isFlashOn = !isFlashOn  // Toggle state
+                camera.cameraControl.enableTorch(isFlashOn)
+            } else {
+                showCustomToast("Camera not initialized yet")
+            }
+        }
+
         binding.buttonClose.setOnClickListener {
             popBack()
         }
@@ -309,7 +324,8 @@ class AddAccountFragment : Fragment() {
 
         cameraProvider.unbindAll()
         val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
-        cameraProvider.bindToLifecycle(viewLifecycleOwner, cameraSelector, preview, imageAnalysis)
+        camera = cameraProvider.bindToLifecycle(viewLifecycleOwner, cameraSelector, preview, imageAnalysis)
+
     }
 
     private fun onQRCodeScanned(value: String) {
@@ -329,6 +345,30 @@ class AddAccountFragment : Fragment() {
         super.onResume()
         makeFragmentFullScreen()
     }
+
+    private fun getFlashCameraId(cameraManager: CameraManager): String? {
+        for (id in cameraManager.cameraIdList) {
+            val characteristics = cameraManager.getCameraCharacteristics(id)
+            val hasFlash = characteristics.get(CameraCharacteristics.FLASH_INFO_AVAILABLE) ?: false
+            val isBackCamera = characteristics.get(CameraCharacteristics.LENS_FACING) == CameraCharacteristics.LENS_FACING_BACK
+            if (hasFlash && isBackCamera) {
+                return id
+            }
+        }
+        return null
+    }
+
+    private fun toggleFlashlight(context: Context, isOn: Boolean) {
+        val cameraManager = context.getSystemService(Context.CAMERA_SERVICE) as CameraManager
+        val cameraId = getFlashCameraId(cameraManager) ?: return // Get correct back camera ID
+
+        try {
+            cameraManager.setTorchMode(cameraId, isOn)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
 
     override fun onPause() {
         super.onPause()

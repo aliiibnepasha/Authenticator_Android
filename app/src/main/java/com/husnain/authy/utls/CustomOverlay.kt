@@ -5,7 +5,6 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
-import android.graphics.Path
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffXfermode
 import android.graphics.RectF
@@ -54,12 +53,10 @@ class CustomOverlay : LinearLayout {
     override fun isClickable(): Boolean {
         return false
     }
+
     private fun createWindowFrame() {
         // Convert 20 dp to pixels
         val twentyDp = resources.displayMetrics.density * 50
-
-        // Convert 14 dp to pixels for corner radius
-        val cornerRadius = resources.displayMetrics.density * 14
 
         // Initialize the bitmap for the overlay
         windowFrame = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
@@ -81,36 +78,24 @@ class CustomOverlay : LinearLayout {
             // Shift the frame up by 20 dp
             val shiftedY = location[1] - twentyDp
 
-            // Create the inner rectangle with the updated vertical position
+            //  *** ADJUST THE HEIGHT HERE ***
+            val originalFrameHeight = frame.height.toFloat()
+            val extraHeight = resources.displayMetrics.density * 30 // Example: Add 50dp extra height
+            val extendedHeight = originalFrameHeight + extraHeight
+
+
+            // Create the inner rectangle with full width and the same height as the frame, extended
             val innerRectangle = RectF(
-                location[0].toFloat(),
+                0f,  // Full width start
                 shiftedY.toFloat(),  // Adjusted Y position
-                location[0].toFloat() + frame.width.toFloat(),
-                shiftedY.toFloat() + frame.height.toFloat()
+                width.toFloat(),  // Full width end
+                shiftedY.toFloat() + extendedHeight  //Extended Height
             )
 
-            // Create the inner rounded rectangle path
-            val path = Path()
-            path.addRoundRect(
-                innerRectangle,
-                cornerRadius,
-                cornerRadius,
-                Path.Direction.CW
-            )
-
-            // Draw the clear area (inside the frame)
-            osCanvas.drawPath(path, paint)
-
-
-            // Optionally, draw a border around the frame
-            val strokePaint = Paint(Paint.ANTI_ALIAS_FLAG)
-            strokePaint.strokeWidth = 5f
-            strokePaint.color = Color.WHITE
-            strokePaint.style = Paint.Style.STROKE
-            osCanvas.drawPath(path,strokePaint)
+            // Create the clear area
+            osCanvas.drawRect(innerRectangle, paint)
         }
     }
-
 
 
     override fun isInEditMode(): Boolean {

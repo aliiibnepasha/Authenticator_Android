@@ -1,5 +1,6 @@
 package com.husnain.authy.utls.progress
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -26,14 +27,22 @@ fun Fragment.showDeleteAccountConfirmationBottomSheet(
     bottomSheetDialog.show()
 }
 
-fun Fragment.showBottomSheetDialog(txtPrimaryButton: String,onPrimaryClick:() -> Unit) {
+fun Fragment.showBottomSheetDialog(txtTitle: String,txtDesc: String,txtPrimaryBtnText: String,isBlue: Boolean,onPrimaryClick:() -> Unit) {
     val bottomSheetDialog = BottomSheetDialog(requireContext(), R.style.BottomSheetDialogTheme)
     val binding = BottomSheetDeleteTotpBinding.inflate(LayoutInflater.from(requireContext()))
     bottomSheetDialog.setContentView(binding.root)
 
-    binding.tvTop.text = txtPrimaryButton
+    if (isBlue){
+        binding.lyYes.setBackgroundColor(this.resources.getColor(R.color.colorPrimary,null))
+    }else{
+        binding.lyYes.setBackgroundColor(Color.parseColor("#FF6363"))
+    }
 
-    binding.lyTopText.setOnClickListener {
+    binding.tvTop.text = txtTitle
+    binding.tvDesc.text = txtDesc
+    binding.tvPrimaryButtonText.text = txtPrimaryBtnText
+
+    binding.lyYes.setOnClickListener {
         onPrimaryClick.invoke()
         bottomSheetDialog.dismiss()
     }

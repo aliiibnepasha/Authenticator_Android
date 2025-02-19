@@ -58,128 +58,52 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="15dp"
+                    android:tint="#EDF046"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_premium_settings" />
+                    app:srcCompat="@drawable/ic_primium" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/appCompatTextView7"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="-2dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="@dimen/_12sdp"
                     android:fontFamily="@font/poppins_medium"
                     android:text="@string/string_get_premium"
-                    android:textColor="@color/white"
+                    android:textColor="#EDF046"
                     android:textSize="17sp"
                     app:layout_constraintStart_toEndOf="@+id/appCompatImageView4"
-                    app:layout_constraintTop_toTopOf="@+id/appCompatImageView4" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/appCompatTextView17"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
+                    android:layout_marginStart="15dp"
                     android:fontFamily="@font/poppins_regular"
                     android:text="@string/string_unlimited_access_to_all_features"
                     android:textColor="@color/white"
                     android:textSize="12sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/appCompatImageView4"
                     app:layout_constraintStart_toEndOf="@+id/appCompatImageView4"
                     app:layout_constraintTop_toBottomOf="@+id/appCompatTextView7" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/btnLogin"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/btn_height_primary"
-                android:layout_marginHorizontal="24dp"
-                android:layout_marginTop="8dp"
-                android:visibility="gone"
-                android:background="@drawable/bg_gradiant_button"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/lyGetPremium">
-
-                <com.husnain.authy.utls.LoadingView
-                    android:id="@+id/loadingView"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:visibility="gone"
-                    app:indicatorColor="@color/white"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/tvLogin"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppins_medium"
-                    android:text="@string/string_log_in"
-                    android:textAllCaps="false"
-                    android:textColor="@color/white"
-                    android:textSize="16sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tvDontHaveAndAccount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="@string/string_don_t_have_account"
-                android:textSize="14sp"
-                android:visibility="gone"
-                app:layout_constraintEnd_toStartOf="@+id/tvSignup"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintHorizontal_chainStyle="packed"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/btnLogin" />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tvSignup"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/string_sign_up"
-                android:layout_marginStart="2dp"
-                android:textColor="@color/colorPrimary"
-                android:textSize="14sp"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="@+id/tvDontHaveAndAccount"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/tvDontHaveAndAccount"
-                app:layout_constraintTop_toTopOf="@+id/tvDontHaveAndAccount" />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/appCompatTextView5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginHorizontal="@dimen/_15sdp"
-                android:fontFamily="@font/poppins_regular"
-                android:text="@string/string_general"
-                android:textColor="#7C8BA0"
-                android:textSize="15sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvSignup" />
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_15sdp"
-                android:layout_marginTop="8dp"
-                app:cardCornerRadius="14dp"
-                app:cardElevation="4dp"
+                android:layout_marginTop="18dp"
+                app:cardCornerRadius="0dp"
+                app:cardElevation="0dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/appCompatTextView5">
+                app:layout_constraintTop_toBottomOf="@+id/lyGetPremium"
+                app:strokeColor="#33000000"
+                app:strokeWidth="1dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -200,7 +124,7 @@
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@drawable/ic_languages_settting" />
+                            app:srcCompat="@drawable/ic_import_google_data" />
 
                         <androidx.appcompat.widget.AppCompatTextView
                             android:layout_width="wrap_content"
@@ -216,37 +140,57 @@
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/lyImportGoogleAuthData"
+                        android:id="@+id/lyBackupAndSync"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="15dp"
+                        android:layout_marginHorizontal="15dp"
                         android:layout_marginTop="17dp">
 
                         <androidx.appcompat.widget.AppCompatImageView
-                            android:id="@+id/appCompatImageView2"
+                            android:id="@+id/appCompatImageView7"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@drawable/ic_import_google_data" />
+                            app:srcCompat="@drawable/ic_sysnc_cloud" />
 
                         <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/appCompatTextView4"
+                            android:id="@+id/appCompatTextView11"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="15dp"
                             android:fontFamily="@font/poppins_medium"
-                            android:text="@string/string_import_google_authenticator"
+                            android:includeFontPadding="false"
+                            android:text="@string/string_backup"
                             android:textColor="#484C52"
                             android:textSize="14sp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toEndOf="@+id/appCompatImageView2"
+                            app:layout_constraintStart_toEndOf="@+id/appCompatImageView7"
                             app:layout_constraintTop_toTopOf="parent" />
 
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/appCompatTextView111"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="15dp"
+                            android:fontFamily="@font/poppins_regular"
+                            android:includeFontPadding="false"
+                            android:text="Sign In To Backup"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="13sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/appCompatImageView7"
+                            app:layout_constraintTop_toBottomOf="@+id/appCompatTextView11" />
 
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/imgSyncPremium"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:srcCompat="@drawable/ic_primium" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
-
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/lyRecentlyDeleted"
                         android:layout_width="match_parent"
@@ -309,105 +253,139 @@
 
             </com.google.android.material.card.MaterialCardView>
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/appCompatTextView6"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="18dp"
-                android:fontFamily="@font/poppins_regular"
-                android:text="@string/string_backup"
-                android:textColor="#7C8BA0"
-                android:textSize="15sp"
-                app:layout_constraintStart_toStartOf="@+id/cardView"
-                app:layout_constraintTop_toBottomOf="@id/cardView" />
-
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardView2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_15sdp"
-                android:layout_marginTop="8dp"
-                app:cardCornerRadius="14dp"
-                app:cardElevation="4dp"
+                android:layout_marginTop="18dp"
+                app:cardCornerRadius="0dp"
+                app:cardElevation="0dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/appCompatTextView6">
+                app:layout_constraintTop_toBottomOf="@+id/cardView"
+                app:strokeColor="#33000000"
+                app:strokeWidth="1dp">
 
                 <LinearLayout
-                    android:id="@+id/lyBackupAndSync"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/lyImportGoogleAuthData"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="15dp"
-                        android:layout_marginTop="17dp"
-                        android:layout_marginBottom="17dp">
+                        android:layout_marginStart="15dp"
+                        android:layout_marginTop="17dp">
 
                         <androidx.appcompat.widget.AppCompatImageView
-                            android:id="@+id/appCompatImageView7"
+                            android:id="@+id/appCompatImageView2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@drawable/ic_sysnc_cloud" />
+                            app:srcCompat="@drawable/ic_import_google_data" />
 
                         <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/appCompatTextView11"
+                            android:id="@+id/appCompatTextView4"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="15dp"
                             android:fontFamily="@font/poppins_medium"
-                            android:text="@string/string_sync"
+                            android:text="@string/string_import_google_authenticator"
                             android:textColor="#484C52"
                             android:textSize="14sp"
                             app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toEndOf="@+id/appCompatImageView7"
+                            app:layout_constraintStart_toEndOf="@+id/appCompatImageView2"
                             app:layout_constraintTop_toTopOf="parent" />
 
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/lyHowToUse"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginTop="17dp">
+
                         <androidx.appcompat.widget.AppCompatImageView
-                            android:id="@+id/imgSyncPremium"
+                            android:id="@+id/img2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:visibility="gone"
                             app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@drawable/ic_primium" />
+                            app:srcCompat="@drawable/ic_how_to_use" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tv2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="15dp"
+                            android:fontFamily="@font/poppins_medium"
+                            android:text="How to use"
+                            android:textColor="#484C52"
+                            android:textSize="14sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/img2"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/ly2faGuides"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginBottom="17dp"
+                        android:layout_marginTop="17dp">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/img1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:srcCompat="@drawable/ic_2fa_guides" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tv1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="15dp"
+                            android:fontFamily="@font/poppins_medium"
+                            android:text="2FA Guides"
+                            android:textColor="#484C52"
+                            android:textSize="14sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/img1"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                 </LinearLayout>
 
             </com.google.android.material.card.MaterialCardView>
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/appCompatTextView8"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:fontFamily="@font/poppins_regular"
-                android:text="@string/string_security"
-                android:textColor="#7C8BA0"
-                android:textSize="15sp"
-                app:layout_constraintStart_toStartOf="@+id/cardView2"
-                app:layout_constraintTop_toBottomOf="@id/cardView2" />
-
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardView3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_15sdp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="18dp"
                 android:layout_marginBottom="@dimen/_20sdp"
-                app:cardCornerRadius="14dp"
-                app:cardElevation="4dp"
+                app:cardCornerRadius="0dp"
+                app:cardElevation="0dp"
+                app:strokeWidth="1dp"
+                app:strokeColor="#33000000"
                 app:layout_constraintBottom_toTopOf="@id/btnLogout"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/appCompatTextView8">
+                app:layout_constraintTop_toBottomOf="@+id/cardView2">
 
                 <LinearLayout
                     android:layout_width="match_parent"
