@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="@dimen/_5sdp"
     android:layout_marginVertical="@dimen/_5sdp"
-    app:cardCornerRadius="@dimen/_14sdp"
+    app:cardCornerRadius="0dp"
     app:cardElevation="@dimen/card_shadow">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -23,7 +22,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/img_baby_brain" />
+            app:srcCompat="@drawable/ic_otp_avatar" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvTotp"
@@ -41,15 +40,15 @@
             android:id="@+id/tvServiceName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/_15sdp"
             android:ellipsize="end"
             android:fontFamily="@font/poppins_regular"
             android:maxLines="1"
+            android:layout_marginEnd="@dimen/_5sdp"
             android:text="Github"
             android:textColor="@color/color_text_gray"
             android:textSize="@dimen/_10ssp"
             app:layout_constraintBottom_toBottomOf="@+id/imgLogo"
-            app:layout_constraintEnd_toStartOf="@+id/imgRadioButton"
+            app:layout_constraintEnd_toStartOf="@+id/frameLayout"
             app:layout_constraintStart_toStartOf="@+id/tvTotp"
             app:layout_constraintTop_toBottomOf="@+id/tvTotp" />
 
@@ -58,21 +57,43 @@
             android:layout_width="@dimen/_20sdp"
             android:layout_height="@dimen/_20sdp"
             android:layout_marginEnd="@dimen/_10sdp"
-            android:src="@drawable/ic_cirlce_un_selected"
+            android:src="@drawable/ic_check_box"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tvCounter"
+        <FrameLayout
+            android:id="@+id/frameLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginTop="2.5dp"
-            android:text="30"
-            android:textColor="@color/color_text_gray"
-            app:layout_constraintStart_toEndOf="@+id/tvTotp"
-            app:layout_constraintTop_toTopOf="@+id/tvTotp" />
+            android:layout_marginEnd="@dimen/_10sdp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/imgRadioButton"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <!-- Circular Progress Indicator -->
+            <com.google.android.material.progressindicator.CircularProgressIndicator
+                android:id="@+id/progressIndicator"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:indeterminate="false"
+                android:max="30"
+                app:indicatorColor="@color/colorPrimary"
+                app:indicatorSize="30dp"
+                app:trackColor="#B9D1E8"
+                app:trackThickness="3dp" />
+
+            <!-- Counter TextView -->
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvCounter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="30"
+                android:textColor="@color/color_text_gray"
+                android:textSize="12sp" />
+        </FrameLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

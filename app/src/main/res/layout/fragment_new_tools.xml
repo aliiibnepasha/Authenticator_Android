@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/img_colored_bg"
     tools:context=".ui.fragment.main.newtools.NewToolsFragment">
 
     <androidx.appcompat.widget.AppCompatImageView
@@ -36,10 +35,10 @@
         android:id="@+id/cardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/_15sdp"
+        android:layout_marginHorizontal="@dimen/_20sdp"
         android:layout_marginTop="32dp"
         app:cardCornerRadius="0dp"
-        app:cardElevation="4dp"
+        app:cardElevation="0dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/appCompatTextView2">
@@ -53,7 +52,6 @@
                 android:id="@+id/lyAppLock"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
                 android:layout_marginTop="17dp">
 
                 <androidx.appcompat.widget.AppCompatImageView
@@ -81,8 +79,6 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
-                android:layout_marginBottom="17dp"
                 android:layout_marginTop="17dp">
 
                 <androidx.appcompat.widget.AppCompatImageView

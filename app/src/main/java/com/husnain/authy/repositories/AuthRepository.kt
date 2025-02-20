@@ -142,6 +142,7 @@ class AuthRepository @Inject constructor(
             userDocRef.get()
                 .addOnSuccessListener { document ->
                     if (document.exists()) {
+                        preferenceManager.saveUserData(user)
                         preferenceManager.saveGuestUser(false)
                         preferenceManager.saveIsFirstLoginAfterAppInstall(true)
                         _googleLoginStatus.value = DataState.Success()

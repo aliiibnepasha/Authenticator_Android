@@ -34,11 +34,11 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvDesc"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="start"
+        android:layout_marginEnd="@dimen/_15sdp"
         android:layout_marginStart="@dimen/_15sdp"
-        android:gravity="center"
         android:text="reuse account for 2-factor authentication" />
 
     <LinearLayout

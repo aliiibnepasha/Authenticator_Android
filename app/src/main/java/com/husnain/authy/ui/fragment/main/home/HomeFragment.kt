@@ -38,8 +38,10 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
     private lateinit var adapter: AdapterHomeTotp
+
     @Inject
     lateinit var preferenceManager: PreferenceManager
+
     @Inject
     lateinit var auth: FirebaseAuth
     private val vmHome: VmHome by viewModels()
@@ -58,6 +60,10 @@ class HomeFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         inItUi()
+        if (Flags.comingBackFromDetailAfterDelete) {
+            Flags.comingBackFromDetailAfterDelete = false
+            vmHome.fetchAllTotp()
+        }
         if (preferenceManager.isFirstLoginAfterAppInstall() || Constants.isComingAfterRestore) {
             Constants.isComingAfterRestore = false
             preferenceManager.saveIsFirstLoginAfterAppInstall(false)
@@ -112,7 +118,8 @@ class HomeFragment : Fragment() {
         } else {
             return
         }
-        val isPermissionGranted = PermissionUtils.handlePermissions(requireActivity(), permissions, 1)
+        val isPermissionGranted =
+            PermissionUtils.handlePermissions(requireActivity(), permissions, 1)
         if (isPermissionGranted) return
     }
 
@@ -124,7 +131,7 @@ class HomeFragment : Fragment() {
                 }
 
                 is DataState.Success -> {
-                        binding.loadingView.stop()
+                    binding.loadingView.stop()
                     val data = state.data
                     if (data != null) {
                         setupAdapter(data)
@@ -190,17 +197,33 @@ class HomeFragment : Fragment() {
 
             //Long click to show the delete bottom sheet
             adapter.setOnLongClickListener { totpData ->
-                showBottomSheetDialog("Remove this account","move to trash","Remove",true, onPrimaryClick = {
-                    vmHome.insertToRecentlyDeleted(
-                        RecentlyDeleted(
-                            totpData.serviceName,
-                            totpData.secretKey,
-                            totpData.firebaseDocId
+                showBottomSheetDialog(
+                    "Remove this account",
+                    "move to trash",
+                    "Remove",
+                    true,
+                    onPrimaryClick = {
+                        vmHome.insertToRecentlyDeleted(
+                            RecentlyDeleted(
+                                totpData.serviceName,
+                                totpData.secretKey,
+                                totpData.firebaseDocId
+                            )
                         )
-                    )
-                    vmHome.deleteTotp(totpData.secretKey)
-                    isDeleted = true
-                })
+                        vmHome.deleteTotp(totpData.secretKey)
+                        isDeleted = true
+                    })
+            }
+
+            adapter.setOnClickListener {
+                val bundle = Bundle()
+                bundle.apply {
+                    putString("accountName", it.serviceName)
+                    putString("secretKey", it.secretKey)
+                    putString("docId", it.firebaseDocId)
+                }
+
+                navigate(R.id.action_homeFragment_to_totpDetailFragment, bundle)
             }
             //end click
 

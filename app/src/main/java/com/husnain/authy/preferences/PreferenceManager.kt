@@ -121,6 +121,14 @@ class PreferenceManager @Inject constructor(@ApplicationContext private val cont
         return myPref.getBoolean(KEY_IS_SUBSCRIPTION_ACTIVE, false)
     }
 
+    fun saveIsSyncOn(isActive: Boolean) {
+        myPref.edit().putBoolean("isSync", isActive).apply()
+    }
+
+    fun isSyncOn(): Boolean {
+        return myPref.getBoolean("isSync", false)
+    }
+
     fun saveLifeTimeAccessActive(isLifeTimeAccess: Boolean) {
         myPref.edit().putBoolean(KEY_IS_LIFE_TIME_ACCESS_ACTIVE, isLifeTimeAccess).apply()
     }

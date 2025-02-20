@@ -1,12 +1,15 @@
 package com.husnain.authy.ui.fragment.main.recentlyDeleted
 
+import android.graphics.PorterDuff
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import com.husnain.authy.R
 import com.husnain.authy.data.room.tables.RecentlyDeleted
 import com.husnain.authy.databinding.FragmentRecentlyDeletedBinding
 import com.husnain.authy.utls.Constants
@@ -15,6 +18,7 @@ import com.husnain.authy.utls.DataState
 import com.husnain.authy.utls.OperationType
 import com.husnain.authy.utls.gone
 import com.husnain.authy.utls.popBack
+import com.husnain.authy.utls.progress.showBottomSheetDialog
 import com.husnain.authy.utls.visible
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -25,6 +29,7 @@ class RecentlyDeletedFragment : Fragment() {
     private lateinit var adapter: AdapterRecentlyDeleted
     private var selectedDataToDelete: RecentlyDeleted? = null
     private val vmRecentlyDeleted: VmRecentlyDeleted by viewModels()
+    private var allSelected = false
 
 
     override fun onCreateView(
@@ -53,29 +58,78 @@ class RecentlyDeletedFragment : Fragment() {
         }
 
         binding.btnRestore.setOnClickListener {
-            selectedDataToDelete?.let { it1 ->
-                vmRecentlyDeleted.restoreOrDelete(
-                    it1,
-                    OperationType.RESTORE
-                )
-            }
+            showBottomSheetDialog(
+                "Restore",
+                "Reuse account for 2-factor authentication",
+                "Restore",
+                true,
+                onPrimaryClick = {
+                    selectedDataToDelete?.let { it1 ->
+                        vmRecentlyDeleted.restoreOrDelete(
+                            it1,
+                            OperationType.RESTORE
+                        )
+                    }
+                })
         }
 
         binding.btnDeletePermanently.setOnClickListener {
-            selectedDataToDelete?.let { it1 ->
-                vmRecentlyDeleted.restoreOrDelete(
-                    it1,
-                    OperationType.PERMANENTLY_DELETE
-                )
-            }
+            showBottomSheetDialog(
+                "Permanently Delete",
+                "Once removed, the current device will not be used for this account’s 2-factor authentication",
+                "Delete",
+                false,
+                onPrimaryClick = {
+                    selectedDataToDelete?.let { it1 ->
+                        vmRecentlyDeleted.restoreOrDelete(
+                            it1,
+                            OperationType.PERMANENTLY_DELETE
+                        )
+                    }
+                })
         }
 
         binding.btnRestoreAll.setOnClickListener {
-            vmRecentlyDeleted.restoreOrDelete(null, OperationType.RESTORE_ALL)
+            showBottomSheetDialog(
+                "Restore",
+                "Reuse account for 2-factor authentication",
+                "Restore",
+                true,
+                onPrimaryClick = {
+                    vmRecentlyDeleted.restoreOrDelete(null, OperationType.RESTORE_ALL)
+                })
         }
 
         binding.btnDeleteAll.setOnClickListener {
-            vmRecentlyDeleted.restoreOrDelete(null, OperationType.DELETE_ALL)
+            showBottomSheetDialog(
+                "Permanently Delete",
+                "Once removed, the current device will not be used for this account’s 2-factor authentication",
+                "Delete",
+                false,
+                onPrimaryClick = {
+                    vmRecentlyDeleted.restoreOrDelete(null, OperationType.DELETE_ALL)
+                })
+        }
+
+        binding.imgCheckBoxAll.setOnClickListener {
+            allSelected = !allSelected
+            if (allSelected){
+                adapter.updateSelectionState(true)
+                binding.lyForAll.visible()
+                binding.lyForOneSelection.gone()
+                binding.imgCheckBoxAll.setColorFilter(
+                    ContextCompat.getColor(requireContext(), R.color.colorPrimary),
+                    PorterDuff.Mode.SRC_IN
+                )
+            }else{
+                adapter.updateSelectionState(false)
+                binding.lyForOneSelection.gone()
+                binding.lyForAll.gone()
+                binding.imgCheckBoxAll.setColorFilter(
+                    ContextCompat.getColor(requireContext(), R.color.black),
+                    PorterDuff.Mode.SRC_IN
+                )
+            }
         }
     }
 
@@ -120,21 +174,20 @@ class RecentlyDeletedFragment : Fragment() {
 
     private fun setupAdapter(data: List<RecentlyDeleted>) {
         if (data.isNotEmpty()) {
-            binding.lottieAnimationViewNoData.gone()
-            binding.lottieAnimationViewNoData.cancelAnimation()
             binding.lyForOneSelection.gone()
-            binding.lyForAll.visible()
 
             adapter = AdapterRecentlyDeleted(data)
             adapter.setOnClickListener { recentData ->
                 binding.lyForAll.gone()
                 binding.lyForOneSelection.visible()
                 selectedDataToDelete = recentData
+                binding.imgCheckBoxAll.setColorFilter(
+                    ContextCompat.getColor(requireContext(), R.color.black),
+                    PorterDuff.Mode.SRC_IN
+                )
             }
             binding.rvRecentlyDeleted.adapter = adapter
         } else {
-            binding.lottieAnimationViewNoData.visible()
-            binding.lottieAnimationViewNoData.playAnimation()
             binding.lyForOneSelection.gone()
             binding.lyForAll.gone()
             binding.rvRecentlyDeleted.gone()

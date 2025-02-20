@@ -3,6 +3,7 @@ package com.husnain.authy.ui.fragment.main.backup
 import android.app.job.JobInfo
 import android.app.job.JobScheduler
 import android.content.ComponentName
+import android.os.Build
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.view.LayoutInflater
@@ -39,10 +40,18 @@ class BackUpFragment : Fragment() {
 
     private fun inIt() {
         inItUi()
+        getDeviceInfo()
         setOnClickListener()
     }
 
+    private fun getDeviceInfo() {
+        val deviceName = "${Build.MANUFACTURER} ${Build.MODEL}"
+        binding.tvDeviceName.text = "Device: $deviceName"
+        binding.tvEmail.text = "Email: ${preferenceManager.getUserData()?.userEmail}"
+    }
+
     private fun inItUi() {
+        binding.switchSyncAndBackup.isChecked = preferenceManager.isSyncOn()
         inItLastSyncTime()
     }
 
@@ -54,6 +63,17 @@ class BackUpFragment : Fragment() {
             val userId = auth.currentUser?.uid
             if (userId != null){
                 startSyncJob(userId)
+            }
+        }
+        binding.switchSyncAndBackup.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked){
+                preferenceManager.saveIsSyncOn(true)
+                val userId = auth.currentUser?.uid
+                if (userId != null){
+                    startSyncJob(userId)
+                }
+            }else{
+                preferenceManager.saveIsSyncOn(false)
             }
         }
     }

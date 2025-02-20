@@ -47,7 +47,7 @@
     <string name="string_localize_languages">Localize languages</string>
     <string name="string_new_tools">New Tools</string>
     <string name="string_app_lock">App lock</string>
-    <string name="string_allow_screenshots">Allow screenshots</string>
+    <string name="string_allow_screenshots">Disable screenshots</string>
     <string name="string_manage_and_generate_passwords">Manage and generate passwords</string>
     <string name="string_apploack_desc">Set a pin to protect your authenticator app</string>
     <string name="string_pin_lock">Pin lock</string>

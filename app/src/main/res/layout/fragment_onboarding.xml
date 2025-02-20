@@ -32,17 +32,36 @@
         app:progressMode="false"
         app:selectedDotColor="@color/colorPrimary" />
 
-    <androidx.appcompat.widget.AppCompatTextView
+    <LinearLayout
         android:id="@+id/tvNext"
-        android:layout_width="70dp"
-        android:layout_height="wrap_content"
+        android:layout_width="100dp"
+        android:layout_height="45dp"
         android:layout_marginEnd="42dp"
-        android:text="Next"
+        android:orientation="horizontal"
         android:background="@drawable/bg_gradiant_button"
-        android:textColor="@color/white"
         android:padding="10dp"
+        android:gravity="center_vertical"
         android:textSize="@dimen/_14ssp"
         app:layout_constraintBottom_toBottomOf="@+id/dotsIndicator"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/dotsIndicator" />
+        app:layout_constraintTop_toTopOf="@+id/dotsIndicator">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Next"
+            android:includeFontPadding="false"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_14ssp"
+            android:fontFamily="@font/poppins_medium"/>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/ic_back"
+            android:layout_marginStart="5dp"
+            android:rotation="180"
+            android:tint="@color/white"/>
+
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

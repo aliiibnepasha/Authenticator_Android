@@ -18,6 +18,7 @@ import com.husnain.authy.utls.showSnackBar
 class AdapterHomeTotp(private var items: List<ModelTotp>) :
     RecyclerView.Adapter<AdapterHomeTotp.ViewHolder>() {
     private var longClickCallBack: (ModelTotp) -> Unit = {}
+    private var clickListenerCallBack: (ModelTotp) -> Unit = {}
     private var onEmptyCallback: (Boolean) -> Unit = {}
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -57,6 +58,10 @@ class AdapterHomeTotp(private var items: List<ModelTotp>) :
         longClickCallBack = callback
     }
 
+    fun setOnClickListener(callback: (ModelTotp) -> Unit) {
+        clickListenerCallBack = callback
+    }
+
     fun emptyStateListener(callback: (Boolean) -> Unit) {
         onEmptyCallback = callback
     }
@@ -72,6 +77,10 @@ class AdapterHomeTotp(private var items: List<ModelTotp>) :
             binding.root.setOnLongClickListener {
                 longClickCallBack.invoke(data)
                 true
+            }
+
+            binding.root.setOnClickListener {
+                clickListenerCallBack.invoke(data)
             }
 
             updateHandler = Handler(Looper.getMainLooper())

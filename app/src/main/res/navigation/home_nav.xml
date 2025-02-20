@@ -55,6 +55,9 @@
         <action
             android:id="@+id/action_homeFragment_to_subscriptionFragment"
             app:destination="@id/subscriptionFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_totpDetailFragment"
+            app:destination="@id/totpDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/addAccountManuallyFragment"
@@ -122,4 +125,9 @@
         android:name="com.husnain.authy.ui.fragment.main.webView.WebViewFragment"
         android:label="fragment_web_view"
         tools:layout="@layout/fragment_web_view" />
+    <fragment
+        android:id="@+id/totpDetailFragment"
+        android:name="com.husnain.authy.ui.fragment.main.otpDetail.TotpDetailFragment"
+        android:label="fragment_totp_detail"
+        tools:layout="@layout/fragment_totp_detail" />
 </navigation>

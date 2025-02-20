@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/img_colored_bg"
     tools:context=".ui.fragment.main.backup.BackUpFragment">
 
     <androidx.appcompat.widget.AppCompatImageView
@@ -42,10 +41,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/appCompatTextView2"
-        app:sl_cornerRadius="14dp"
         app:sl_dx="0dp"
         app:sl_dy="0dp"
-        app:sl_shadowColor="#12F1F1F1"
+        app:sl_shadowColor="#23F1F1F1"
         app:sl_shadowRadius="10dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -68,37 +66,132 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_10sdp"
-                android:text="@string/string_backup"
-                android:textColor="#484C52"
                 android:fontFamily="@font/poppins_semibold"
+                android:text="Sync &amp; Backup"
+                android:textColor="#484C52"
                 android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="@+id/appCompatImageView10"
                 app:layout_constraintStart_toEndOf="@+id/appCompatImageView10"
                 app:layout_constraintTop_toTopOf="@+id/appCompatImageView10" />
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tvLastSyncTime"
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/switchSyncAndBackup"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_10sdp"
-                android:text="Last sync: --"
-                android:textColor="#484C52"
-                android:fontFamily="@font/poppins_regular"
-                android:textSize="12sp"
-                app:layout_constraintStart_toEndOf="@+id/appCompatImageView10"
-                app:layout_constraintTop_toBottomOf="@+id/appCompatTextView13" />
+                android:layout_marginEnd="14dp"
+                android:thumb="@drawable/switch_ios_selector"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:track="@drawable/switch_ios_track" />
         </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.husnain.authy.utls.ShadowLayout>
+
+    <com.husnain.authy.utls.ShadowLayout
+        android:id="@+id/shadowLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginTop="@dimen/_15sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/shadowLayout"
+        app:sl_dx="0dp"
+        app:sl_dy="0dp"
+        app:sl_shadowColor="#23F1F1F1"
+        app:sl_shadowRadius="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_rect_white"
+            android:orientation="vertical"
+            android:paddingHorizontal="15dp"
+            android:paddingVertical="15dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="5dp"
+                    android:layout_height="5dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_gree_dot" />
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvLastSyncTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:includeFontPadding="false"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:text="Last sync at : 2025-03-04 06:16:00"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="5dp"
+                    android:layout_height="5dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_gree_dot" />
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvDeviceName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:includeFontPadding="false"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:text="Device: samsung a71"/>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="5dp"
+                    android:layout_height="5dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_gree_dot" />
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvEmail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:includeFontPadding="false"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:text="Email: husnainalirafique12@gmail.com"/>
+            </LinearLayout>
+
+        </LinearLayout>
     </com.husnain.authy.utls.ShadowLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/btnSyncNow"
         android:layout_width="match_parent"
         android:layout_height="@dimen/btn_height_primary"
-        android:layout_marginTop="16dp"
         android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="@dimen/_15sdp"
         android:background="@drawable/bg_gradiant_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/shadowLayout">
+        app:layout_constraintTop_toBottomOf="@+id/shadowLayout2">
 
         <com.husnain.authy.utls.LoadingView
             android:id="@+id/loadingView"
@@ -116,7 +209,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_medium"
-            android:text="@string/string_sync_now"
+            android:text="@string/string_backup"
             android:textAllCaps="false"
             android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"

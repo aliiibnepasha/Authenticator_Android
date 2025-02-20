@@ -30,4 +30,7 @@ interface DaoTotp {
 
     @Query("DELETE FROM table_totp WHERE secretKey = :secret")
     suspend fun deleteTotpById(secret: String)
+
+    @Query("UPDATE table_totp SET serviceName = :newServiceName WHERE secretKey = :secretKey")
+    suspend fun updateServiceNameBySecretKey(secretKey: String, newServiceName: String)
 }

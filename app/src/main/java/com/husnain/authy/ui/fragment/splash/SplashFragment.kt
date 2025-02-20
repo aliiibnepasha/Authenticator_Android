@@ -22,8 +22,11 @@ import com.husnain.authy.utls.CustomToast.showCustomToast
 import com.husnain.authy.utls.DelayOption
 import com.husnain.authy.utls.Flags
 import com.husnain.authy.utls.admob.AdUtils
+import com.husnain.authy.utls.gone
+import com.husnain.authy.utls.invisible
 import com.husnain.authy.utls.navigate
 import com.husnain.authy.utls.startActivity
+import com.husnain.authy.utls.visible
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Runnable
 import javax.inject.Inject
@@ -63,6 +66,10 @@ class SplashFragment : Fragment() {
                 }, 1500)
             }
         }
+
+        binding.btnUnlock.setOnClickListener {
+            checkForBiometricLogin()
+        }
         return binding.root
     }
 
@@ -81,6 +88,8 @@ class SplashFragment : Fragment() {
             preferenceManager.saveLastAppOpenTime()
             when {
                 preferenceManager.isBiometricLockEnabled() -> {
+                    binding.btnUnlock.visible()
+                    binding.linearProgressIndicator2.invisible()
                     checkForBiometricLogin()
                 }
 
@@ -89,10 +98,14 @@ class SplashFragment : Fragment() {
                 }
 
                 else -> {
+                    binding.linearProgressIndicator2.visible()
+                    binding.btnUnlock.gone()
                     goToMainActivity()
                 }
             }
         } else {
+            binding.linearProgressIndicator2.visible()
+            binding.btnUnlock.gone()
             goToMainActivity()
         }
     }
@@ -105,7 +118,7 @@ class SplashFragment : Fragment() {
                     goToMainActivity()
                 },
                 onFailure = {
-                    showCustomToast("Something went wrong!")
+
                 }
             )
         }

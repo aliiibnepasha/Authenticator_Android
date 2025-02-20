@@ -1,7 +1,9 @@
 package com.husnain.authy.ui.fragment.main.subscription.adapter
 
+import android.graphics.PorterDuff
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.husnain.authy.R
 import com.husnain.authy.data.models.ModelSubscription
@@ -62,13 +64,26 @@ class AdapterSubscription(
             // Highlight the selected item
             if (bindingAdapterPosition == selectedPosition) {
                 binding.imgCircle.setImageResource(R.drawable.ic_circle_selected)
-                binding.lySubscription.setBackgroundResource(R.drawable.bg_subscription_ly_with_stroke)
+                binding.imgCircle.setColorFilter(
+                    ContextCompat.getColor(itemView.context,R.color.colorPrimary),
+                    PorterDuff.Mode.SRC_IN
+                )
+                binding.lySubscription.setBackgroundResource(R.drawable.bg_subscription_ly_selected)
+                binding.materialCardView2.setCardBackgroundColor(
+                    ContextCompat.getColor(itemView.context, R.color.colorPrimary)
+                )
+                binding.tvLabel.setTextColor(itemView.context.getColor(R.color.white))
             } else {
                 binding.imgCircle.setImageResource(R.drawable.ic_cirlce_un_selected)
                 binding.lySubscription.setBackgroundResource(R.drawable.bg_subscription_ly)
+                binding.materialCardView2.setCardBackgroundColor(
+                    ContextCompat.getColor(itemView.context, R.color.color_subs_un_selected)
+                )
+                binding.tvLabel.setTextColor(itemView.context.getColor(R.color.colorPrimary))
             }
 
             binding.lySubscription.setOnClickListener {
+
                 val previousSelectedPosition = selectedPosition
                 selectedPosition = bindingAdapterPosition
 

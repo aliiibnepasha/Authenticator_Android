@@ -27,7 +27,7 @@ object SyncServiceUtil {
     fun syncIfUserValidForSyncing(context: Context,userId:String?,preferenceManager: PreferenceManager){
         val isUserLoggedIn = userId != null
         when{
-            preferenceManager.isSubscriptionActive() && isUserLoggedIn -> userId?.let {
+            preferenceManager.isSubscriptionActive() && preferenceManager.isSyncOn() && isUserLoggedIn -> userId?.let {
                 startSyncJob(context,
                     it
                 )

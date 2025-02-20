@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/img_colored_bg"
     tools:context=".ui.fragment.main.recentlyDeleted.RecentlyDeletedFragment">
 
     <androidx.core.widget.NestedScrollView
@@ -44,6 +43,16 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/imgCheckBoxAll"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/_20sdp"
+                app:layout_constraintBottom_toBottomOf="@+id/appCompatTextView2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/appCompatTextView2"
+                app:srcCompat="@drawable/ic_check_box" />
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvRecentlyDeleted"
                 android:layout_width="0dp"
@@ -62,7 +71,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_10sdp"
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 android:visibility="gone"
                 android:layout_marginBottom="@dimen/_5sdp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -75,15 +84,17 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="10dp"
-                    android:layout_marginStart="24dp"
+                    android:layout_marginHorizontal="@dimen/_20sdp"
                     android:layout_weight="1"
-                    app:cardCornerRadius="20dp"
-                    app:cardElevation="@dimen/card_shadow">
+                    app:cardCornerRadius="0dp"
+                    app:cardBackgroundColor="#ECF1FB"
+                    app:cardElevation="1dp">
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/btn_height_primary"
                         android:gravity="center"
+                        android:textColor="@color/black"
                         android:text="@string/string_restore" />
                 </com.google.android.material.card.MaterialCardView>
 
@@ -92,17 +103,18 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="10dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginEnd="24dp"
+                    android:layout_marginHorizontal="@dimen/_20sdp"
                     android:layout_weight="1"
-                    app:cardCornerRadius="20dp"
-                    app:cardElevation="@dimen/card_shadow">
+                    app:cardCornerRadius="0dp"
+                    app:cardBackgroundColor="@color/colorPrimary"
+                    app:cardElevation="0dp">
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/btn_height_primary"
                         android:gravity="center"
-                        android:text="@string/string_permanently_delete" />
+                        android:textColor="@color/white"
+                        android:text="@string/string_delete" />
                 </com.google.android.material.card.MaterialCardView>
 
             </LinearLayout>
@@ -112,7 +124,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_10sdp"
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 android:visibility="gone"
                 android:layout_marginBottom="@dimen/_5sdp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -122,36 +134,37 @@
 
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/btnRestoreAll"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="10dp"
-                    android:layout_marginStart="24dp"
-                    android:layout_weight="1"
-                    app:cardCornerRadius="20dp"
-                    app:cardElevation="@dimen/card_shadow">
+                    android:layout_marginHorizontal="@dimen/_20sdp"
+                    app:cardCornerRadius="0dp"
+                    app:cardBackgroundColor="#ECF1FB"
+                    app:cardElevation="1dp">
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/btn_height_primary"
                         android:gravity="center"
+                        android:textColor="@color/black"
                         android:text="@string/string_restore_all" />
                 </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/btnDeleteAll"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="10dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginEnd="24dp"
-                    android:layout_weight="1"
-                    app:cardCornerRadius="20dp"
-                    app:cardElevation="@dimen/card_shadow">
+                    app:cardBackgroundColor="@color/colorPrimary"
+                    android:layout_marginHorizontal="@dimen/_20sdp"
+                    app:cardCornerRadius="0dp"
+                    app:cardElevation="0dp">
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/btn_height_primary"
                         android:gravity="center"
+                        android:textColor="@color/white"
                         android:text="@string/string_delete_all" />
                 </com.google.android.material.card.MaterialCardView>
 
@@ -170,16 +183,4 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 
-    <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/lottieAnimationViewNoData"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/_5sdp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:lottie_autoPlay="false"
-        app:lottie_loop="true"
-        app:lottie_rawRes="@raw/no_data_anim" />
 </androidx.constraintlayout.widget.ConstraintLayout>

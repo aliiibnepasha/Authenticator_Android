@@ -1,12 +1,13 @@
 package com.husnain.authy.ui.fragment.main.recentlyDeleted
 
+import android.graphics.PorterDuff
 import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.husnain.authy.R
-import com.husnain.authy.data.models.ModelTotp
 import com.husnain.authy.data.room.tables.RecentlyDeleted
 import com.husnain.authy.databinding.ItemRecentlyDeletedBinding
 import com.husnain.authy.utls.TotpUtil
@@ -17,6 +18,7 @@ class AdapterRecentlyDeleted(
     RecyclerView.Adapter<AdapterRecentlyDeleted.ViewHolder>() {
     private var callBack: (RecentlyDeleted) -> Unit = {}
     private var selectedPosition = -1;
+    private var isAllSelected = false
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ItemRecentlyDeletedBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -30,7 +32,7 @@ class AdapterRecentlyDeleted(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val data = items[position]
-        holder.bind(data)
+        holder.bind(data,isAllSelected)
     }
 
     override fun onViewRecycled(holder: ViewHolder) {
@@ -42,26 +44,40 @@ class AdapterRecentlyDeleted(
         this.callBack = callback
     }
 
-    inner class ViewHolder(val binding: ItemRecentlyDeletedBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+    fun updateSelectionState(selectAll: Boolean) {
+        isAllSelected = selectAll
+        selectedPosition = if (selectAll) RecyclerView.NO_POSITION else -1
+        notifyDataSetChanged()
+    }
+
+
+    inner class ViewHolder(val binding: ItemRecentlyDeletedBinding) : RecyclerView.ViewHolder(binding.root) {
         private var updateHandler: Handler? = null
 
-        fun bind(data: RecentlyDeleted) {
-            binding.imgLogo.setImageResource(R.drawable.img_baby_brain)
+        fun bind(data: RecentlyDeleted, isAllSelected2: Boolean) {
+            binding.imgLogo.setImageResource(R.drawable.ic_otp_avatar)
             binding.tvServiceName.text = data.name
 
-            if (bindingAdapterPosition == selectedPosition) {
-                binding.imgRadioButton.setImageResource(R.drawable.ic_radio_selected)
-            } else {
-                binding.imgRadioButton.setImageResource(R.drawable.ic_radio_unselected)
-            }
+            val isSelected = isAllSelected2 || bindingAdapterPosition == selectedPosition
+            binding.imgRadioButton.setColorFilter(
+                ContextCompat.getColor(itemView.context, if (isSelected) R.color.colorPrimary else R.color.black),
+                PorterDuff.Mode.SRC_IN
+            )
 
             binding.root.setOnClickListener {
-                val previousSelectedPosition = selectedPosition
-                selectedPosition = bindingAdapterPosition
+                if (isAllSelected2) {
+                    // If all are selected, deselect all and select only this one
+                    isAllSelected = false
+                    selectedPosition = bindingAdapterPosition
+                    notifyDataSetChanged()
+                } else {
+                    // Normal selection behavior
+                    val previousSelectedPosition = selectedPosition
+                    selectedPosition = bindingAdapterPosition
 
-                notifyItemChanged(previousSelectedPosition)
-                notifyItemChanged(selectedPosition)
+                    notifyItemChanged(previousSelectedPosition)
+                    notifyItemChanged(selectedPosition)
+                }
 
                 callBack.invoke(data)
             }
@@ -75,7 +91,7 @@ class AdapterRecentlyDeleted(
 
                         val remainingSeconds = TotpUtil.getRemainingSeconds()
                         binding.tvCounter.text = remainingSeconds.toString()
-
+                        binding.progressIndicator.progress = remainingSeconds
                         updateHandler?.postDelayed(this, 1000L)
                     } catch (e: Exception) {
                         e.printStackTrace()
@@ -84,7 +100,6 @@ class AdapterRecentlyDeleted(
                 }
             }
 
-            // Start TOTP updates
             updateHandler?.post(updateTotp)
         }
 

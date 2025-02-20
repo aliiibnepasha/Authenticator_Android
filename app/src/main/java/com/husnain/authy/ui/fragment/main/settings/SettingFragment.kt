@@ -82,13 +82,14 @@ class SettingFragment : Fragment() {
 
             // Handle login state
             if (!isUserLoggedIn) {
+                tvSignInToBackUp.visible()
                 btnLogout.gone()
                 lyDeleteAccount.gone()
 
             } else {
                 lyDeleteAccount.visible()
                 btnLogout.visible()
-
+                tvSignInToBackUp.gone()
             }
         }
     }
