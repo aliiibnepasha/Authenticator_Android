@@ -92,6 +92,11 @@ class AddAccountFragment : Fragment() {
             if (::camera.isInitialized) {
                 isFlashOn = !isFlashOn  // Toggle state
                 camera.cameraControl.enableTorch(isFlashOn)
+                if (isFlashOn){
+                    binding.btnFlash.setImageResource(R.drawable.ic_btn_off_flash_light)
+                }else{
+                    binding.btnFlash.setImageResource(R.drawable.ic_btn_on_flash_light)
+                }
             } else {
                 showCustomToast("Camera not initialized yet")
             }

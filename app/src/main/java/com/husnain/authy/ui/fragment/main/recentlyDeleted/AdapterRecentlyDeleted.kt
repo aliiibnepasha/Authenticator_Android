@@ -59,10 +59,12 @@ class AdapterRecentlyDeleted(
             binding.tvServiceName.text = data.name
 
             val isSelected = isAllSelected2 || bindingAdapterPosition == selectedPosition
-            binding.imgRadioButton.setColorFilter(
-                ContextCompat.getColor(itemView.context, if (isSelected) R.color.colorPrimary else R.color.black),
-                PorterDuff.Mode.SRC_IN
-            )
+
+            if (isSelected){
+                binding.imgRadioButton.setImageResource(R.drawable.ic_check_box)
+            }else{
+                binding.imgRadioButton.setImageResource(R.drawable.ic_checkbox_un_selected)
+            }
 
             binding.root.setOnClickListener {
                 if (isAllSelected2) {

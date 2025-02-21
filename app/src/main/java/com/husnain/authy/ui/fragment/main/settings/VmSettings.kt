@@ -29,4 +29,5 @@ class VmSettings @Inject constructor(
             authRepository.deleteUserAccountAndData()
         }
     }
+
 }

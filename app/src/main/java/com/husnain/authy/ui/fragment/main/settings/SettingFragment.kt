@@ -1,5 +1,6 @@
 package com.husnain.authy.ui.fragment.main.settings
 
+import android.app.Activity
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
@@ -11,14 +12,18 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import com.google.firebase.auth.FirebaseAuth
 import com.husnain.authy.R
+import com.husnain.authy.data.room.daos.DaoTotp
+import com.husnain.authy.data.room.tables.EntityTotp
 import com.husnain.authy.databinding.FragmentSettingBinding
 import com.husnain.authy.preferences.PreferenceManager
 import com.husnain.authy.ui.activities.AuthActivity
 import com.husnain.authy.utls.Constants
 import com.husnain.authy.utls.CustomToast.showCustomToast
 import com.husnain.authy.utls.DataState
+import com.husnain.authy.utls.Flags
 import com.husnain.authy.utls.gone
 import com.husnain.authy.utls.navigate
 import com.husnain.authy.utls.popBack
@@ -27,6 +32,11 @@ import com.husnain.authy.utls.progress.showDeleteAccountConfirmationBottomSheet
 import com.husnain.authy.utls.startActivity
 import com.husnain.authy.utls.visible
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import org.json.JSONArray
+import org.json.JSONObject
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -38,6 +48,7 @@ class SettingFragment : Fragment() {
     @Inject
     lateinit var preferenceManager: PreferenceManager
 
+    @Inject lateinit var daoTotp: DaoTotp
     @Inject
     lateinit var auth: FirebaseAuth
     private val KEY_HEADER_TITLE = "headerTitle"
@@ -99,6 +110,13 @@ class SettingFragment : Fragment() {
             popBack()
         }
 
+        binding.lyExport.setOnClickListener {
+            openFilePicker()
+        }
+
+        binding.lyImport.setOnClickListener {
+            openFilePickerForImport()
+        }
 
         //Navto buy premium
         binding.lyGetPremium.setOnClickListener {
@@ -282,6 +300,114 @@ class SettingFragment : Fragment() {
             webIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(webIntent)
         }
+    }
+
+    private fun openFilePicker() {
+        val intent = Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
+            addCategory(Intent.CATEGORY_OPENABLE)
+            type = "application/json"
+            putExtra(Intent.EXTRA_TITLE, "totp_details.json")
+        }
+        startActivityForResult(intent, REQUEST_CODE_CREATE_FILE)
+    }
+
+    @Deprecated("Deprecated in Java")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_CODE_CREATE_FILE && resultCode == Activity.RESULT_OK) {
+            val uri: Uri? = data?.data
+            uri?.let { exportTotpDetails(it) }
+        }else if (requestCode == REQUEST_CODE_OPEN_FILE && resultCode == Activity.RESULT_OK) {
+            val uri: Uri? = data?.data
+            uri?.let { importTotpDetails(it) }
+            Flags.comingBackFromDetailAfterDelete = true
+        }
+    }
+
+    private fun exportTotpDetails(uri: Uri) {
+        lifecycleScope.launch {
+            val totpDetails = getTotpDetailsFromDb()
+            val json = createJsonFromTotpDetails(totpDetails)
+            writeToFile(uri, json)
+        }
+    }
+
+    private suspend fun getTotpDetailsFromDb(): List<EntityTotp> {
+        return withContext(Dispatchers.IO) {
+            daoTotp.getAllTotpData()
+        }
+    }
+
+    private fun createJsonFromTotpDetails(totpDetails: List<EntityTotp>): String {
+        val jsonArray = JSONArray()
+        for (detail in totpDetails) {
+            val jsonObject = JSONObject()
+            jsonObject.put("serviceName", detail.serviceName)
+            jsonObject.put("secretKey", detail.secretKey)
+            jsonArray.put(jsonObject)
+        }
+        val jsonObject = JSONObject()
+        jsonObject.put("totpDetails", jsonArray)
+        return jsonObject.toString()
+    }
+
+    private suspend fun writeToFile(uri: Uri, json: String) {
+        withContext(Dispatchers.IO) {
+            requireContext().contentResolver.openOutputStream(uri)?.use { outputStream ->
+                outputStream.write(json.toByteArray())
+                outputStream.flush()
+            }
+        }
+    }
+
+    private fun openFilePickerForImport() {
+        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+            addCategory(Intent.CATEGORY_OPENABLE)
+            type = "application/json"
+        }
+        startActivityForResult(intent, REQUEST_CODE_OPEN_FILE)
+    }
+
+    private fun importTotpDetails(uri: Uri) {
+        lifecycleScope.launch {
+            val json = readJsonFromUri(uri)
+            val totpDetails = parseJsonToTotpDetails(json)
+            saveTotpDetailsToDb(totpDetails)
+        }
+    }
+
+    private suspend fun readJsonFromUri(uri: Uri): String {
+        return withContext(Dispatchers.IO) {
+            requireContext().contentResolver.openInputStream(uri)?.bufferedReader().use { it?.readText() } ?: ""
+        }
+    }
+
+    private fun parseJsonToTotpDetails(json: String): List<EntityTotp> {
+        val totpDetailsList = mutableListOf<EntityTotp>()
+        val jsonObject = JSONObject(json)
+        val jsonArray = jsonObject.getJSONArray("totpDetails")
+
+        for (i in 0 until jsonArray.length()) {
+            val detailJson = jsonArray.getJSONObject(i)
+            val serviceName = detailJson.getString("serviceName")
+            val secretKey = detailJson.getString("secretKey")
+            totpDetailsList.add(EntityTotp(0,serviceName, secretKey))
+        }
+
+        return totpDetailsList
+    }
+
+    private suspend fun saveTotpDetailsToDb(totpDetails: List<EntityTotp>) {
+        withContext(Dispatchers.IO) {
+            for (totp in totpDetails) {
+                daoTotp.insertOrReplaceTotpData(totp)
+            }
+        }
+    }
+
+    companion object {
+        const val REQUEST_CODE_CREATE_FILE = 1001
+        const val REQUEST_CODE_OPEN_FILE = 1002
     }
 
     override fun onDestroyView() {
