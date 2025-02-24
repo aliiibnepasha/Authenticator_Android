@@ -63,7 +63,16 @@
         android:label="fragment_subscription"
         tools:layout="@layout/fragment_subscription" >
         <action
-            android:id="@+id/action_subscriptionFragment2_to_onboardingFragment"
+            android:id="@+id/action_subscriptionFragmentAuth_to_localizeFragment2"
+            app:destination="@id/localizeFragment2" />
+    </fragment>
+    <fragment
+        android:id="@+id/localizeFragment2"
+        android:name="com.husnain.authy.ui.fragment.main.localization.LocalizeFragment"
+        android:label="fragment_localize"
+        tools:layout="@layout/fragment_localize" >
+        <action
+            android:id="@+id/action_localizeFragment2_to_onboardingFragment"
             app:destination="@id/onboardingFragment" />
     </fragment>
 </navigation>

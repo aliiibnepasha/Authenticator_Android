@@ -30,8 +30,7 @@ class App : LocalizationApplication(){
     var isScreenshotRestricted: Boolean = false
     private var currentActivity: WeakReference<MainActivity>? = null
     var isFreshStart: Boolean = true
-    @Inject
-    lateinit var preferenceManager: PreferenceManager
+    @Inject lateinit var preferenceManager: PreferenceManager
 
     override fun getDefaultLanguage(context: Context): Locale = Locale.ENGLISH
 

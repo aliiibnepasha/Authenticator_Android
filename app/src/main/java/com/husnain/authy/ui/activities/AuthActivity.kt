@@ -10,6 +10,7 @@ import android.view.WindowMetrics
 import androidx.core.text.layoutDirection
 import androidx.core.view.WindowCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
@@ -17,7 +18,9 @@ import com.akexorcist.localizationactivity.ui.LocalizationActivity
 import com.android.billingclient.api.BillingClient
 import com.android.billingclient.api.BillingClientStateListener
 import com.android.billingclient.api.BillingResult
+import com.android.billingclient.api.QueryProductDetailsParams
 import com.android.billingclient.api.QueryPurchasesParams
+import com.android.billingclient.api.queryProductDetails
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdSize
@@ -26,6 +29,7 @@ import com.google.android.gms.ads.LoadAdError
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
 import com.husnain.authy.R
+import com.husnain.authy.data.models.ModelSubscription
 import com.husnain.authy.databinding.ActivityAuthBinding
 import com.husnain.authy.preferences.PreferenceManager
 import com.husnain.authy.ui.fragment.auth.SigninFragment
@@ -34,10 +38,16 @@ import com.husnain.authy.ui.fragment.main.subscription.SubscriptionFragment
 import com.husnain.authy.ui.fragment.onboarding.OnboardingFragment
 import com.husnain.authy.utls.BackPressedExtensions.goBackPressed
 import com.husnain.authy.utls.Constants
+import com.husnain.authy.utls.CustomToast.showCustomToast
 import com.husnain.authy.utls.admob.AdUtils
 import com.husnain.authy.utls.gone
+import com.husnain.authy.utls.progress.ProgressDialogUtil.dismissProgressDialog
+import com.husnain.authy.utls.progress.ProgressDialogUtil.showProgressDialog
 import com.husnain.authy.utls.visible
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.Locale
 import javax.inject.Inject
 
@@ -58,6 +68,7 @@ class AuthActivity : LocalizationActivity() {
     lateinit var preferenceManager: PreferenceManager
     private lateinit var adRequest: AdRequest
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAuthBinding.inflate(layoutInflater)
@@ -72,6 +83,10 @@ class AuthActivity : LocalizationActivity() {
         setupBillingClient()
         setupNavController()
         handleBackPressed()
+    }
+
+    fun changeLanguage(language: String) {
+        setLanguage(language)
     }
 
     private fun setupNavController() {
@@ -90,7 +105,7 @@ class AuthActivity : LocalizationActivity() {
                 if (isAdLoaded) {
                     binding.adContainer.visible()
                 }
-            }  else {
+            } else {
                 setStatusBarColor(R.color.white)
                 binding.adContainer.gone()
             }
@@ -126,7 +141,10 @@ class AuthActivity : LocalizationActivity() {
 
             override fun onBillingSetupFinished(billingResult: BillingResult) {
                 if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
-                    checkSubscriptionStatus()
+                    lifecycleScope.launch(Dispatchers.IO) {
+                        queryProductDetails()
+                        checkSubscriptionStatus()
+                    }
                 } else {
                     Log.e(
                         "LOG_AUTHY",
@@ -303,4 +321,101 @@ class AuthActivity : LocalizationActivity() {
             val adWidth = (adWidthPixels / density).toInt()
             return AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(this, adWidth)
         }
+
+    private fun queryProductDetails() {
+        // Define subscription products
+//        showProgressDialog()
+        val subsProductList = listOf(
+            QueryProductDetailsParams.Product.newBuilder()
+                .setProductId(Constants.weaklySubId)
+                .setProductType(BillingClient.ProductType.SUBS)
+                .build(),
+            QueryProductDetailsParams.Product.newBuilder()
+                .setProductId(Constants.monthlySubId)
+                .setProductType(BillingClient.ProductType.SUBS)
+                .build()
+        )
+
+        // Define in-app products
+        val inAppProductList = listOf(
+            QueryProductDetailsParams.Product.newBuilder()
+                .setProductId(Constants.lifeTimePorductId)
+                .setProductType(BillingClient.ProductType.INAPP)
+                .build()
+        )
+
+        lifecycleScope.launch(Dispatchers.IO) {
+            val updatedSubscriptionDataList = mutableListOf<ModelSubscription>()
+
+            // Query subscriptions
+            val subsParams = QueryProductDetailsParams.newBuilder()
+                .setProductList(subsProductList)
+                .build()
+            val subsResult = billingClient.queryProductDetails(subsParams)
+
+            if (subsResult.billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
+                subsResult.productDetailsList?.forEach { productDetails ->
+
+                    val price = productDetails.subscriptionOfferDetails?.firstOrNull()
+                        ?.pricingPhases?.pricingPhaseList?.firstOrNull()?.formattedPrice ?: ""
+
+                    val (duration, label) = getSubscriptionDurationAndLabel(productDetails.productId)
+                    updatedSubscriptionDataList.add(
+                        ModelSubscription(
+                            duration,
+                            label,
+                            price,
+                            productDetails.productId
+                        )
+                    )
+                }
+            }
+
+            // Query in-app products
+            val inAppParams = QueryProductDetailsParams.newBuilder()
+                .setProductList(inAppProductList)
+                .build()
+            val inAppResult = billingClient.queryProductDetails(inAppParams)
+
+            if (inAppResult.billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
+                inAppResult.productDetailsList?.forEach { productDetails ->
+
+                    val price = productDetails.oneTimePurchaseOfferDetails?.formattedPrice ?: ""
+
+                    val (duration, label) = getSubscriptionDurationAndLabel(productDetails.productId)
+                    updatedSubscriptionDataList.add(
+                        ModelSubscription(
+                            duration,
+                            label,
+                            price,
+                            productDetails.productId
+                        )
+                    )
+                }
+            }
+
+            val sortedSubscriptionDataList =
+                updatedSubscriptionDataList.sortedWith(compareBy { subscription ->
+                    when (subscription.productId) {
+                        Constants.weaklySubId -> 1
+                        Constants.monthlySubId -> 2
+                        Constants.lifeTimePorductId -> 3
+                        else -> Int.MAX_VALUE
+                    }
+                })
+
+            lifecycleScope.launch(Dispatchers.IO) {
+                preferenceManager.saveSubscriptionData(sortedSubscriptionDataList)
+            }
+        }
+    }
+
+    private fun getSubscriptionDurationAndLabel(productId: String): Pair<String, String> {
+        return when (productId) {
+            Constants.weaklySubId -> Pair("Weekly", "Most popular")
+            Constants.monthlySubId -> Pair("Monthly", "Best value")
+            Constants.lifeTimePorductId -> Pair("Lifetime Access", "Enterprise")
+            else -> Pair("Unknown", "N/A")
+        }
+    }
 }

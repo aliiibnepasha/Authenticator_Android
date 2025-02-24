@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -18,6 +19,7 @@ import com.android.billingclient.api.Purchase
 import com.android.billingclient.api.PurchasesUpdatedListener
 import com.android.billingclient.api.QueryProductDetailsParams
 import com.android.billingclient.api.queryProductDetails
+import com.google.android.datatransport.runtime.scheduling.jobscheduling.SchedulerConfig.Flag
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.husnain.authy.R
 import com.husnain.authy.data.models.ModelSubscription
@@ -25,6 +27,7 @@ import com.husnain.authy.databinding.FragmentSubscriptionBinding
 import com.husnain.authy.preferences.PreferenceManager
 import com.husnain.authy.ui.activities.MainActivity
 import com.husnain.authy.ui.fragment.main.subscription.adapter.AdapterSubscription
+import com.husnain.authy.utls.BackPressedExtensions.goBackPressed
 import com.husnain.authy.utls.Constants
 import com.husnain.authy.utls.CustomToast.showCustomToast
 import com.husnain.authy.utls.Flags
@@ -64,11 +67,27 @@ class SubscriptionFragment : Fragment() {
         _binding = FragmentSubscriptionBinding.inflate(inflater, container, false)
         Log.d(Constants.TAG, "landed on subscription fragment")
         if (!Flags.isComingFromSplash && !preferenceManager.isSubscriptionActive()) {
-            vmSubscription.loadAd(requireActivity())
+            if (!Flags.isNotToShowAd){
+                vmSubscription.loadAd(requireActivity())
+            }
         }
+        getAndSetDataFromPrefs()
         setupBillingClient()
         setOnClickListener()
+        handleBackPressed()
         return binding.root
+    }
+
+    private fun getAndSetDataFromPrefs() {
+        val data = preferenceManager.getSubscriptionData()
+        initAdapter(data)
+    }
+
+    private fun handleBackPressed(){
+        // In your fragment:
+        goBackPressed {
+            onCrossClick()
+        }
     }
 
     private fun onCrossClick() {
@@ -80,14 +99,21 @@ class SubscriptionFragment : Fragment() {
             if (Flags.isComingFromSplash) {
                 Flags.isComingFromSplash = false
                 Log.d(Constants.TAG, "interstial ad on showed")
-                AdUtils.showInterstitialAdWithCallback(requireActivity(), failureShowCallback = {
-                    if (!preferenceManager.isOnboardingFinished()) {
-                        findNavController().navigate(R.id.onboardingFragment)
-                    } else {
-                        popBack()
-                    }
+                if (Flags.isNotToShowAd){
+                    Flags.isNotToShowAd = false;
+                    popBack()
+                }else{
+                    AdUtils.showInterstitialAdWithCallback(requireActivity(), failureShowCallback = {
+                        if (!preferenceManager.isOnboardingFinished()) {
+                            val bundle = Bundle()
+                            bundle.putBoolean("comingFromOnboarding",true)
+
+                            navigate(R.id.action_subscriptionFragmentAuth_to_localizeFragment2,bundle)
+                        } else {
+                            popBack()
+                        }
+                    })
                 }
-                )
             } else {
                 /**
                  * Observes the `isAdLoaded` status and performs actions based on its value.
@@ -95,29 +121,42 @@ class SubscriptionFragment : Fragment() {
                  * - `true`: Stops loading and shows the interstitial ad.
                  * - `false`: Stops loading and navigates back.
                  */
-                vmSubscription.isAdLoaded.observe(viewLifecycleOwner) { isAdLoaded ->
-                    when (isAdLoaded) {
-                        null -> {
-                            binding.mainLoadingView.start()
-                        }
+                if (Flags.isNotToShowAd){
+                    Flags.isNotToShowAd = false
+                    popBack()
+                }else{
+                    vmSubscription.isAdLoaded.observe(viewLifecycleOwner) { isAdLoaded ->
+                        when (isAdLoaded) {
+                            null -> {
+                                binding.mainLoadingView.start()
+                            }
 
-                        true -> {
-                            binding.mainLoadingView.stop()
-                            AdUtils.showInterstitialAdWithCallback(
-                                requireActivity(),
-                                failureShowCallback = {
-                                    if (!preferenceManager.isOnboardingFinished()) {
-                                        navigate(R.id.onboardingFragment)
-                                    } else {
-                                        popBack()
-                                    }
+                            true -> {
+                                binding.mainLoadingView.stop()
+                                if (Flags.isNotToShowAd){
+                                    Flags.isNotToShowAd = false;
+                                    popBack()
+                                }else{
+                                    AdUtils.showInterstitialAdWithCallback(
+                                        requireActivity(),
+                                        failureShowCallback = {
+                                            if (!preferenceManager.isOnboardingFinished()) {
+                                                val bundle = Bundle()
+                                                bundle.putBoolean("comingFromOnboarding",true)
+
+                                                navigate(R.id.action_subscriptionFragmentAuth_to_localizeFragment2,bundle)
+                                            } else {
+                                                popBack()
+                                            }
+                                        }
+                                    )
                                 }
-                            )
-                        }
+                            }
 
-                        false -> {
-                            binding.mainLoadingView.stop()
-                            popBack()
+                            false -> {
+                                binding.mainLoadingView.stop()
+                                popBack()
+                            }
                         }
                     }
                 }
@@ -177,7 +216,7 @@ class SubscriptionFragment : Fragment() {
 
     private fun queryProductDetails() {
         // Define subscription products
-        showProgressDialog()
+//        showProgressDialog()
         val subsProductList = listOf(
             QueryProductDetailsParams.Product.newBuilder()
                 .setProductId(Constants.weaklySubId)
@@ -262,11 +301,11 @@ class SubscriptionFragment : Fragment() {
             // Update the UI with the sorted results
             withContext(Dispatchers.Main) {
                 try {
-                    initAdapter(sortedSubscriptionDataList)
+//                    initAdapter(sortedSubscriptionDataList)
                 } catch (e: Exception) {
                     e.message?.let { showCustomToast(it) }
                 }
-                dismissProgressDialog()
+//                dismissProgressDialog()
             }
         }
     }
@@ -312,7 +351,10 @@ class SubscriptionFragment : Fragment() {
             preferenceManager.saveSubscriptionActive(true)
             preferenceManager.saveLifeTimeAccessActive(true)
             if (!preferenceManager.isOnboardingFinished()) {
-                navigate(R.id.action_subscriptionFragment2_to_onboardingFragment)
+                val bundle = Bundle()
+                bundle.putBoolean("comingFromOnboarding",true)
+
+                navigate(R.id.action_subscriptionFragmentAuth_to_localizeFragment2)
             } else {
                 (activity as? MainActivity)?.preloadAd()
                 popBack()
@@ -327,7 +369,10 @@ class SubscriptionFragment : Fragment() {
             logSubscriptionSuccess()
             preferenceManager.saveSubscriptionActive(true)
             if (!preferenceManager.isOnboardingFinished()) {
-                navigate(R.id.action_subscriptionFragment2_to_onboardingFragment)
+                val bundle = Bundle()
+                bundle.putBoolean("comingFromOnboarding",true)
+
+                navigate(R.id.action_subscriptionFragmentAuth_to_localizeFragment2)
             } else {
                 (activity as? MainActivity)?.preloadAd()
                 popBack()

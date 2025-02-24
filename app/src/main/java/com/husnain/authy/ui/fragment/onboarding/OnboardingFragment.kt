@@ -10,6 +10,7 @@ import com.husnain.authy.R
 import com.husnain.authy.databinding.FragmentOnboardingBinding
 import com.husnain.authy.preferences.PreferenceManager
 import com.husnain.authy.ui.activities.MainActivity
+import com.husnain.authy.utls.navigate
 import com.husnain.authy.utls.startActivity
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject

@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -97,7 +98,6 @@ class HomeFragment : Fragment() {
 
     private fun setOnClickListener() {
 
-
         binding.btnAddAccountFirstTime.setOnClickListener {
             navigate(R.id.action_homeFragment_to_addAccountFragment)
         }
@@ -107,6 +107,7 @@ class HomeFragment : Fragment() {
         }
 
         binding.imgPremium.setOnClickListener {
+            Flags.isNotToShowAd = true
             navigate(R.id.action_homeFragment_to_subscriptionFragment)
         }
     }

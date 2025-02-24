@@ -16,52 +16,66 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.tbuonomo.viewpagerdotsindicator.DotsIndicator
-        android:id="@+id/dotsIndicator"
-        android:layout_width="wrap_content"
+
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="27dp"
-        android:layout_marginBottom="@dimen/_46sdp"
-        app:dotsColor="#77555BF5"
-        app:dotsCornerRadius="0dp"
-        app:dotsSize="14dp"
-        app:dotsSpacing="4dp"
-        app:dotsWidthFactor="2.5"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:progressMode="false"
-        app:selectedDotColor="@color/colorPrimary" />
-
-    <LinearLayout
-        android:id="@+id/tvNext"
-        android:layout_width="100dp"
-        android:layout_height="45dp"
-        android:layout_marginEnd="42dp"
         android:orientation="horizontal"
-        android:background="@drawable/bg_gradiant_button"
-        android:padding="10dp"
-        android:gravity="center_vertical"
-        android:textSize="@dimen/_14ssp"
-        app:layout_constraintBottom_toBottomOf="@+id/dotsIndicator"
+        android:layout_marginBottom="@dimen/_50sdp"
+        app:layout_constraintBottom_toBottomOf="@+id/viewPager"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/dotsIndicator">
+        app:layout_constraintStart_toStartOf="parent">
 
-        <androidx.appcompat.widget.AppCompatTextView
+        <com.tbuonomo.viewpagerdotsindicator.DotsIndicator
+            android:id="@+id/dotsIndicator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Next"
-            android:includeFontPadding="false"
-            android:textColor="@color/white"
+            android:layout_marginStart="27dp"
+            app:dotsColor="#77555BF5"
+            android:layout_alignParentTop="true"
+            app:dotsCornerRadius="0dp"
+            android:layout_marginTop="15dp"
+            android:layout_alignParentStart="true"
+            app:dotsSize="14dp"
+            app:dotsSpacing="4dp"
+            app:dotsWidthFactor="2.5"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:progressMode="false"
+            app:selectedDotColor="@color/colorPrimary" />
+
+        <LinearLayout
+            android:id="@+id/tvNext"
+            android:layout_width="100dp"
+            android:layout_height="45dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="42dp"
+            android:layout_alignParentTop="true"
+            android:background="@drawable/bg_gradiant_button"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="10dp"
             android:textSize="@dimen/_14ssp"
-            android:fontFamily="@font/poppins_medium"/>
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:srcCompat="@drawable/ic_back"
-            android:layout_marginStart="5dp"
-            android:rotation="180"
-            android:tint="@color/white"/>
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_medium"
+                android:includeFontPadding="false"
+                android:text="Next"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_14ssp" />
 
-    </LinearLayout>
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:rotation="180"
+                android:tint="@color/white"
+                app:srcCompat="@drawable/ic_back" />
+
+        </LinearLayout>
+    </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

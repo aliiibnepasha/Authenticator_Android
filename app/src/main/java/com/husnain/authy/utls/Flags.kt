@@ -5,5 +5,6 @@ object Flags {
     var isComingFromSplash = false
     var isComingFromInterstitialAdClose = false
     var comingBackFromDetailAfterDelete = false
+    var isNotToShowAd = false
 }
 

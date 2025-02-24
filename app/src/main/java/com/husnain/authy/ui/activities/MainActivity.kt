@@ -76,10 +76,13 @@ class MainActivity : LocalizationActivity() {
         inIt()
     }
 
+    override fun onResume() {
+        super.onResume()
+        handleBackPressed()
+    }
     private fun inIt() {
         preloadAd()
         setUpBottomBar()
-        handleBackPressed()
     }
 
     fun preloadAd() {
@@ -171,13 +174,13 @@ class MainActivity : LocalizationActivity() {
     }
 
     private fun handleBackPressed() {
-        goBackPressed {
-            if (navHostFragment.childFragmentManager.fragments.first() is HomeFragment) {
-                moveTaskToBack(true)
-            } else if (navHostFragment.childFragmentManager.fragments.first() is SubscriptionFragment) {
-
-            } else {
-                navHostFragment.findNavController().popBackStack()
+        if (navHostFragment.childFragmentManager.fragments.first() !is SubscriptionFragment) {
+            goBackPressed {
+                if (navHostFragment.childFragmentManager.fragments.first() is HomeFragment) {
+                    moveTaskToBack(true)
+                } else {
+                    navHostFragment.findNavController().popBackStack()
+                }
             }
         }
     }

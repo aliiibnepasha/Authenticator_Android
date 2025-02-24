@@ -41,7 +41,9 @@ class AdapterLanguages(private val items: List<ModelLanguage>, private val callB
             }
 
             binding.lyLanguage.setOnClickListener {
+                selectedLang = data.langShortType // Update selectedLang before notifying adapter
                 callBack.invoke(data)
+                notifyDataSetChanged()
             }
         }
     }

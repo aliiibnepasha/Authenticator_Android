@@ -11,6 +11,7 @@ import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.husnain.authy.R
@@ -29,6 +30,8 @@ import com.husnain.authy.utls.startActivity
 import com.husnain.authy.utls.visible
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Runnable
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -53,14 +56,25 @@ class SplashFragment : Fragment() {
             navigate(R.id.action_splashFragment_to_signupFragment)
         } else {
             if (!preferenceManager.isSubscriptionActive()) {
+                var isAdHandled = false
+
+                lifecycleScope.launch {
+                    delay(12_000) // Wait for 12 seconds
+                    if (!isAdHandled) {
+                        isAdHandled = true
+                        init() // Move forward if ad is not loaded within 12 seconds
+                    }
+                }
+
+                // Load the interstitial ad
                 AdUtils.loadInterstitialAd(requireActivity()) { isAdLoaded ->
-                    if (isAdLoaded) {
-                        init()
-                    } else {
+                    if (!isAdHandled) {
+                        isAdHandled = true
                         init()
                     }
                 }
-            } else {
+            }
+            else {
                 binding.root.postDelayed(Runnable {
                     init()
                 }, 1500)

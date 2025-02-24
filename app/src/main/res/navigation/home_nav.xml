@@ -29,8 +29,11 @@
             android:id="@+id/action_settingFragment_to_webViewFragment"
             app:destination="@id/webViewFragment" />
         <action
-            android:id="@+id/action_settingFragment_to_addAccountFragment"
-            app:destination="@id/addAccountFragment" />
+            android:id="@+id/action_settingFragment_to_importFromGoogleFragment"
+            app:destination="@id/importFromGoogleFragment" />
+        <action
+            android:id="@+id/action_settingFragment_to_exportCodesFragment"
+            app:destination="@id/exportCodesFragment" />
     </fragment>
     <fragment
         android:id="@+id/newToolsFragment"
@@ -130,4 +133,35 @@
         android:name="com.husnain.authy.ui.fragment.main.otpDetail.TotpDetailFragment"
         android:label="fragment_totp_detail"
         tools:layout="@layout/fragment_totp_detail" />
+    <fragment
+        android:id="@+id/importFromGoogleFragment"
+        android:name="com.husnain.authy.ui.fragment.main.importFromGoogle.ImportFromGoogleFragment"
+        android:label="fragment_import_from_google"
+        tools:layout="@layout/fragment_import_from_google" >
+        <action
+            android:id="@+id/action_importFromGoogleFragment_to_addFromSameDeviceFragment"
+            app:destination="@id/addFromSameDeviceFragment" />
+        <action
+            android:id="@+id/action_importFromGoogleFragment_to_importFromOtherDeviceFragment"
+            app:destination="@id/importFromOtherDeviceFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addFromSameDeviceFragment"
+        android:name="com.husnain.authy.ui.fragment.main.importFromGoogle.AddFromSameDeviceFragment"
+        android:label="fragment_add_from_same_device"
+        tools:layout="@layout/fragment_add_from_same_device" />
+    <fragment
+        android:id="@+id/importFromOtherDeviceFragment"
+        android:name="com.husnain.authy.ui.fragment.main.importFromGoogle.ImportFromOtherDeviceFragment"
+        android:label="fragment_import_from_other_device"
+        tools:layout="@layout/fragment_import_from_other_device" >
+        <action
+            android:id="@+id/action_importFromOtherDeviceFragment_to_addAccountFragment"
+            app:destination="@id/addAccountFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/exportCodesFragment"
+        android:name="com.husnain.authy.ui.fragment.main.exportCodes.ExportCodesFragment"
+        android:label="fragment_export_codes"
+        tools:layout="@layout/fragment_export_codes" />
 </navigation>

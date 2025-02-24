@@ -46,6 +46,7 @@ import com.husnain.authy.utls.Flags
 import com.husnain.authy.utls.OtpMigration
 import com.husnain.authy.utls.QRCodeAnalyzer
 import com.husnain.authy.utls.gone
+import com.husnain.authy.utls.invisible
 import com.husnain.authy.utls.navigate
 import com.husnain.authy.utls.popBack
 import com.husnain.authy.utls.visible
@@ -120,7 +121,8 @@ class AddAccountFragment : Fragment() {
             arguments?.getBoolean(Constants.KEY_IS_COMING_FROM_SETTINGS_FOR_GOOGLE_AUTH_IMPORT)
         value?.let { isValue ->
             isComingFromSetting = isValue
-            binding.btnAddAccountManually.apply { if (isValue) gone() else visible() }
+            binding.btnAddAccountManually.apply { if (isValue) invisible() else visible() }
+            binding.btnGallery.apply { if (isValue) invisible() else visible() }
         }
     }
 
@@ -219,7 +221,7 @@ class AddAccountFragment : Fragment() {
 
     private fun handleQrContent(qrContent: String?) {
         if (qrContent != null) {
-            logQRCodeScanned()
+//            logQRCodeScanned()
             if (qrContent.startsWith("otpauth://") || qrContent.startsWith("otpauth-migration://")) {
                 handleTOTPUri(qrContent)
             } else {

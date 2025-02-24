@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
+import com.google.android.datatransport.runtime.scheduling.jobscheduling.SchedulerConfig.Flag
 import com.google.firebase.auth.FirebaseAuth
 import com.husnain.authy.R
 import com.husnain.authy.data.room.daos.DaoTotp
@@ -111,7 +112,7 @@ class SettingFragment : Fragment() {
         }
 
         binding.lyExport.setOnClickListener {
-            openFilePicker()
+            navigate(R.id.action_settingFragment_to_exportCodesFragment)
         }
 
         binding.lyImport.setOnClickListener {
@@ -120,6 +121,7 @@ class SettingFragment : Fragment() {
 
         //Navto buy premium
         binding.lyGetPremium.setOnClickListener {
+            Flags.isNotToShowAd = true
             navigate(R.id.action_settingFragment_to_subscriptionFragment)
         }
 
@@ -145,6 +147,7 @@ class SettingFragment : Fragment() {
             when {
                 // If the user is not subscribed, take them to the subscription screen
                 !isUserHavePremium -> {
+                    Flags.isNotToShowAd = true
                     navigate(R.id.action_settingFragment_to_subscriptionFragment)
                 }
 
@@ -176,10 +179,7 @@ class SettingFragment : Fragment() {
 
         //google authenticator import
         binding.lyImportGoogleAuthData.setOnClickListener {
-            val bundle = Bundle().apply {
-                putBoolean(Constants.KEY_IS_COMING_FROM_SETTINGS_FOR_GOOGLE_AUTH_IMPORT,true)
-            }
-            navigate(R.id.action_settingFragment_to_addAccountFragment,bundle)
+            navigate(R.id.action_settingFragment_to_importFromGoogleFragment)
         }
 
         //Info and share
@@ -302,14 +302,7 @@ class SettingFragment : Fragment() {
         }
     }
 
-    private fun openFilePicker() {
-        val intent = Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
-            addCategory(Intent.CATEGORY_OPENABLE)
-            type = "application/json"
-            putExtra(Intent.EXTRA_TITLE, "totp_details.json")
-        }
-        startActivityForResult(intent, REQUEST_CODE_CREATE_FILE)
-    }
+
 
     @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

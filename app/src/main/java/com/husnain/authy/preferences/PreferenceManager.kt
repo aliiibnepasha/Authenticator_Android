@@ -3,6 +3,8 @@ package com.husnain.authy.preferences
 import android.content.Context
 import android.content.SharedPreferences
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import com.husnain.authy.data.models.ModelSubscription
 import com.husnain.authy.data.models.ModelUser
 import com.husnain.authy.utls.DelayOption
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -89,7 +91,7 @@ class PreferenceManager @Inject constructor(@ApplicationContext private val cont
     }
 
     fun getLang(): String? {
-        return myPref.getString(KEY_LANG, "")
+        return myPref.getString(KEY_LANG, "en")
     }
 
     fun saveBiometricLock(isEnabled: Boolean) {
@@ -189,5 +191,20 @@ class PreferenceManager @Inject constructor(@ApplicationContext private val cont
 
     fun getLastSyncTime(): String? {
         return myPref.getString(KEY_LAST_SYNC_TIME, "")
+    }
+
+    fun saveSubscriptionData(subscriptionList: List<ModelSubscription>) {
+        val json = gson.toJson(subscriptionList)
+        myPref.edit().putString("subscription_data", json).apply()
+    }
+
+    fun getSubscriptionData(): List<ModelSubscription> {
+        val json = myPref.getString("subscription_data", null)
+        return if (json != null) {
+            val type = object : TypeToken<List<ModelSubscription>>() {}.type
+            gson.fromJson(json, type)
+        } else {
+            emptyList()
+        }
     }
 }
