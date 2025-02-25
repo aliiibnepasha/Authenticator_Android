@@ -1,11 +1,9 @@
 package com.husnain.authy.ui.fragment.main.recentlyDeleted
 
-import android.graphics.PorterDuff
 import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.husnain.authy.R
 import com.husnain.authy.data.room.tables.RecentlyDeleted
@@ -14,10 +12,10 @@ import com.husnain.authy.utls.TotpUtil
 
 class AdapterRecentlyDeleted(
     private var items: List<RecentlyDeleted>,
-) :
-    RecyclerView.Adapter<AdapterRecentlyDeleted.ViewHolder>() {
+) : RecyclerView.Adapter<AdapterRecentlyDeleted.ViewHolder>() {
+
     private var callBack: (RecentlyDeleted) -> Unit = {}
-    private var selectedPosition = -1;
+    private val selectedItems = mutableSetOf<RecentlyDeleted>() // Store multiple selected items
     private var isAllSelected = false
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -25,14 +23,11 @@ class AdapterRecentlyDeleted(
         return ViewHolder(binding)
     }
 
-
-    override fun getItemCount(): Int {
-        return items.size
-    }
+    override fun getItemCount(): Int = items.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val data = items[position]
-        holder.bind(data,isAllSelected)
+        holder.bind(data, isAllSelected)
     }
 
     override fun onViewRecycled(holder: ViewHolder) {
@@ -44,12 +39,25 @@ class AdapterRecentlyDeleted(
         this.callBack = callback
     }
 
+    /**
+     * Selects or deselects all items.
+     */
     fun updateSelectionState(selectAll: Boolean) {
         isAllSelected = selectAll
-        selectedPosition = if (selectAll) RecyclerView.NO_POSITION else -1
+        selectedItems.clear()
+
+        if (selectAll) {
+            selectedItems.addAll(items)
+        }
         notifyDataSetChanged()
     }
 
+    /**
+     * Returns the selected items.
+     */
+    fun getSelectedItems(): List<RecentlyDeleted> {
+        return selectedItems.toList()
+    }
 
     inner class ViewHolder(val binding: ItemRecentlyDeletedBinding) : RecyclerView.ViewHolder(binding.root) {
         private var updateHandler: Handler? = null
@@ -58,29 +66,23 @@ class AdapterRecentlyDeleted(
             binding.imgLogo.setImageResource(R.drawable.ic_otp_avatar)
             binding.tvServiceName.text = data.name
 
-            val isSelected = isAllSelected2 || bindingAdapterPosition == selectedPosition
+            val isSelected = selectedItems.contains(data)
 
-            if (isSelected){
+            // Update UI based on selection state
+            if (isSelected) {
                 binding.imgRadioButton.setImageResource(R.drawable.ic_check_box)
-            }else{
+            } else {
                 binding.imgRadioButton.setImageResource(R.drawable.ic_checkbox_un_selected)
             }
 
             binding.root.setOnClickListener {
-                if (isAllSelected2) {
-                    // If all are selected, deselect all and select only this one
-                    isAllSelected = false
-                    selectedPosition = bindingAdapterPosition
-                    notifyDataSetChanged()
+                if (selectedItems.contains(data)) {
+                    selectedItems.remove(data) // Deselect
                 } else {
-                    // Normal selection behavior
-                    val previousSelectedPosition = selectedPosition
-                    selectedPosition = bindingAdapterPosition
-
-                    notifyItemChanged(previousSelectedPosition)
-                    notifyItemChanged(selectedPosition)
+                    selectedItems.add(data) // Select
                 }
 
+                notifyItemChanged(bindingAdapterPosition)
                 callBack.invoke(data)
             }
 

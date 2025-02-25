@@ -199,9 +199,9 @@ class HomeFragment : Fragment() {
             //Long click to show the delete bottom sheet
             adapter.setOnLongClickListener { totpData ->
                 showBottomSheetDialog(
-                    "Remove this account",
-                    "move to trash",
-                    "Remove",
+                    getString(R.string.remove_this_account),
+                    getString(R.string.move_to_trash),
+                    getString(R.string.remove),
                     true,
                     onPrimaryClick = {
                         vmHome.insertToRecentlyDeleted(

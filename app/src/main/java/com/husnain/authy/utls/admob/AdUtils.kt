@@ -3,6 +3,7 @@ package com.husnain.authy.utls.admob
 import android.app.Activity
 import android.content.Context
 import android.util.Log
+import com.google.android.datatransport.runtime.scheduling.jobscheduling.SchedulerConfig.Flag
 import com.google.android.gms.ads.AdError
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.FullScreenContentCallback
@@ -53,19 +54,26 @@ object AdUtils {
      */
 
     fun showInterstitialAdWithCallback(activity: Activity,failureShowCallback:() -> Unit) {
+        if (isDebug) {
+            failureShowCallback()
+            return
+        }
         if (interstitialAd != null) {
             interstitialAd?.fullScreenContentCallback = object : FullScreenContentCallback() {
                 override fun onAdDismissedFullScreenContent() {
+                    Flags.isInterstitialAdShowing = false
                     interstitialAd = null
                 }
 
                 override fun onAdFailedToShowFullScreenContent(adError: AdError) {
+                    Flags.isInterstitialAdShowing = false
                     interstitialAd = null
                     Flags.isComingFromInterstitialAdClose = false
                     failureShowCallback.invoke()
                 }
 
                 override fun onAdShowedFullScreenContent() {
+                    Flags.isInterstitialAdShowing = true
                     Flags.isComingFromInterstitialAdClose = true
                     failureShowCallback()
                 }

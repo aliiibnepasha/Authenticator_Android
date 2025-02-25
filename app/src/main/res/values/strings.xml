@@ -130,5 +130,28 @@
     <string name="string_please_select_at_least_one">Please select at least one</string>
     <string name="string_lifetime_purchase_successful">Lifetime purchase is successful</string>
     <string name="string_subscription_successful">Subscribed successfully</string>
+    <string name="string_data_saved_successfully">Data Saved Successfully</string>
+    <string name="account_name_cannot_be_empty">Account name cannot be empty</string>
+    <string name="private_key_cannot_be_empty">Private key cannot be empty</string>
+    <string name="invalid_private_key_format">Invalid private key format</string>
+    <string name="remove_this_account">Remove this account</string>
+    <string name="move_to_trash">move to trash</string>
+    <string name="remove">Remove</string>
+    <string name="stay_one_step_ahead">Stay One Step Ahead</string>
+    <string name="protect_what_matters">Protect what matters</string>
+    <string name="access_made_easy">Access made easy</string>
+    <string name="get_seamless_authentication_and_advanced_security_features_all_in_one_place">Get seamless authentication and advanced security features, all in one place.</string>
+    <string name="protect_what_matters_with_enhanced_security_and_peace_of_mind">Protect what matters with enhanced security and peace of mind</string>
+    <string name="secure_your_digital_world_with_ease">Secure your digital world with ease.</string>
+    <string name="imported_successfully">Imported Successfully</string>
+    <string name="password_is_required">Password is required</string>
+    <string name="invalid_password">Invalid password</string>
+    <string name="restore">Restore</string>
+    <string name="reuse_account_for_2_factor_authentication">Reuse account for 2-factor authentication</string>
+    <string name="permanently_delete">Permanently Delete</string>
+    <string name="once_removed_the_current_device_will_not_be_used_for_this_account_s_2_factor_authentication">Once removed, the current device will not be used for this account’s 2-factor authentication</string>
+    <string name="delete">Delete</string>
+    <string name="are_you_sure_you_want_to_logout">Are you sure you want to logout</string>
+    <string name="yes">Yes</string>
 
 </resources>

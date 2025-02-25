@@ -38,6 +38,7 @@ import com.husnain.authy.utls.progress.ProgressDialogUtil.dismissProgressDialog
 import com.husnain.authy.utls.progress.ProgressDialogUtil.showProgressDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -103,16 +104,21 @@ class SubscriptionFragment : Fragment() {
                     Flags.isNotToShowAd = false;
                     popBack()
                 }else{
-                    AdUtils.showInterstitialAdWithCallback(requireActivity(), failureShowCallback = {
-                        if (!preferenceManager.isOnboardingFinished()) {
-                            val bundle = Bundle()
-                            bundle.putBoolean("comingFromOnboarding",true)
+                    lifecycleScope.launch {
+                        binding.mainLoadingView.start()
+                        delay(1000)
+                        binding.mainLoadingView.stop()
+                        AdUtils.showInterstitialAdWithCallback(requireActivity(), failureShowCallback = {
+                            if (!preferenceManager.isOnboardingFinished()) {
+                                val bundle = Bundle()
+                                bundle.putBoolean("comingFromOnboarding",true)
 
-                            navigate(R.id.action_subscriptionFragmentAuth_to_localizeFragment2,bundle)
-                        } else {
-                            popBack()
-                        }
-                    })
+                                navigate(R.id.action_subscriptionFragmentAuth_to_localizeFragment2,bundle)
+                            } else {
+                                popBack()
+                            }
+                        })
+                    }
                 }
             } else {
                 /**
@@ -125,37 +131,42 @@ class SubscriptionFragment : Fragment() {
                     Flags.isNotToShowAd = false
                     popBack()
                 }else{
-                    vmSubscription.isAdLoaded.observe(viewLifecycleOwner) { isAdLoaded ->
-                        when (isAdLoaded) {
-                            null -> {
-                                binding.mainLoadingView.start()
-                            }
-
-                            true -> {
-                                binding.mainLoadingView.stop()
-                                if (Flags.isNotToShowAd){
-                                    Flags.isNotToShowAd = false;
-                                    popBack()
-                                }else{
-                                    AdUtils.showInterstitialAdWithCallback(
-                                        requireActivity(),
-                                        failureShowCallback = {
-                                            if (!preferenceManager.isOnboardingFinished()) {
-                                                val bundle = Bundle()
-                                                bundle.putBoolean("comingFromOnboarding",true)
-
-                                                navigate(R.id.action_subscriptionFragmentAuth_to_localizeFragment2,bundle)
-                                            } else {
-                                                popBack()
-                                            }
-                                        }
-                                    )
+                    lifecycleScope.launch {
+                        binding.mainLoadingView.start()
+                        delay(1000)
+                        binding.mainLoadingView.stop()
+                        vmSubscription.isAdLoaded.observe(viewLifecycleOwner) { isAdLoaded ->
+                            when (isAdLoaded) {
+                                null -> {
+//                                    binding.mainLoadingView.start()
                                 }
-                            }
 
-                            false -> {
-                                binding.mainLoadingView.stop()
-                                popBack()
+                                true -> {
+//                                    binding.mainLoadingView.stop()
+                                    if (Flags.isNotToShowAd){
+                                        Flags.isNotToShowAd = false;
+                                        popBack()
+                                    }else{
+                                        AdUtils.showInterstitialAdWithCallback(
+                                            requireActivity(),
+                                            failureShowCallback = {
+                                                if (!preferenceManager.isOnboardingFinished()) {
+                                                    val bundle = Bundle()
+                                                    bundle.putBoolean("comingFromOnboarding",true)
+
+                                                    navigate(R.id.action_subscriptionFragmentAuth_to_localizeFragment2,bundle)
+                                                } else {
+                                                    popBack()
+                                                }
+                                            }
+                                        )
+                                    }
+                                }
+
+                                false -> {
+//                                    binding.mainLoadingView.stop()
+                                    popBack()
+                                }
                             }
                         }
                     }

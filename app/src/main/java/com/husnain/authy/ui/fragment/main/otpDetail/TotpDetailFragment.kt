@@ -24,9 +24,11 @@ import com.husnain.authy.utls.DataState
 import com.husnain.authy.utls.Flags
 import com.husnain.authy.utls.TotpUtil
 import com.husnain.authy.utls.copyToClip
+import com.husnain.authy.utls.gone
 import com.husnain.authy.utls.popBack
 import com.husnain.authy.utls.progress.showBottomSheetDialog
 import com.husnain.authy.utls.showSnackBar
+import com.husnain.authy.utls.visible
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -106,11 +108,16 @@ class TotpDetailFragment : Fragment() {
     }
 
     private fun setOnClickListener() {
+        binding.imgBack.setOnClickListener {
+            popBack()
+        }
+
         binding.btnEditName.setOnClickListener {
             binding.edtAccountName.isEnabled = true
             binding.edtAccountName.requestFocus()
             binding.edtAccountName.setSelection(binding.edtAccountName.text.length)
             showKeyboard(binding.edtAccountName)
+            it.gone()
         }
 
         // Handle "Done" action on keyboard
@@ -120,6 +127,7 @@ class TotpDetailFragment : Fragment() {
                 performActionOnDone()
 
                 hideKeyboard(binding.edtAccountName)
+                binding.btnEditName.visible()
                 binding.edtAccountName.clearFocus()
                 binding.edtAccountName.isEnabled = false
                 true

@@ -1,14 +1,28 @@
 package com.husnain.authy.ui.fragment.main.settings
 
 import android.app.Activity
+import android.app.Dialog
 import android.content.ActivityNotFoundException
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import java.security.SecureRandom
+import javax.crypto.Cipher
+import javax.crypto.SecretKeyFactory
+import javax.crypto.spec.IvParameterSpec
+import javax.crypto.spec.PBEKeySpec
+import javax.crypto.spec.SecretKeySpec
+import kotlin.text.Charsets.UTF_8
+import android.util.Base64
+import android.view.Gravity
 import android.view.ViewGroup
+import android.view.WindowManager
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -18,6 +32,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.husnain.authy.R
 import com.husnain.authy.data.room.daos.DaoTotp
 import com.husnain.authy.data.room.tables.EntityTotp
+import com.husnain.authy.databinding.DialogPasswordBinding
 import com.husnain.authy.databinding.FragmentSettingBinding
 import com.husnain.authy.preferences.PreferenceManager
 import com.husnain.authy.ui.activities.AuthActivity
@@ -49,11 +64,14 @@ class SettingFragment : Fragment() {
     @Inject
     lateinit var preferenceManager: PreferenceManager
 
-    @Inject lateinit var daoTotp: DaoTotp
+    @Inject
+    lateinit var daoTotp: DaoTotp
+
     @Inject
     lateinit var auth: FirebaseAuth
     private val KEY_HEADER_TITLE = "headerTitle"
     private val KEY_LINK_TO_LOAD = "linkToLoad"
+    private val salt = "some_fixed_salt".toByteArray()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -172,9 +190,14 @@ class SettingFragment : Fragment() {
 
         //logout
         binding.btnLogout.setOnClickListener {
-            showBottomSheetDialog(resources.getString(R.string.string_logout),"Are you sure you want to logout","Yes",true, onPrimaryClick = {
-                vmSettings.logout()
-            })
+            showBottomSheetDialog(
+                resources.getString(R.string.string_logout),
+                getString(R.string.are_you_sure_you_want_to_logout),
+                getString(R.string.yes),
+                true,
+                onPrimaryClick = {
+                    vmSettings.logout()
+                })
         }
 
         //google authenticator import
@@ -212,6 +235,7 @@ class SettingFragment : Fragment() {
                     Log.e(Constants.TAG, "Error: ${state.message}")
                     showCustomToast(resources.getString(R.string.string_something_went_wrong_please_try_again))
                 }
+
             }
         })
 
@@ -275,14 +299,16 @@ class SettingFragment : Fragment() {
         val shareIntent = Intent(Intent.ACTION_SEND).apply {
             type = "text/plain"
             putExtra(Intent.EXTRA_SUBJECT, "Check out this app!")
-            putExtra(Intent.EXTRA_TEXT, "Hey there! \uD83D\uDC4B\n" +
-                    "\n" +
-                    "Stay secure with Authenticator, the simple and reliable app for generating 2FA codes to protect your accounts.\n" +
-                    "\n" +
-                    "✨ Key Features:\n" +
-                    "✅ Easy to use.\n" +
-                    "✅ Backup & restore made simple.\n" +
-                    "✅ Your data, your privacy.\n ${Constants.PLAY_STORE_URL}")
+            putExtra(
+                Intent.EXTRA_TEXT, "Hey there! \uD83D\uDC4B\n" +
+                        "\n" +
+                        "Stay secure with Authenticator, the simple and reliable app for generating 2FA codes to protect your accounts.\n" +
+                        "\n" +
+                        "✨ Key Features:\n" +
+                        "✅ Easy to use.\n" +
+                        "✅ Backup & restore made simple.\n" +
+                        "✅ Your data, your privacy.\n ${Constants.PLAY_STORE_URL}"
+            )
         }
         startActivity(Intent.createChooser(shareIntent, "Share via"))
     }
@@ -303,75 +329,100 @@ class SettingFragment : Fragment() {
     }
 
 
-
-    @Deprecated("Deprecated in Java")
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_CODE_CREATE_FILE && resultCode == Activity.RESULT_OK) {
-            val uri: Uri? = data?.data
-            uri?.let { exportTotpDetails(it) }
-        }else if (requestCode == REQUEST_CODE_OPEN_FILE && resultCode == Activity.RESULT_OK) {
-            val uri: Uri? = data?.data
-            uri?.let { importTotpDetails(it) }
-            Flags.comingBackFromDetailAfterDelete = true
-        }
-    }
-
-    private fun exportTotpDetails(uri: Uri) {
-        lifecycleScope.launch {
-            val totpDetails = getTotpDetailsFromDb()
-            val json = createJsonFromTotpDetails(totpDetails)
-            writeToFile(uri, json)
-        }
-    }
-
-    private suspend fun getTotpDetailsFromDb(): List<EntityTotp> {
-        return withContext(Dispatchers.IO) {
-            daoTotp.getAllTotpData()
-        }
-    }
-
-    private fun createJsonFromTotpDetails(totpDetails: List<EntityTotp>): String {
-        val jsonArray = JSONArray()
-        for (detail in totpDetails) {
-            val jsonObject = JSONObject()
-            jsonObject.put("serviceName", detail.serviceName)
-            jsonObject.put("secretKey", detail.secretKey)
-            jsonArray.put(jsonObject)
-        }
-        val jsonObject = JSONObject()
-        jsonObject.put("totpDetails", jsonArray)
-        return jsonObject.toString()
-    }
-
-    private suspend fun writeToFile(uri: Uri, json: String) {
-        withContext(Dispatchers.IO) {
-            requireContext().contentResolver.openOutputStream(uri)?.use { outputStream ->
-                outputStream.write(json.toByteArray())
-                outputStream.flush()
+    private val getContent =
+        registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+            uri?.let {
+                importTotpDetails(it)
             }
         }
-    }
-
-    private fun openFilePickerForImport() {
-        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
-            addCategory(Intent.CATEGORY_OPENABLE)
-            type = "application/json"
-        }
-        startActivityForResult(intent, REQUEST_CODE_OPEN_FILE)
-    }
 
     private fun importTotpDetails(uri: Uri) {
         lifecycleScope.launch {
             val json = readJsonFromUri(uri)
-            val totpDetails = parseJsonToTotpDetails(json)
-            saveTotpDetailsToDb(totpDetails)
+            if (isEncrypted(json)) {
+                showPasswordDialog(uri)
+            } else {
+                val totpDetails = parseJsonToTotpDetails(json)
+                saveTotpDetailsToDb(totpDetails)
+            }
         }
+    }
+
+    private fun isEncrypted(data: String): Boolean {
+        // Assuming an encrypted file contains base64-encoded data (you can modify this check based on your format)
+        return data.startsWith("ENCRYPTED")
+    }
+
+    private fun showPasswordDialog(uri: Uri) {
+        // Initialize dialog
+        val dialog = Dialog(requireContext())
+        val binding = DialogPasswordBinding.inflate(LayoutInflater.from(requireContext()))
+
+
+        dialog.apply {
+            setContentView(binding.root)
+            setCancelable(true)
+
+            val horizontalMargin = context.resources.getDimensionPixelSize(R.dimen.padding_top_20dp)
+            val screenWidth = context.resources.displayMetrics.widthPixels
+            val dialogWidth = screenWidth - 2 * horizontalMargin
+
+            window?.setLayout(dialogWidth, WindowManager.LayoutParams.WRAP_CONTENT)
+        }
+
+
+        // Handling the OK button
+        binding.btnOk.setOnClickListener {
+            val password = binding.edtPassword.text.toString()
+            if (password.isEmpty()) {
+                showCustomToast(getString(R.string.password_is_required))
+            } else {
+                lifecycleScope.launch {
+                    try {
+                        val decryptedJson = decrypt(uri, password)
+                        val totpDetails = parseJsonToTotpDetails(decryptedJson)
+                        saveTotpDetailsToDb(totpDetails)
+                    } catch (e: Exception) {
+                        withContext(Dispatchers.Main) {
+                            showCustomToast(getString(R.string.invalid_password))
+                        }
+                    }
+                }
+                dialog.dismiss()
+            }
+        }
+
+        // Handling the Cancel button
+        binding.btnCancel.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.show()
+    }
+
+
+    private suspend fun decrypt(uri: Uri, password: String): String {
+        val encryptedData = readJsonFromUri(uri)
+        val base64Data = encryptedData.removePrefix("ENCRYPTED")
+        val encryptedBytes = Base64.decode(base64Data, Base64.DEFAULT)
+        val iv = encryptedBytes.copyOfRange(0, 16)
+        val encryptedContent = encryptedBytes.copyOfRange(16, encryptedBytes.size)
+
+        val factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256")
+        val spec = PBEKeySpec(password.toCharArray(), salt, 10000, 256)
+        val secretKey = SecretKeySpec(factory.generateSecret(spec).encoded, "AES")
+        val cipher = Cipher.getInstance("AES/CBC/PKCS5Padding").apply {
+            init(Cipher.DECRYPT_MODE, secretKey, IvParameterSpec(iv))
+        }
+
+        val decryptedData = cipher.doFinal(encryptedContent)
+        return String(decryptedData, UTF_8)
     }
 
     private suspend fun readJsonFromUri(uri: Uri): String {
         return withContext(Dispatchers.IO) {
-            requireContext().contentResolver.openInputStream(uri)?.bufferedReader().use { it?.readText() } ?: ""
+            requireContext().contentResolver.openInputStream(uri)?.bufferedReader()
+                .use { it?.readText() } ?: ""
         }
     }
 
@@ -384,7 +435,7 @@ class SettingFragment : Fragment() {
             val detailJson = jsonArray.getJSONObject(i)
             val serviceName = detailJson.getString("serviceName")
             val secretKey = detailJson.getString("secretKey")
-            totpDetailsList.add(EntityTotp(0,serviceName, secretKey))
+            totpDetailsList.add(EntityTotp(0, serviceName, secretKey))
         }
 
         return totpDetailsList
@@ -392,15 +443,23 @@ class SettingFragment : Fragment() {
 
     private suspend fun saveTotpDetailsToDb(totpDetails: List<EntityTotp>) {
         withContext(Dispatchers.IO) {
-            for (totp in totpDetails) {
-                daoTotp.insertOrReplaceTotpData(totp)
+            try {
+                for (totp in totpDetails) {
+                    daoTotp.insertOrReplaceTotpData(totp)
+                }
+            } catch (e: Exception) {
+//                showCustomToast(e.localizedMessage)
+            } finally {
+                withContext(Dispatchers.Main) {
+                    Flags.comingBackFromDetailAfterDelete = true
+                    showCustomToast(getString(R.string.imported_successfully))  // Show the toast on the main thread
+                }
             }
         }
     }
 
-    companion object {
-        const val REQUEST_CODE_CREATE_FILE = 1001
-        const val REQUEST_CODE_OPEN_FILE = 1002
+    private fun openFilePickerForImport() {
+        getContent.launch("application/json")
     }
 
     override fun onDestroyView() {

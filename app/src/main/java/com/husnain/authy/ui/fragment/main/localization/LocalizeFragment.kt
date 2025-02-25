@@ -68,11 +68,17 @@ class LocalizeFragment : Fragment() {
     private fun setUpAdapter() {
         val languagesList = listOf(
             ModelLanguage("English", "en"),
-            ModelLanguage("Arabic", "ar"),
-            ModelLanguage("Spanish", "es"),
-            ModelLanguage("French", "fr"),
-            ModelLanguage("Urdu", "ur")
-
+            ModelLanguage("Arabic (العربية)", "ar"),
+            ModelLanguage("Spanish (Español)", "es"),
+            ModelLanguage("French (Français)", "fr"),
+            ModelLanguage("Indonesian (Bahasa Indonesia)", "id"),
+            ModelLanguage("Chinese (中文)", "zh"),
+            ModelLanguage("Hebrew (עברית)", "he"),
+            ModelLanguage("Russian (русский)", "ru"),
+            ModelLanguage("Hindi (हिंदी)", "hi"),
+            ModelLanguage("Filipino", "tl"),
+            ModelLanguage("Turkish (Türkçe)", "tr"),
+            ModelLanguage("Urdu (اردو)", "ur")
         )
 
         val adapter = AdapterLanguages(languagesList) {

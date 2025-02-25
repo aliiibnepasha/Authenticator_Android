@@ -13,6 +13,7 @@ import com.husnain.authy.databinding.FragmentAddAccountManuallyBinding
 import com.husnain.authy.ui.fragment.main.addNewAccount.VmAddAccount
 import com.husnain.authy.utls.CustomToast.showCustomToast
 import com.husnain.authy.utls.DataState
+import com.husnain.authy.utls.Flags
 import com.husnain.authy.utls.navigate
 import com.husnain.authy.utls.popBack
 import com.husnain.authy.utls.setupKeyboardDismissListener
@@ -47,7 +48,8 @@ class AddAccountManuallyFragment : Fragment() {
                 }
 
                 is DataState.Success -> {
-                    showCustomToast("Data Saved Successfully")
+                    Flags.isComingAfterAddingTotpData = true
+                    showCustomToast(getString(R.string.string_data_saved_successfully))
                     navigate(R.id.action_addAccountManuallyFragment_to_homeFragment)
                 }
 
@@ -74,17 +76,17 @@ class AddAccountManuallyFragment : Fragment() {
         val secretKey = binding.edtPrivateKey.text.toString().trim()
 
         if (accountName.isEmpty()) {
-            showCustomToast("Account name cannot be empty")
+            showCustomToast(getString(R.string.account_name_cannot_be_empty))
             return false
         }
 
         if (secretKey.isEmpty()) {
-            showCustomToast("Private key cannot be empty")
+            showCustomToast(getString(R.string.private_key_cannot_be_empty))
             return false
         }
 
         if (!isValidSecretKey(secretKey)) {
-            showCustomToast("Invalid private key format")
+            showCustomToast(getString(R.string.invalid_private_key_format))
             return false
         }
 

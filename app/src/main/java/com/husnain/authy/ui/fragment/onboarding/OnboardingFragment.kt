@@ -43,15 +43,15 @@ class OnboardingFragment : Fragment() {
         )
 
         val titles = listOf(
-            "Stay One Step Ahead",
-            "Protect what matters",
-            "Access made easy"
+            getString(R.string.stay_one_step_ahead),
+            getString(R.string.protect_what_matters),
+            getString(R.string.access_made_easy)
         )
 
         val descriptions = listOf(
-            "Get seamless authentication and advanced security features, all in one place.",
-            "Protect what matters with enhanced security and peace of mind",
-            "Secure your digital world with ease."
+            getString(R.string.get_seamless_authentication_and_advanced_security_features_all_in_one_place),
+            getString(R.string.protect_what_matters_with_enhanced_security_and_peace_of_mind),
+            getString(R.string.secure_your_digital_world_with_ease)
         )
 
         adapter = OnboardingAdapter(images, titles, descriptions)

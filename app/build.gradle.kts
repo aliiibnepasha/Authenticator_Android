@@ -7,6 +7,7 @@ plugins {
     id ("com.google.gms.google-services")
     id("com.google.firebase.crashlytics")
     id("com.google.protobuf")
+    id("com.google.firebase.firebase-perf")
 }
 
 android {
@@ -121,6 +122,7 @@ dependencies {
     implementation("com.google.firebase:firebase-firestore")
     implementation("com.google.firebase:firebase-analytics-ktx")
     implementation("com.google.firebase:firebase-crashlytics")
+    implementation("com.google.firebase:firebase-perf")
 
     //Credentials api
     implementation("androidx.credentials:credentials:1.3.0") //Google credential manager
@@ -153,10 +155,6 @@ dependencies {
     //To Read qr data from gallery image
     implementation("com.journeyapps:zxing-android-embedded:4.3.0")
 
-    //Admob
-    implementation("com.google.android.gms:play-services-ads:23.6.0")
-    implementation("androidx.lifecycle:lifecycle-process:2.8.7")
-
     //shimmer
     implementation("com.facebook.shimmer:shimmer:0.5.0")
 
@@ -174,9 +172,26 @@ dependencies {
 
     implementation("com.airbnb.android:lottie:6.4.0")
 
+
     //To read google authenticator data
     implementation("com.google.protobuf:protobuf-javalite:3.21.12")
     implementation("org.jetbrains.kotlin:kotlin-stdlib:1.9.10")
+
+    //Admob
+    implementation("com.google.android.gms:play-services-ads:23.6.0")
+    implementation("androidx.lifecycle:lifecycle-process:2.8.7")
+
+    // Mintegral SDK + AdMob Mediation Adapter
+    implementation("com.google.ads.mediation:mintegral:16.9.41.0")
+
+    // Liftoff (Vungle) SDK + AdMob Mediation Adapter
+    implementation("com.google.ads.mediation:vungle:7.4.3.0")
+
+    // AppLovin SDK + AdMob Mediation Adapter
+    implementation("com.google.ads.mediation:applovin:13.1.0.0")
+
+    // Pangle SDK + AdMob Mediation Adapter
+    implementation("com.google.ads.mediation:pangle:6.5.0.4.0")
 }
 
 protobuf {

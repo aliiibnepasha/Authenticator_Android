@@ -24,7 +24,7 @@
         android:layout_marginTop="25dp"
         android:layout_marginEnd="10dp"
         android:fontFamily="@font/poppins_semibold"
-        android:text="@string/string_setting"
+        android:text="Export codes"
         android:textColor="@color/black"
         android:textSize="@dimen/_16ssp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -74,6 +74,46 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.husnain.authy.utls.ShadowLayout>
+
+    <com.husnain.authy.utls.ShadowLayout
+        android:id="@+id/lyPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:visibility="gone"
+        android:layout_marginTop="@dimen/_15sdp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/shadowLayout"
+        app:sl_dx="0dp"
+        app:sl_dy="0dp"
+        app:sl_shadowColor="#23F1F1F1"
+        app:sl_shadowRadius="10dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@drawable/bg_rect_white">
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/edtPass"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/poppins_regular"
+                android:hint="Enter your password"
+                android:background="@color/transparent"
+                android:textColor="#484C52"
+                android:inputType="text"
+                android:imeOptions="actionDone"
+                android:textSize="16sp"
+                android:paddingHorizontal="@dimen/_10sdp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.husnain.authy.utls.ShadowLayout>
 

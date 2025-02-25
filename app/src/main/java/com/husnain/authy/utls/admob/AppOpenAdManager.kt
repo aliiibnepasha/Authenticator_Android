@@ -9,7 +9,9 @@ import com.google.android.gms.ads.FullScreenContentCallback
 import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.appopen.AppOpenAd
 import com.google.android.gms.ads.appopen.AppOpenAd.AppOpenAdLoadCallback
+import com.husnain.authy.BuildConfig
 import com.husnain.authy.utls.Constants
+import com.husnain.authy.utls.Flags
 import java.util.concurrent.TimeUnit
 
 class AppOpenAdManager(private val application: Application) {
@@ -39,6 +41,14 @@ class AppOpenAdManager(private val application: Application) {
     }
 
     fun showAdIfAvailableFromFragment(activity: Activity, onAdComplete: () -> Unit) {
+        if (BuildConfig.DEBUG){
+            onAdComplete()
+            return
+        }
+        if (Flags.isInterstitialAdShowing){
+            return
+        }
+
         if (isShowingAd || !isAdAvailable()) {
             onAdComplete()
             return

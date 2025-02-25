@@ -6,5 +6,7 @@ object Flags {
     var isComingFromInterstitialAdClose = false
     var comingBackFromDetailAfterDelete = false
     var isNotToShowAd = false
+    var isInterstitialAdShowing = false
+    var comingFromAddAccountManuallyFragment = false
 }
 
