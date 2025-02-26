@@ -11,7 +11,10 @@
     <color name="colorDarkBlue">#0057AE</color>
     <color name="transparent">#00000000</color>
     <color name="color_gray">#E0E5EC</color>
+    <color name="color_gray_ad">#ECECEC</color>
     <color name="color_subs_un_selected">#F5F8FF</color>
     <color name="color_text_gray">#61677D</color>
     <color name="default_shadow_color">#2af1f1f1</color>
+
+    <color name="shimmerColor">#C2C2C2</color>
 </resources>

@@ -41,10 +41,10 @@ class AppOpenAdManager(private val application: Application) {
     }
 
     fun showAdIfAvailableFromFragment(activity: Activity, onAdComplete: () -> Unit) {
-        if (BuildConfig.DEBUG){
-            onAdComplete()
-            return
-        }
+//        if (BuildConfig.DEBUG){
+//            onAdComplete()
+//            return
+//        }
         if (Flags.isInterstitialAdShowing){
             return
         }

@@ -90,7 +90,13 @@ class SplashFragment : Fragment() {
     private fun init() {
         Flags.isComingFromSplash = true
         if (!preferenceManager.isOnboardingFinished()) {
-            findNavController().navigate(R.id.action_splashFragment_to_subscriptionFragmentAuth)
+            if (preferenceManager.isSubscriptionActive()){
+                val bundle = Bundle()
+                bundle.putBoolean("comingFromOnboarding",true)
+                navigate(R.id.localizeFragment2,bundle)
+            }else{
+                findNavController().navigate(R.id.action_splashFragment_to_subscriptionFragmentAuth)
+            }
         } else {
             preferenceManager.saveIsToShowSubsScreenAsDialog(true)
             handleUser()
@@ -217,7 +223,6 @@ class SplashFragment : Fragment() {
             DelayOption.AFTER_30S -> 30 * 1000L
             DelayOption.AFTER_50S -> 50 * 1000L
             DelayOption.AFTER_1M -> 60 * 1000L
-            DelayOption.NEVER -> Long.MAX_VALUE // NEVER means no delay, so always show lock screen
         }
 
         return timeDifference > delayInMillis

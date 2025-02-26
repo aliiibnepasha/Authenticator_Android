@@ -31,6 +31,7 @@ import com.husnain.authy.utls.BackPressedExtensions.goBackPressed
 import com.husnain.authy.utls.Constants
 import com.husnain.authy.utls.CustomToast.showCustomToast
 import com.husnain.authy.utls.Flags
+import com.husnain.authy.utls.NetworkUtils
 import com.husnain.authy.utls.admob.AdUtils
 import com.husnain.authy.utls.navigate
 import com.husnain.authy.utls.popBack
@@ -105,9 +106,11 @@ class SubscriptionFragment : Fragment() {
                     popBack()
                 }else{
                     lifecycleScope.launch {
-                        binding.mainLoadingView.start()
-                        delay(1000)
-                        binding.mainLoadingView.stop()
+                        if (NetworkUtils.isNetworkAvailable(requireContext())){
+                            binding.mainLoadingView.start()
+                            delay(1000)
+                            binding.mainLoadingView.stop()
+                        }
                         AdUtils.showInterstitialAdWithCallback(requireActivity(), failureShowCallback = {
                             if (!preferenceManager.isOnboardingFinished()) {
                                 val bundle = Bundle()
@@ -132,9 +135,11 @@ class SubscriptionFragment : Fragment() {
                     popBack()
                 }else{
                     lifecycleScope.launch {
-                        binding.mainLoadingView.start()
-                        delay(1000)
-                        binding.mainLoadingView.stop()
+                        if (NetworkUtils.isNetworkAvailable(requireContext())){
+                            binding.mainLoadingView.start()
+                            delay(1000)
+                            binding.mainLoadingView.stop()
+                        }
                         vmSubscription.isAdLoaded.observe(viewLifecycleOwner) { isAdLoaded ->
                             when (isAdLoaded) {
                                 null -> {
@@ -365,7 +370,7 @@ class SubscriptionFragment : Fragment() {
                 val bundle = Bundle()
                 bundle.putBoolean("comingFromOnboarding",true)
 
-                navigate(R.id.action_subscriptionFragmentAuth_to_localizeFragment2)
+                navigate(R.id.action_subscriptionFragmentAuth_to_localizeFragment2,bundle)
             } else {
                 (activity as? MainActivity)?.preloadAd()
                 popBack()
@@ -383,7 +388,7 @@ class SubscriptionFragment : Fragment() {
                 val bundle = Bundle()
                 bundle.putBoolean("comingFromOnboarding",true)
 
-                navigate(R.id.action_subscriptionFragmentAuth_to_localizeFragment2)
+                navigate(R.id.action_subscriptionFragmentAuth_to_localizeFragment2,bundle)
             } else {
                 (activity as? MainActivity)?.preloadAd()
                 popBack()

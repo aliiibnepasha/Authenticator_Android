@@ -136,7 +136,7 @@ class MainActivity : LocalizationActivity() {
             }
 
             if (destination.id == R.id.homeFragment) {
-                setStatusBarColor(R.color.colorPrimary)
+                setStatusBarColor(R.color.white)
             } else {
                 setStatusBarColor(R.color.white)
             }

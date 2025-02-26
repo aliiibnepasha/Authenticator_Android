@@ -72,6 +72,14 @@ class AddAccountFragment : Fragment() {
     private val vmAddAccount: VmAddAccount by viewModels()
     private var isComingFromSetting = false
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        lifecycleScope.launch(Dispatchers.IO){
+            inItUiAndCamera()
+            startCamera()
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
@@ -129,8 +137,10 @@ class AddAccountFragment : Fragment() {
     private fun requestPermission() {
         requestCameraPermissionIfMissing { granted ->
             if (granted) {
-                inItUiAndCamera()
-                startCamera()
+                lifecycleScope.launch(Dispatchers.IO){
+                    inItUiAndCamera()
+                    startCamera()
+                }
             }
         }
     }

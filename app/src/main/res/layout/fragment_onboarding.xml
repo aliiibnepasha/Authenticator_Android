@@ -13,69 +13,147 @@
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvSkip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:text="Skip"
+        android:layout_marginTop="@dimen/_30sdp"
+        android:textSize="16sp"
+        android:textColor="@color/white"
+        android:fontFamily="@font/poppins_regular"
+        android:layout_marginEnd="23dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginBottom="@dimen/_50sdp"
-        app:layout_constraintBottom_toBottomOf="@+id/viewPager"
+        android:paddingTop="@dimen/_15sdp"
+        android:background="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-        <com.tbuonomo.viewpagerdotsindicator.DotsIndicator
-            android:id="@+id/dotsIndicator"
+        <TextView
+            android:id="@+id/titleText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="27dp"
-            app:dotsColor="#77555BF5"
-            android:layout_alignParentTop="true"
-            app:dotsCornerRadius="0dp"
-            android:layout_marginTop="15dp"
-            android:layout_alignParentStart="true"
-            app:dotsSize="14dp"
-            app:dotsSpacing="4dp"
-            app:dotsWidthFactor="2.5"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:progressMode="false"
-            app:selectedDotColor="@color/colorPrimary" />
+            android:fontFamily="@font/poppins_semibold"
+            android:gravity="center"
+            android:paddingHorizontal="@dimen/_24sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:text="Stay One Step Ahead"
+            android:textColor="@color/colorPrimary"
+            android:textSize="17sp"
+            app:layout_constraintBottom_toTopOf="@+id/descriptionText"
+            app:layout_constraintStart_toStartOf="parent" />
 
-        <LinearLayout
-            android:id="@+id/tvNext"
-            android:layout_width="100dp"
-            android:layout_height="45dp"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="42dp"
-            android:layout_alignParentTop="true"
-            android:background="@drawable/bg_gradiant_button"
-            android:gravity="center_vertical"
+        <TextView
+            android:id="@+id/descriptionText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_regular"
+            android:gravity="start"
+            android:layout_marginBottom="@dimen/_20sdp"
+            android:paddingHorizontal="@dimen/_24sdp"
+            android:text="Get seamless authentication and advanced security features, all in one place."
+            android:textColor="#484C52"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toTopOf="@+id/relativeLayout"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <RelativeLayout
+            android:id="@+id/relativeLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_15sdp"
             android:orientation="horizontal"
-            android:padding="10dp"
-            android:textSize="@dimen/_14ssp"
+            app:layout_constraintBottom_toTopOf="@+id/shimmer_layout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <com.tbuonomo.viewpagerdotsindicator.DotsIndicator
+                android:id="@+id/dotsIndicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="27dp"
+                android:layout_marginTop="15dp"
+                app:dotsColor="#77555BF5"
+                app:dotsCornerRadius="0dp"
+                app:dotsSize="14dp"
+                app:dotsSpacing="4dp"
+                app:dotsWidthFactor="2.5"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:progressMode="false"
+                app:selectedDotColor="@color/colorPrimary" />
+
+            <LinearLayout
+                android:id="@+id/tvNext"
+                android:layout_width="100dp"
+                android:layout_height="45dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="42dp"
+                android:background="@drawable/bg_gradiant_button"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="10dp"
+                android:textSize="@dimen/_14ssp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_medium"
+                    android:includeFontPadding="false"
+                    android:text="Next"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_14ssp" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:rotation="180"
+                    android:tint="@color/white"
+                    app:srcCompat="@drawable/ic_back" />
+
+            </LinearLayout>
+        </RelativeLayout>
+
+
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/shimmer_layout"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_250sdp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            tools:visibility="visible">
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins_medium"
-                android:includeFontPadding="false"
-                android:text="Next"
-                android:textColor="@color/white"
-                android:textSize="@dimen/_14ssp" />
+            <include layout="@layout/native_ad_layout_shimmer" />
 
-            <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:rotation="180"
-                android:tint="@color/white"
-                app:srcCompat="@drawable/ic_back" />
+        </com.facebook.shimmer.ShimmerFrameLayout>
 
-        </LinearLayout>
-    </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/adView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

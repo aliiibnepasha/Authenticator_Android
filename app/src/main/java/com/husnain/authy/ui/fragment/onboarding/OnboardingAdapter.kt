@@ -10,14 +10,10 @@ import com.husnain.authy.R
 
 class OnboardingAdapter(
     private val images: List<Int>,
-    private val titles: List<String>,
-    private val descriptions: List<String>
 ) : RecyclerView.Adapter<OnboardingAdapter.OnboardingViewHolder>() {
 
     class OnboardingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val imageView: ImageView = itemView.findViewById(R.id.imageView)
-        val titleText: TextView = itemView.findViewById(R.id.titleText)
-        val descriptionText: TextView = itemView.findViewById(R.id.descriptionText)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OnboardingViewHolder {
@@ -28,8 +24,6 @@ class OnboardingAdapter(
 
     override fun onBindViewHolder(holder: OnboardingViewHolder, position: Int) {
         holder.imageView.setImageResource(images[position])
-        holder.titleText.text = titles[position]
-        holder.descriptionText.text = descriptions[position]
 
         if (position == 0) {
             holder.imageView.scaleType = ImageView.ScaleType.CENTER_CROP

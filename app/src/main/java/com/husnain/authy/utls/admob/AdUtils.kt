@@ -54,10 +54,10 @@ object AdUtils {
      */
 
     fun showInterstitialAdWithCallback(activity: Activity,failureShowCallback:() -> Unit) {
-        if (isDebug) {
-            failureShowCallback()
-            return
-        }
+//        if (isDebug) {
+//            failureShowCallback()
+//            return
+//        }
         if (interstitialAd != null) {
             interstitialAd?.fullScreenContentCallback = object : FullScreenContentCallback() {
                 override fun onAdDismissedFullScreenContent() {

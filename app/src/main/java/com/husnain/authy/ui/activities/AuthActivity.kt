@@ -79,7 +79,6 @@ class AuthActivity : LocalizationActivity() {
     }
 
     private fun inIt() {
-        inItAdmob()
         setupBillingClient()
         setupNavController()
         handleBackPressed()
@@ -102,12 +101,8 @@ class AuthActivity : LocalizationActivity() {
             }
             if (destination.id == R.id.onboardingFragment) {
                 setStatusBarColor(R.color.colorPrimary)
-                if (isAdLoaded) {
-                    binding.adContainer.visible()
-                }
             } else {
                 setStatusBarColor(R.color.white)
-                binding.adContainer.gone()
             }
         }
     }
@@ -229,37 +224,6 @@ class AuthActivity : LocalizationActivity() {
         }
     }
 
-    private fun inItAdmob() {
-        if (!preferenceManager.isSubscriptionActive()) {
-            //make and set the adView
-            adView = AdView(this);
-            adView.adUnitId = AdUtils.getBannerAdId(this);
-            adView.setAdSize(adSize);
-            binding.adContainer.removeAllViews()
-            binding.adContainer.addView(adView)
-
-            //Request ad
-            adRequest = AdRequest.Builder().build()
-            adView.loadAd(adRequest)
-
-            adView.adListener = object : AdListener() {
-                override fun onAdLoaded() {
-                    isAdLoaded = true
-                }
-
-                override fun onAdFailedToLoad(adError: LoadAdError) {
-                    isAdLoaded = false
-                    binding.adContainer.gone()
-                    Log.d(Constants.TAG, adError.message)
-                }
-            }
-        } else {
-            isAdLoaded = false
-            binding.adContainer.gone()
-        }
-    }
-
-
     private fun handleBackPressed() {
         navHostFragment = supportFragmentManager.findFragmentById(R.id.auth_nav_host_fragment)!!
         goBackPressed {
@@ -305,22 +269,6 @@ class AuthActivity : LocalizationActivity() {
         WindowCompat.setDecorFitsSystemWindows(window, true)
         window.statusBarColor = getColor(colorResId)
     }
-
-
-    private val adSize: AdSize
-        get() {
-            val displayMetrics = resources.displayMetrics
-            val adWidthPixels =
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                    val windowMetrics: WindowMetrics = this.windowManager.currentWindowMetrics
-                    windowMetrics.bounds.width()
-                } else {
-                    displayMetrics.widthPixels
-                }
-            val density = displayMetrics.density
-            val adWidth = (adWidthPixels / density).toInt()
-            return AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(this, adWidth)
-        }
 
     private fun queryProductDetails() {
         // Define subscription products

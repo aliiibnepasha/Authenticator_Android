@@ -1,21 +1,27 @@
 package com.husnain.authy.ui.fragment.main.localization
 
+import android.content.Context
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.google.android.gms.ads.nativead.NativeAdView
 import com.google.rpc.context.AttributeContext.Auth
+import com.husnain.authy.BuildConfig
 import com.husnain.authy.R
 import com.husnain.authy.data.models.ModelLanguage
 import com.husnain.authy.databinding.FragmentLocalizeBinding
 import com.husnain.authy.preferences.PreferenceManager
 import com.husnain.authy.ui.activities.AuthActivity
 import com.husnain.authy.ui.activities.MainActivity
+import com.husnain.authy.utls.admob.NativeAdUtils
+import com.husnain.authy.utls.gone
 import com.husnain.authy.utls.navigate
 import com.husnain.authy.utls.popBack
 import com.husnain.authy.utls.startActivity
+import com.husnain.authy.utls.visible
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Locale
 import javax.inject.Inject
@@ -24,6 +30,7 @@ import javax.inject.Inject
 class LocalizeFragment : Fragment() {
     private var _binding: FragmentLocalizeBinding? = null
     private val binding get() = _binding!!
+
     @Inject
     lateinit var preferenceManager: PreferenceManager
     private lateinit var modelLang: ModelLanguage
@@ -34,6 +41,13 @@ class LocalizeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentLocalizeBinding.inflate(inflater, container, false)
+        if (!preferenceManager.isSubscriptionActive()) {
+            loadAndPopulateAd()
+        } else {
+            binding.shimmerLayout.stopShimmer()
+            binding.shimmerLayout.gone()
+            binding.frameLayout2.gone()
+        }
         inIt()
         return binding.root
     }
@@ -44,6 +58,32 @@ class LocalizeFragment : Fragment() {
         setUpAdapter()
     }
 
+
+    private fun loadAndPopulateAd() {
+        binding.shimmerLayout.startShimmer()
+        NativeAdUtils.loadNativeAd(requireContext(), getNativeAdId()) { nativeAd ->
+            if (nativeAd != null) {
+                binding.shimmerLayout.stopShimmer()
+                binding.shimmerLayout.gone()
+                binding.frameLayout2.visible()
+                // Native ad successfully loaded, now populate the ad in the layout
+                val adView: NativeAdView = binding.adContainer.nativeAdView
+                NativeAdUtils.populateNativeAdView(nativeAd, adView)
+            } else {
+                binding.shimmerLayout.stopShimmer()
+                binding.shimmerLayout.gone()
+                binding.frameLayout2.gone()
+            }
+        }
+    }
+
+    private fun getNativeAdId(): String {
+        return if (BuildConfig.DEBUG) {
+            getString(R.string.admob_native_ad_id_test)
+        } else {
+            getString(R.string.admob_native_ad_id_test)
+        }
+    }
 
     private fun setOnClickListener() {
         binding.imgBack.setOnClickListener {
@@ -102,7 +142,8 @@ class LocalizeFragment : Fragment() {
         val newLocale = Locale(modelLanguage.langShortType)
         Locale.setDefault(newLocale)
 
-        val layoutDirection = if (TextUtils.getLayoutDirectionFromLocale(newLocale) == View.LAYOUT_DIRECTION_RTL) {
+        val layoutDirection =
+            if (TextUtils.getLayoutDirectionFromLocale(newLocale) == View.LAYOUT_DIRECTION_RTL) {
                 View.LAYOUT_DIRECTION_RTL
             } else {
                 View.LAYOUT_DIRECTION_LTR

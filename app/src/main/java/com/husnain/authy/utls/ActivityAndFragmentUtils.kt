@@ -170,8 +170,7 @@ enum class DelayOption {
     AFTER_15S,
     AFTER_30S,
     AFTER_50S,
-    AFTER_1M,
-    NEVER;
+    AFTER_1M;
 
     // Method to get the display text from resources
     fun getDisplayText(context: Context): String {
@@ -181,7 +180,6 @@ enum class DelayOption {
             AFTER_30S -> context.getString(R.string.delay_after_30s)
             AFTER_50S -> context.getString(R.string.delay_after_50s)
             AFTER_1M -> context.getString(R.string.delay_after_1m)
-            NEVER -> context.getString(R.string.delay_never)
         }
     }
 }

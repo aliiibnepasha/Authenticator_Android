@@ -181,6 +181,7 @@ dependencies {
     implementation("com.google.android.gms:play-services-ads:23.6.0")
     implementation("androidx.lifecycle:lifecycle-process:2.8.7")
 
+
     // Mintegral SDK + AdMob Mediation Adapter
     implementation("com.google.ads.mediation:mintegral:16.9.41.0")
 

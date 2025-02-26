@@ -4,12 +4,15 @@
     <string name="admob_banner_id_test" translatable="false">ca-app-pub-3940256099942544/9214589741</string>
     <string name="admob_app_open_ad_unit_id_test" translatable="false">ca-app-pub-3940256099942544/9257395921</string>
     <string name="admob_interstitial_ad_id_test" translatable="false">ca-app-pub-3940256099942544/1033173712</string>
+    <string name="admob_native_ad_id_test" translatable="false">ca-app-pub-3940256099942544/2247696110</string>
 
     //Admob release
     <string name="admob_app_id_release" translatable="false">ca-app-pub-9844943887550892~3638913015</string>
     <string name="admob_banner_id_release" translatable="false">ca-app-pub-9844943887550892/4292098259</string>
     <string name="admob_app_open_ad_unit_id_release" translatable="false">ca-app-pub-9844943887550892/7014889545</string>
     <string name="admob_interstitial_ad_id_release" translatable="false">ca-app-pub-9844943887550892/9233858779</string>
+    <string name="admob_native_ad_id_release_language_screen" translatable="false">ca-app-pub-9844943887550892/7563556018</string>
+    <string name="admob_native_ad_id_release_onboarding_screen" translatable="false">ca-app-pub-9844943887550892/7563556018</string>
 
     //Google play licence key
     <string name="string_licence_key_google_play" translatable="false">MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAuwd2Y2BhXOr7LqSdbMrlB6R3ROdrOoHkQAmWYNzhCQtmRr4rfoDXB0ykMHqlEaN4HpEIpG8Pt6pQO8wi++kVDtZe/V4kiBq+eQTv3BL4l0LHw469/MA1IkIdEOhSwo3kNCaOgLdLTC5eIAzCOJU50QLMib2x18VmgfqjD+UonfMKkbaK3SXfOXw7y42H2zwn9mweBgCCgntAM8/+TztK8lLZqX1eXSqD+VeFuie5nqkr47qWAocECGmTpXniRYKe30K51wWx1eUNdoa9mKY14sAoMosuvgVHd1+jybRq3rQTqQGKGx+cSMN3OTj+yHhXn1zx5ve0ij9htN5cElgFXQIDAQAB</string>
