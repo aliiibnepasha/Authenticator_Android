@@ -230,4 +230,12 @@ class PreferenceManager @Inject constructor(@ApplicationContext private val cont
     fun isHomeBannerAdEnabled(): Boolean {
         return myPref.getBoolean(KEY_HOME_BANNER_AD, true) // Default to true if not set
     }
+
+    fun saveLangSmall(isSmall: Boolean) {
+        myPref.edit().putBoolean("islangscreenadsmall", isSmall).apply()
+    }
+
+    fun isLangScreenAdSmallConfig(): Boolean {
+        return myPref.getBoolean("islangscreenadsmall", true) // Default to true if not set
+    }
 }

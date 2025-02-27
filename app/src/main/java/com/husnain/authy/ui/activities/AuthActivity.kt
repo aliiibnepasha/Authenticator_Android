@@ -76,6 +76,10 @@ class AuthActivity : LocalizationActivity() {
         binding = ActivityAuthBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        lifecycleScope.launch(Dispatchers.IO){
+            fetchForLangConfig()
+        }
+
         if (preferenceManager.getOpenCount() != 1){
             lifecycleScope.launch(Dispatchers.IO){
                 fetchAndCheckHomeBannerAdOrNative()
@@ -105,7 +109,6 @@ class AuthActivity : LocalizationActivity() {
                     NativeAdUtils.preloadNativeAd(
                         this,
                         getString(R.string.admob_native_ad_id_release_home_screen),
-                        false
                     )
                 } else {
                     preferenceManager.saveHomeBannerAd(true)
@@ -114,6 +117,20 @@ class AuthActivity : LocalizationActivity() {
         }
     }
 
+
+    private fun fetchForLangConfig(){
+        RemoteConfigUtil.fetchRemoteConfig { success ->
+            if (success) {
+                val homeNativeBannerAd = RemoteConfigUtil.getNativeAdLanguage()
+
+                if (homeNativeBannerAd == 1) {
+                    preferenceManager.saveLangSmall(false)
+                } else {
+                    preferenceManager.saveLangSmall(true)
+                }
+            }
+        }
+    }
     fun changeLanguage(language: String) {
         setLanguage(language)
     }

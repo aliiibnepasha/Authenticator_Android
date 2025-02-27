@@ -3,6 +3,7 @@ package com.husnain.authy.ui.fragment.main.localization
 import android.content.Context
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +17,8 @@ import com.husnain.authy.databinding.FragmentLocalizeBinding
 import com.husnain.authy.preferences.PreferenceManager
 import com.husnain.authy.ui.activities.AuthActivity
 import com.husnain.authy.ui.activities.MainActivity
+import com.husnain.authy.utls.RemoteConfigUtil
+import com.husnain.authy.utls.ShimmerView
 import com.husnain.authy.utls.admob.NativeAdUtils
 import com.husnain.authy.utls.gone
 import com.husnain.authy.utls.navigate
@@ -42,11 +45,31 @@ class LocalizeFragment : Fragment() {
     ): View {
         _binding = FragmentLocalizeBinding.inflate(inflater, container, false)
         if (!preferenceManager.isSubscriptionActive()) {
-            loadAndPopulateAd()
+            if (preferenceManager.getOpenCount() == 1) {
+                binding.shimmerView.gone()
+                binding.adView.setAdType(com.husnain.authy.utls.NativeAdView.AdType.MEDIUM)
+                NativeAdUtils.getOrLoadNativeAd(requireContext(), getNativeAdId()) { nativeAd ->
+                    if (nativeAd != null) {
+                        binding.shimmerLayout.stopShimmer()
+                        binding.shimmerLayout.gone()
+                        binding.shimmerView.gone()
+                        binding.adView.visible()
+                        // Native ad successfully loaded, now populate the ad in the layout
+                        val adView: NativeAdView = binding.adView.findViewById(R.id.native_ad_view)
+                        NativeAdUtils.populateNativeAdView(nativeAd, adView, true)
+                    } else {
+                        binding.shimmerLayout.stopShimmer()
+                        binding.shimmerLayout.gone()
+                        binding.adView.gone()
+                    }
+                }
+            } else {
+                fetchAndCheckHomeBannerAdOrNative()
+            }
         } else {
             binding.shimmerLayout.stopShimmer()
             binding.shimmerLayout.gone()
-            binding.frameLayout2.gone()
+            binding.adView.gone()
         }
         inIt()
         return binding.root
@@ -58,21 +81,38 @@ class LocalizeFragment : Fragment() {
         setUpAdapter()
     }
 
+    private fun fetchAndCheckHomeBannerAdOrNative() {
+        if (!preferenceManager.isLangScreenAdSmallConfig()) {
+            loadAndPopulateAd(true)
+        } else {
+            loadAndPopulateAd(false)
+        }
+    }
 
-    private fun loadAndPopulateAd() {
+    private fun loadAndPopulateAd(isMedia: Boolean) {
+        binding.shimmerLayout.visible()
+        binding.shimmerView.visible()
+        if (isMedia) {
+            binding.shimmerView.setShimmerType(ShimmerView.ShimmerType.MEDIUM)
+            binding.adView.setAdType(com.husnain.authy.utls.NativeAdView.AdType.MEDIUM)
+        } else {
+            binding.shimmerView.setShimmerType(ShimmerView.ShimmerType.SMALL)
+            binding.adView.setAdType(com.husnain.authy.utls.NativeAdView.AdType.SMALL)
+        }
         binding.shimmerLayout.startShimmer()
-        NativeAdUtils.loadNativeAd(requireContext(), getNativeAdId(),false) { nativeAd ->
+        NativeAdUtils.loadNativeAd(requireContext(), getNativeAdId()) { nativeAd ->
             if (nativeAd != null) {
                 binding.shimmerLayout.stopShimmer()
                 binding.shimmerLayout.gone()
-                binding.frameLayout2.visible()
+                binding.shimmerView.gone()
+                binding.adView.visible()
                 // Native ad successfully loaded, now populate the ad in the layout
-                val adView: NativeAdView = binding.adContainer.nativeAdView
-                NativeAdUtils.populateNativeAdView(nativeAd, adView)
+                val adView: NativeAdView = binding.adView.findViewById(R.id.native_ad_view)
+                NativeAdUtils.populateNativeAdView(nativeAd, adView, isMedia)
             } else {
                 binding.shimmerLayout.stopShimmer()
                 binding.shimmerLayout.gone()
-                binding.frameLayout2.gone()
+                binding.adView.gone()
             }
         }
     }

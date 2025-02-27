@@ -11,22 +11,16 @@ object RemoteConfigUtil {
     private val firebaseRemoteConfig: FirebaseRemoteConfig by lazy {
         FirebaseRemoteConfig.getInstance().apply {
             val configSettings = FirebaseRemoteConfigSettings.Builder()
-                .setMinimumFetchIntervalInSeconds(3600) // Fetch every 1 hour
+                .setMinimumFetchIntervalInSeconds(0) // Fetch every 1 hour
                 .build()
             setConfigSettingsAsync(configSettings)
-            setDefaultsAsync(
-                mapOf(
-                    HOME_NATIVE_BANNER_AD to 0, // Default: Hide banner (0 = off, 1 = on)
-                    NATIVE_AD_LANGUAGE to 1  // Default: English (1 = EN, 2 = AR, etc.)
-                )
-            )
         }
     }
 
     fun fetchRemoteConfig(onComplete: (Boolean) -> Unit) {
         firebaseRemoteConfig.fetchAndActivate().addOnCompleteListener { task ->
             if (task.isSuccessful) {
-                Log.d("RemoteConfig", "Fetch successful: ${firebaseRemoteConfig.getAll()}")
+                Log.d("RemoteConfig", "Fetch successful: ${firebaseRemoteConfig.all}")
                 onComplete(true)
             } else {
                 Log.e("RemoteConfig", "Fetch failed: ${task.exception}")

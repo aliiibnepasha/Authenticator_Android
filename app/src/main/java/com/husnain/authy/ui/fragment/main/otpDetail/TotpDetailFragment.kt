@@ -60,7 +60,7 @@ class TotpDetailFragment : Fragment() {
         } else {
             binding.shimmerLayout.stopShimmer()
             binding.shimmerLayout.gone()
-            binding.frameLayout2.gone()
+            binding.adView.gone()
         }
         inIt()
         return binding.root
@@ -75,27 +75,27 @@ class TotpDetailFragment : Fragment() {
 
     private fun loadAndPopulateAd() {
         binding.shimmerLayout.startShimmer()
-        NativeAdUtils.loadNativeAd(requireContext(), getNativeAdId(),false) { nativeAd ->
+        NativeAdUtils.loadNativeAd(requireContext(), getNativeAdId()) { nativeAd ->
             if (nativeAd != null) {
                 binding.shimmerLayout.stopShimmer()
                 binding.shimmerLayout.gone()
-                binding.frameLayout2.visible()
+                binding.adView.visible()
                 // Native ad successfully loaded, now populate the ad in the layout
-                val adView: NativeAdView = binding.adContainer.nativeAdView
-                NativeAdUtils.populateNativeAdView(nativeAd, adView)
+                val adView: NativeAdView = binding.adView.findViewById(R.id.native_ad_view)
+                NativeAdUtils.populateNativeAdView(nativeAd, adView,false)
             } else {
                 binding.shimmerLayout.stopShimmer()
                 binding.shimmerLayout.gone()
-                binding.frameLayout2.gone()
+                binding.adView.gone()
             }
         }
     }
 
     private fun getNativeAdId(): String {
         return if (BuildConfig.DEBUG) {
-            getString(R.string.admob_native_ad_id_test)
+            getString(R.string.admob_native_ad_id_release_edit_screen)
         } else {
-            getString(R.string.admob_native_ad_id_release_language_screen)
+            getString(R.string.admob_native_ad_id_release_edit_screen)
         }
     }
 

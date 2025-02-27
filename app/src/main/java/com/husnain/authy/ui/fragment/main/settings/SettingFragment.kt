@@ -80,6 +80,7 @@ class SettingFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentSettingBinding.inflate(inflater, container, false)
+        preferenceManager.incrementOpenCount()
         inIt()
         updateUiBasedOnUserState()
         return binding.root

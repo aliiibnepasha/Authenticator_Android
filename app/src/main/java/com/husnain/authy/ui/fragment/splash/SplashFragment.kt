@@ -60,7 +60,6 @@ class SplashFragment : Fragment() {
                 NativeAdUtils.preloadNativeAd(
                     requireContext(),
                     getString(R.string.admob_native_ad_id_release_language_screen),
-                    true
                 )
             }
         }

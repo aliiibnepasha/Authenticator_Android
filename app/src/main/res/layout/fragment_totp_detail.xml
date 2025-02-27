@@ -190,31 +190,27 @@
     <com.facebook.shimmer.ShimmerFrameLayout
         android:id="@+id/shimmer_layout"
         android:layout_width="0dp"
-        android:layout_height="@dimen/_250sdp"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         tools:visibility="visible">
 
-        <include layout="@layout/native_ad_layout_shimmer" />
+        <com.husnain.authy.utls.ShimmerView
+            android:id="@+id/shimmerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:shimmerType="small" />
 
     </com.facebook.shimmer.ShimmerFrameLayout>
 
-    <FrameLayout
-        android:id="@+id/frameLayout2"
+    <com.husnain.authy.utls.NativeAdView
+        android:id="@+id/adView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:adType="small"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <include
-            android:id="@+id/ad_container"
-            layout="@layout/native_ad_layout"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/rvLocalizationLanugages" />
-    </FrameLayout>
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

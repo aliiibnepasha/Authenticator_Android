@@ -18,8 +18,8 @@ object NativeAdUtils {
     /**
      * Preload a Native Ad with or without media
      */
-    fun preloadNativeAd(context: Context, adId: String, isMedia: Boolean) {
-        loadNativeAd(context, adId, isMedia) { ad ->
+    fun preloadNativeAd(context: Context, adId: String) {
+        loadNativeAd(context, adId) { ad ->
             nativeAd = ad // Store the ad for later use
         }
     }
@@ -27,7 +27,7 @@ object NativeAdUtils {
     /**
      * Load a Native Ad and return immediately via callback
      */
-    fun loadNativeAd(context: Context, adId: String, isMedia: Boolean, onAdLoaded: (NativeAd?) -> Unit) {
+    fun loadNativeAd(context: Context, adId: String, onAdLoaded: (NativeAd?) -> Unit) {
         val adLoader = AdLoader.Builder(context, adId)
             .forNativeAd { ad ->
                 nativeAd = ad
@@ -39,8 +39,6 @@ object NativeAdUtils {
                     onAdLoaded(null)
                 }
             })
-            .withNativeAdOptions(NativeAdOptions.Builder()
-                .build())
             .build()
 
         adLoader.loadAd(AdRequest.Builder().build())
@@ -49,23 +47,22 @@ object NativeAdUtils {
     /**
      * Get a preloaded Ad if available, otherwise load a new one
      */
-    fun getOrLoadNativeAd(context: Context, adId: String, isMedia: Boolean, onAdAvailable: (NativeAd?) -> Unit) {
+    fun getOrLoadNativeAd(context: Context, adId: String, onAdAvailable: (NativeAd?) -> Unit) {
         if (nativeAd != null) {
             onAdAvailable(nativeAd)
         } else {
-            loadNativeAd(context, adId, isMedia, onAdAvailable)
+            loadNativeAd(context, adId, onAdAvailable)
         }
     }
 
     /**
      * Binds a Native Ad to a NativeAdView
      */
-    fun populateNativeAdView(nativeAd: NativeAd, adView: NativeAdView) {
+    fun populateNativeAdView(nativeAd: NativeAd, adView: NativeAdView, isMedia: Boolean) {
         adView.headlineView = adView.findViewById(R.id.ad_headline)
         adView.iconView = adView.findViewById(R.id.ad_app_icon)
         adView.bodyView = adView.findViewById(R.id.ad_body)
         adView.callToActionView = adView.findViewById(R.id.ad_call_to_action)
-        adView.mediaView = adView.findViewById(R.id.ad_media)
 
         (adView.headlineView as? TextView)?.text = nativeAd.headline
         (adView.bodyView as? TextView)?.text = nativeAd.body
@@ -82,15 +79,20 @@ object NativeAdUtils {
             adView.iconView?.visibility = View.GONE
         }
 
-        // Bind MediaView
-        if (nativeAd.mediaContent != null) {
-            adView.mediaView?.mediaContent = nativeAd.mediaContent
-            adView.mediaView?.visibility = View.VISIBLE
-        } else {
-            adView.mediaView?.visibility = View.GONE
+        // Conditional MediaView Binding
+        if (isMedia) {
+            // Bind MediaView if media is requested
+            if (nativeAd.mediaContent != null) {
+                adView.mediaView = adView.findViewById(R.id.ad_media)
+                adView.mediaView?.mediaContent = nativeAd.mediaContent
+                adView.mediaView?.visibility = View.VISIBLE
+            } else {
+                adView.mediaView?.visibility = View.GONE
+            }
         }
 
         // Set the native ad
         adView.setNativeAd(nativeAd)
     }
+
 }
