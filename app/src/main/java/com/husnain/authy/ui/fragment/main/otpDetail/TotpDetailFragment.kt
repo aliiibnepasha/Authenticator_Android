@@ -14,15 +14,19 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
+import com.google.android.gms.ads.nativead.NativeAdView
+import com.husnain.authy.BuildConfig
 import com.husnain.authy.R
 import com.husnain.authy.data.room.daos.DaoTotp
 import com.husnain.authy.data.room.tables.RecentlyDeleted
 import com.husnain.authy.databinding.FragmentTotpDetailBinding
+import com.husnain.authy.preferences.PreferenceManager
 import com.husnain.authy.ui.fragment.main.home.VmHome
 import com.husnain.authy.utls.CustomToast.showCustomToast
 import com.husnain.authy.utls.DataState
 import com.husnain.authy.utls.Flags
 import com.husnain.authy.utls.TotpUtil
+import com.husnain.authy.utls.admob.NativeAdUtils
 import com.husnain.authy.utls.copyToClip
 import com.husnain.authy.utls.gone
 import com.husnain.authy.utls.popBack
@@ -43,6 +47,7 @@ class TotpDetailFragment : Fragment() {
     private var updateHandler: Handler? = null
     private val vmHome: VmHome by viewModels()
     @Inject lateinit var daoTotp: DaoTotp
+    @Inject lateinit var preferenceManager: PreferenceManager
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -50,6 +55,13 @@ class TotpDetailFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentTotpDetailBinding.inflate(inflater, container, false)
+        if (!preferenceManager.isSubscriptionActive()) {
+            loadAndPopulateAd()
+        } else {
+            binding.shimmerLayout.stopShimmer()
+            binding.shimmerLayout.gone()
+            binding.frameLayout2.gone()
+        }
         inIt()
         return binding.root
     }
@@ -59,6 +71,32 @@ class TotpDetailFragment : Fragment() {
         generateTotp()
         setOnClickListener()
         setUpObservers()
+    }
+
+    private fun loadAndPopulateAd() {
+        binding.shimmerLayout.startShimmer()
+        NativeAdUtils.loadNativeAd(requireContext(), getNativeAdId(),false) { nativeAd ->
+            if (nativeAd != null) {
+                binding.shimmerLayout.stopShimmer()
+                binding.shimmerLayout.gone()
+                binding.frameLayout2.visible()
+                // Native ad successfully loaded, now populate the ad in the layout
+                val adView: NativeAdView = binding.adContainer.nativeAdView
+                NativeAdUtils.populateNativeAdView(nativeAd, adView)
+            } else {
+                binding.shimmerLayout.stopShimmer()
+                binding.shimmerLayout.gone()
+                binding.frameLayout2.gone()
+            }
+        }
+    }
+
+    private fun getNativeAdId(): String {
+        return if (BuildConfig.DEBUG) {
+            getString(R.string.admob_native_ad_id_test)
+        } else {
+            getString(R.string.admob_native_ad_id_release_language_screen)
+        }
     }
 
     private fun setUpObservers() {

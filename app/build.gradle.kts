@@ -123,6 +123,7 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics-ktx")
     implementation("com.google.firebase:firebase-crashlytics")
     implementation("com.google.firebase:firebase-perf")
+    implementation("com.google.firebase:firebase-config")
 
     //Credentials api
     implementation("androidx.credentials:credentials:1.3.0") //Google credential manager

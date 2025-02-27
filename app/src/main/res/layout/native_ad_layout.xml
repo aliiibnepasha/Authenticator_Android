@@ -5,7 +5,9 @@
     android:layout_height="wrap_content"
     android:background="@color/color_gray_ad"
     android:elevation="4dp"
-    android:padding="10dp">
+    android:paddingVertical="5dp"
+    android:paddingHorizontal="5dp"
+    >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -18,7 +20,7 @@
         <com.google.android.gms.ads.nativead.MediaView
             android:id="@+id/ad_media"
             android:layout_width="match_parent"
-            android:layout_height="195dp"
+            android:layout_height="170dp"
             android:scaleType="fitXY" />
 
         <!-- Row for Icon, Title, Rating, Ad Label -->
@@ -32,8 +34,8 @@
             <!-- Ad Icon -->
             <ImageView
                 android:id="@+id/ad_app_icon"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
                 android:background="@color/color_gray_ad"
                 android:src="@drawable/img_baby_brain"
                 android:scaleType="fitCenter"
@@ -60,7 +62,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:gravity="center_vertical">
+                    android:layout_marginTop="4dp"
+                    android:gravity="top">
 
                     <TextView
                         android:id="@+id/ad_label"
@@ -74,38 +77,30 @@
                         android:background="@drawable/ad_label_bg"
                         android:textColor="@android:color/white"/>
 
-                    <RatingBar
-                        android:id="@+id/ad_stars"
-                        android:layout_width="wrap_content"
-                        android:layout_height="44dp"
-                        android:numStars="5"
-                        android:stepSize="0.5"
-                        android:visibility="visible"
-                        android:layout_marginStart="-50dp"
-                        android:layout_gravity="start"
-                        android:isIndicator="true"
-                        android:scaleX="0.5"
-                        android:scaleY="0.5" />
+                    <TextView
+                        android:id="@+id/ad_body"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="14sp"
+                        android:layout_gravity="top"
+                        android:layout_marginTop="-3dp"
+                        android:text="dasgagag"
+                        android:layout_marginStart="@dimen/_5sdp"
+                        android:includeFontPadding="false"
+                        android:textColor="#666"
+                        />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
 
         <!-- Ad Body -->
-        <TextView
-            android:id="@+id/ad_body"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:textColor="#666"
-            android:layout_marginVertical="5dp"
-            />
 
         <!-- CTA Button -->
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/ad_call_to_action"
             android:layout_width="match_parent"
             android:layout_height="42dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="12dp"
             android:background="@color/colorPrimary"
             android:backgroundTint="@color/colorPrimary"
             android:text="INSTALL"

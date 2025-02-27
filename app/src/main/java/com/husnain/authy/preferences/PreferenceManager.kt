@@ -31,6 +31,8 @@ class PreferenceManager @Inject constructor(@ApplicationContext private val cont
         private const val KEY_LAST_SYNC_TIME = "lastSyncTime"
         private const val KEY_IS_TO_SHOW_SUBS_SCREEN = "showSubsScreen"
         private const val KEY_IS_FIRST_INSTALL = "isFirstInstall"
+        private const val KEY_OPEN_COUNT = "open_count"
+        private const val KEY_HOME_BANNER_AD = "key_home_banner_ad"
     }
 
     private val gson = Gson()
@@ -206,5 +208,26 @@ class PreferenceManager @Inject constructor(@ApplicationContext private val cont
         } else {
             emptyList()
         }
+    }
+
+    private fun getPreferences(context: Context): SharedPreferences {
+        return context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+    }
+
+    fun getOpenCount(): Int {
+        return myPref.getInt(KEY_OPEN_COUNT, 0)
+    }
+
+    fun incrementOpenCount() {
+        val currentCount = myPref.getInt(KEY_OPEN_COUNT, 0)
+        myPref.edit().putInt(KEY_OPEN_COUNT, currentCount + 1).apply()
+    }
+
+    fun saveHomeBannerAd(isEnabled: Boolean) {
+        myPref.edit().putBoolean(KEY_HOME_BANNER_AD, isEnabled).apply()
+    }
+
+    fun isHomeBannerAdEnabled(): Boolean {
+        return myPref.getBoolean(KEY_HOME_BANNER_AD, true) // Default to true if not set
     }
 }

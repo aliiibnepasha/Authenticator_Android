@@ -27,6 +27,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.google.android.datatransport.runtime.scheduling.jobscheduling.SchedulerConfig.Flag
 import com.google.firebase.auth.FirebaseAuth
 import com.husnain.authy.R
@@ -129,8 +130,16 @@ class SettingFragment : Fragment() {
             popBack()
         }
 
+        binding.lyHowToUse.setOnClickListener {
+            showCustomToast("Coming Soon!")
+        }
+
+        binding.ly2faGuides.setOnClickListener {
+            showCustomToast("Coming Soon!")
+        }
+
         binding.lyExport.setOnClickListener {
-            navigate(R.id.action_settingFragment_to_exportCodesFragment)
+            findNavController().navigate(R.id.action_settingFragment_to_exportCodesFragment)
         }
 
         binding.lyImport.setOnClickListener {

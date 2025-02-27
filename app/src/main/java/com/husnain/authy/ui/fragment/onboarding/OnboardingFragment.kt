@@ -49,7 +49,7 @@ class OnboardingFragment : Fragment() {
             loadInlineAdaptiveBannerAd()
         }else{
             binding.shimmerLayout.stopShimmer()
-            binding.shimmerLayout.gone()
+            binding.shimmerLayout.invisible()
             binding.adView.gone()
         }
         inIt()
@@ -58,9 +58,9 @@ class OnboardingFragment : Fragment() {
     }
 
     private fun loadInlineAdaptiveBannerAd() {
-        val adSize = AdSize.getCurrentOrientationInlineAdaptiveBannerAdSize(
-            requireContext(),
-            AdSize.FULL_WIDTH
+        val adSize = AdSize.getInlineAdaptiveBannerAdSize(
+            AdSize.FULL_WIDTH,
+            230
         )
 
         val bannerView = AdView(requireContext()).apply {
@@ -80,8 +80,8 @@ class OnboardingFragment : Fragment() {
                 super.onAdLoaded()
                 // Ad successfully loaded
                 binding.shimmerLayout.stopShimmer()
-                binding.shimmerLayout.visibility = View.GONE
-                binding.adView.visibility = View.VISIBLE
+                binding.shimmerLayout.gone()
+                binding.adView.visible()
 
                 // Update constraint to attach RelativeLayout above AdView with margin
                 val constraintLayout = binding.constraintLayout
@@ -105,8 +105,8 @@ class OnboardingFragment : Fragment() {
                 super.onAdFailedToLoad(adError)
                 // Ad failed to load, stop shimmer and restore constraints
                 binding.shimmerLayout.stopShimmer()
-                binding.shimmerLayout.visibility = View.GONE
-                binding.adView.visibility = View.GONE
+                binding.shimmerLayout.invisible()
+                binding.adView.gone()
 
                 val constraintLayout = binding.constraintLayout
                 val constraintSet = ConstraintSet()
@@ -130,9 +130,9 @@ class OnboardingFragment : Fragment() {
 
     private fun setUpViewPagerAdapter() {
         val images = listOf(
-            R.drawable.img_onboarding1,
-            R.drawable.img_onboarding2,
-            R.drawable.img_onboarding3
+            R.drawable.ic_intro1_new,
+            R.drawable.ic_intro2_new,
+            R.drawable.ic_intro3_new
         )
 
         val titles = listOf(

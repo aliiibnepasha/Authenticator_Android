@@ -23,12 +23,14 @@ import com.husnain.authy.utls.CustomToast.showCustomToast
 import com.husnain.authy.utls.DelayOption
 import com.husnain.authy.utls.Flags
 import com.husnain.authy.utls.admob.AdUtils
+import com.husnain.authy.utls.admob.NativeAdUtils
 import com.husnain.authy.utls.gone
 import com.husnain.authy.utls.invisible
 import com.husnain.authy.utls.navigate
 import com.husnain.authy.utls.startActivity
 import com.husnain.authy.utls.visible
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Runnable
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -51,6 +53,18 @@ class SplashFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentSplashBinding.inflate(inflater, container, false)
+        preferenceManager.incrementOpenCount()
+
+        if (preferenceManager.getOpenCount() == 1) {
+            lifecycleScope.launch(Dispatchers.IO){
+                NativeAdUtils.preloadNativeAd(
+                    requireContext(),
+                    getString(R.string.admob_native_ad_id_release_language_screen),
+                    true
+                )
+            }
+        }
+
         if (Constants.isComingToAuthFromGuest) {
             Constants.isComingToAuthFromGuest = false
             navigate(R.id.action_splashFragment_to_signupFragment)
@@ -73,8 +87,7 @@ class SplashFragment : Fragment() {
                         init()
                     }
                 }
-            }
-            else {
+            } else {
                 binding.root.postDelayed(Runnable {
                     init()
                 }, 1500)
@@ -90,11 +103,11 @@ class SplashFragment : Fragment() {
     private fun init() {
         Flags.isComingFromSplash = true
         if (!preferenceManager.isOnboardingFinished()) {
-            if (preferenceManager.isSubscriptionActive()){
+            if (preferenceManager.isSubscriptionActive()) {
                 val bundle = Bundle()
-                bundle.putBoolean("comingFromOnboarding",true)
-                navigate(R.id.localizeFragment2,bundle)
-            }else{
+                bundle.putBoolean("comingFromOnboarding", true)
+                navigate(R.id.localizeFragment2, bundle)
+            } else {
                 findNavController().navigate(R.id.action_splashFragment_to_subscriptionFragmentAuth)
             }
         } else {

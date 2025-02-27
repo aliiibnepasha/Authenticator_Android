@@ -39,7 +39,9 @@ import com.husnain.authy.ui.fragment.onboarding.OnboardingFragment
 import com.husnain.authy.utls.BackPressedExtensions.goBackPressed
 import com.husnain.authy.utls.Constants
 import com.husnain.authy.utls.CustomToast.showCustomToast
+import com.husnain.authy.utls.RemoteConfigUtil
 import com.husnain.authy.utls.admob.AdUtils
+import com.husnain.authy.utls.admob.NativeAdUtils
 import com.husnain.authy.utls.gone
 import com.husnain.authy.utls.progress.ProgressDialogUtil.dismissProgressDialog
 import com.husnain.authy.utls.progress.ProgressDialogUtil.showProgressDialog
@@ -73,6 +75,13 @@ class AuthActivity : LocalizationActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityAuthBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        if (preferenceManager.getOpenCount() != 1){
+            lifecycleScope.launch(Dispatchers.IO){
+                fetchAndCheckHomeBannerAdOrNative()
+            }
+        }
+
         firebaseAnalytics = FirebaseAnalytics.getInstance(this)
         adRequest = AdRequest.Builder().build()
         inIt()
@@ -82,6 +91,27 @@ class AuthActivity : LocalizationActivity() {
         setupBillingClient()
         setupNavController()
         handleBackPressed()
+    }
+
+    private fun fetchAndCheckHomeBannerAdOrNative(){
+        RemoteConfigUtil.fetchRemoteConfig { success ->
+            if (success) {
+                val homeNativeBannerAd = RemoteConfigUtil.getHomeNativeBannerAd()
+
+                Log.d("LOG_AUTHY", "HomeNativeBannerAd: $homeNativeBannerAd")
+
+                if (homeNativeBannerAd == 1) {
+                    preferenceManager.saveHomeBannerAd(false)
+                    NativeAdUtils.preloadNativeAd(
+                        this,
+                        getString(R.string.admob_native_ad_id_release_home_screen),
+                        false
+                    )
+                } else {
+                    preferenceManager.saveHomeBannerAd(true)
+                }
+            }
+        }
     }
 
     fun changeLanguage(language: String) {

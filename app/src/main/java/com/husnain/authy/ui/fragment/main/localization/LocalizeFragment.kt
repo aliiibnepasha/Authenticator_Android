@@ -61,7 +61,7 @@ class LocalizeFragment : Fragment() {
 
     private fun loadAndPopulateAd() {
         binding.shimmerLayout.startShimmer()
-        NativeAdUtils.loadNativeAd(requireContext(), getNativeAdId()) { nativeAd ->
+        NativeAdUtils.loadNativeAd(requireContext(), getNativeAdId(),false) { nativeAd ->
             if (nativeAd != null) {
                 binding.shimmerLayout.stopShimmer()
                 binding.shimmerLayout.gone()
@@ -81,7 +81,7 @@ class LocalizeFragment : Fragment() {
         return if (BuildConfig.DEBUG) {
             getString(R.string.admob_native_ad_id_test)
         } else {
-            getString(R.string.admob_native_ad_id_test)
+            getString(R.string.admob_native_ad_id_release_language_screen)
         }
     }
 

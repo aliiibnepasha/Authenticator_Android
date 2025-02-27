@@ -1,27 +1,33 @@
 package com.husnain.authy.utls.admob
 
 import android.content.Context
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
-import android.widget.RatingBar
 import android.widget.TextView
 import com.google.android.gms.ads.*
 import com.google.android.gms.ads.nativead.NativeAd
-import com.husnain.authy.R
+import com.google.android.gms.ads.nativead.NativeAdOptions
 import com.google.android.gms.ads.nativead.NativeAdView
-import com.husnain.authy.BuildConfig
+import com.husnain.authy.R
 
 object NativeAdUtils {
 
     private var nativeAd: NativeAd? = null
 
     /**
-     * Preload a Native Ad
+     * Preload a Native Ad with or without media
      */
-    fun loadNativeAd(context: Context, adId: String,onAdLoaded: (NativeAd?) -> Unit) {
+    fun preloadNativeAd(context: Context, adId: String, isMedia: Boolean) {
+        loadNativeAd(context, adId, isMedia) { ad ->
+            nativeAd = ad // Store the ad for later use
+        }
+    }
+
+    /**
+     * Load a Native Ad and return immediately via callback
+     */
+    fun loadNativeAd(context: Context, adId: String, isMedia: Boolean, onAdLoaded: (NativeAd?) -> Unit) {
         val adLoader = AdLoader.Builder(context, adId)
             .forNativeAd { ad ->
                 nativeAd = ad
@@ -33,24 +39,34 @@ object NativeAdUtils {
                     onAdLoaded(null)
                 }
             })
+            .withNativeAdOptions(NativeAdOptions.Builder()
+                .build())
             .build()
 
         adLoader.loadAd(AdRequest.Builder().build())
     }
 
     /**
-     * Binds the Native Ad to the provided Ad Layout
+     * Get a preloaded Ad if available, otherwise load a new one
+     */
+    fun getOrLoadNativeAd(context: Context, adId: String, isMedia: Boolean, onAdAvailable: (NativeAd?) -> Unit) {
+        if (nativeAd != null) {
+            onAdAvailable(nativeAd)
+        } else {
+            loadNativeAd(context, adId, isMedia, onAdAvailable)
+        }
+    }
+
+    /**
+     * Binds a Native Ad to a NativeAdView
      */
     fun populateNativeAdView(nativeAd: NativeAd, adView: NativeAdView) {
-        // Set the ad content
         adView.headlineView = adView.findViewById(R.id.ad_headline)
         adView.iconView = adView.findViewById(R.id.ad_app_icon)
         adView.bodyView = adView.findViewById(R.id.ad_body)
         adView.callToActionView = adView.findViewById(R.id.ad_call_to_action)
         adView.mediaView = adView.findViewById(R.id.ad_media)
-        adView.starRatingView = adView.findViewById(R.id.ad_stars)
 
-        // Bind values
         (adView.headlineView as? TextView)?.text = nativeAd.headline
         (adView.bodyView as? TextView)?.text = nativeAd.body
         (adView.callToActionView as? Button)?.apply {
@@ -67,26 +83,14 @@ object NativeAdUtils {
         }
 
         // Bind MediaView
-        adView.mediaView?.mediaContent = nativeAd.mediaContent
-
-        // Bind Star Rating
-        val starRating = nativeAd.starRating
-        if (starRating != null && starRating > 0) {
-            (adView.starRatingView as? RatingBar)?.apply {
-                rating = starRating.toFloat()
-                visibility = View.VISIBLE
-            }
+        if (nativeAd.mediaContent != null) {
+            adView.mediaView?.mediaContent = nativeAd.mediaContent
+            adView.mediaView?.visibility = View.VISIBLE
         } else {
-            adView.starRatingView?.visibility = View.GONE
+            adView.mediaView?.visibility = View.GONE
         }
 
         // Set the native ad
         adView.setNativeAd(nativeAd)
     }
-
-
-    /**
-     * Retrieves the Native Ad ID based on Debug/Release mode
-     */
-
 }

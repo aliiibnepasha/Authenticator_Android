@@ -9,6 +9,7 @@
     //Admob release
     <string name="admob_app_id_release" translatable="false">ca-app-pub-9844943887550892~3638913015</string>
     <string name="admob_banner_id_release" translatable="false">ca-app-pub-9844943887550892/4292098259</string>
+    <string name="admob_native_ad_id_release_home_screen" translatable="false">ca-app-pub-9844943887550892/7808160688</string>
     <string name="admob_app_open_ad_unit_id_release" translatable="false">ca-app-pub-9844943887550892/7014889545</string>
     <string name="admob_interstitial_ad_id_release" translatable="false">ca-app-pub-9844943887550892/9233858779</string>
     <string name="admob_native_ad_id_release_language_screen" translatable="false">ca-app-pub-9844943887550892/7563556018</string>
