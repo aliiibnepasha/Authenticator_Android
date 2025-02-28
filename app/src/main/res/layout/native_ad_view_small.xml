@@ -5,7 +5,7 @@
     android:id="@+id/native_ad_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/color_gray_ad"
+    android:background="@color/color_gray"
     android:elevation="4dp"
     android:paddingVertical="2dp"
     android:paddingHorizontal="5dp"
@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:background="@color/color_gray_ad"
+        android:background="@color/color_gray"
         android:padding="8dp">
 
         <!-- Media Content (Main Ad Image or Video) -->
@@ -38,7 +38,7 @@
                 android:layout_width="55dp"
                 android:layout_height="55dp"
                 android:layout_marginEnd="8dp"
-                android:background="@color/color_gray_ad"
+                android:background="@color/color_gray"
                 android:scaleType="fitCenter"
                 />
 
@@ -106,6 +106,7 @@
             android:textColor="@android:color/white"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.gms.ads.nativead.NativeAdView>

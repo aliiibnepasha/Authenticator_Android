@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
@@ -21,6 +22,7 @@ import com.husnain.authy.data.room.daos.DaoTotp
 import com.husnain.authy.data.room.tables.RecentlyDeleted
 import com.husnain.authy.databinding.FragmentTotpDetailBinding
 import com.husnain.authy.preferences.PreferenceManager
+import com.husnain.authy.ui.activities.VmMain
 import com.husnain.authy.ui.fragment.main.home.VmHome
 import com.husnain.authy.utls.CustomToast.showCustomToast
 import com.husnain.authy.utls.DataState
@@ -46,6 +48,7 @@ class TotpDetailFragment : Fragment() {
     private var docId = ""
     private var updateHandler: Handler? = null
     private val vmHome: VmHome by viewModels()
+    private val vmMain: VmMain by activityViewModels()
     @Inject lateinit var daoTotp: DaoTotp
     @Inject lateinit var preferenceManager: PreferenceManager
 
@@ -55,6 +58,7 @@ class TotpDetailFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentTotpDetailBinding.inflate(inflater, container, false)
+        vmMain.setSubscriptionVisible(false)
         if (!preferenceManager.isSubscriptionActive()) {
             loadAndPopulateAd()
         } else {
@@ -93,7 +97,7 @@ class TotpDetailFragment : Fragment() {
 
     private fun getNativeAdId(): String {
         return if (BuildConfig.DEBUG) {
-            getString(R.string.admob_native_ad_id_release_edit_screen)
+            getString(R.string.admob_native_ad_id_test)
         } else {
             getString(R.string.admob_native_ad_id_release_edit_screen)
         }

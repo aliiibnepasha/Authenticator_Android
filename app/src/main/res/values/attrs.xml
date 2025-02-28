@@ -4,12 +4,15 @@
         <attr name="indicatorColor" format="color" />
     </declare-styleable>
 
+
     <declare-styleable name="NativeAdView">
-        <attr name="adType" format="enum">
+        <attr name="adType" format="integer">
             <enum name="small" value="0"/>
             <enum name="medium" value="1"/>
         </attr>
+        <attr name="isBanner" format="boolean"/>
     </declare-styleable>
+
 
     <declare-styleable name="ShimmerView">
         <attr name="shimmerType" format="enum">

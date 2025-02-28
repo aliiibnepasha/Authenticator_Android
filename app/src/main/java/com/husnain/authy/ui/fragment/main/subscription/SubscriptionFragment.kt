@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -26,6 +27,7 @@ import com.husnain.authy.data.models.ModelSubscription
 import com.husnain.authy.databinding.FragmentSubscriptionBinding
 import com.husnain.authy.preferences.PreferenceManager
 import com.husnain.authy.ui.activities.MainActivity
+import com.husnain.authy.ui.activities.VmMain
 import com.husnain.authy.ui.fragment.main.subscription.adapter.AdapterSubscription
 import com.husnain.authy.utls.BackPressedExtensions.goBackPressed
 import com.husnain.authy.utls.Constants
@@ -58,6 +60,7 @@ class SubscriptionFragment : Fragment() {
     lateinit var firebaseAnalytics: FirebaseAnalytics
     private var selectedProductId = Constants.weaklySubId
     private val productDetailsMap = mutableMapOf<String, ProductDetails>()
+    private val vmMain: VmMain by activityViewModels()
     private val vmSubscription: VmSubscription by viewModels()
 
 
@@ -67,6 +70,7 @@ class SubscriptionFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentSubscriptionBinding.inflate(inflater, container, false)
+        vmMain.setSubscriptionVisible(true)
         Log.d(Constants.TAG, "landed on subscription fragment")
         if (!Flags.isComingFromSplash && !preferenceManager.isSubscriptionActive()) {
             if (!Flags.isNotToShowAd){
@@ -458,6 +462,7 @@ class SubscriptionFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        vmMain.setSubscriptionVisible(false)
         Log.d(Constants.TAG, "Subscription screen onDestroy")
         if (::billingClient.isInitialized) {
             billingClient.endConnection()
