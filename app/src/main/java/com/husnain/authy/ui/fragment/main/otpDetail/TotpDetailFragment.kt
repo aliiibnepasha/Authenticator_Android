@@ -58,7 +58,7 @@ class TotpDetailFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentTotpDetailBinding.inflate(inflater, container, false)
-        vmMain.setSubscriptionVisible(false)
+        vmMain.setSubscriptionVisible(true)
         if (!preferenceManager.isSubscriptionActive()) {
             loadAndPopulateAd()
         } else {
@@ -250,6 +250,7 @@ class TotpDetailFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         Flags.comingBackFromDetailAfterDelete = true
+        vmMain.setSubscriptionVisible(false)
         _binding = null
         updateHandler?.removeCallbacksAndMessages(null)
     }

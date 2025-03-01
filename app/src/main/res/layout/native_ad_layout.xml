@@ -5,7 +5,8 @@
     android:layout_height="wrap_content"
     android:background="@color/color_gray_ad"
     android:elevation="4dp"
-    android:paddingVertical="5dp"
+    android:paddingBottom="4dp"
+    android:paddingTop="3dp"
     android:paddingHorizontal="5dp"
     >
 
@@ -16,20 +17,13 @@
         android:background="@color/color_gray_ad"
         android:padding="8dp">
 
-        <!-- Media Content (Main Ad Image or Video) -->
-        <com.google.android.gms.ads.nativead.MediaView
-            android:id="@+id/ad_media"
-            android:layout_width="match_parent"
-            android:layout_height="170dp"
-            android:scaleType="fitXY" />
-
         <!-- Row for Icon, Title, Rating, Ad Label -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="top"
-            android:paddingTop="8dp">
+            >
 
             <!-- Ad Icon -->
             <ImageView
@@ -42,7 +36,7 @@
                 android:layout_marginEnd="8dp" />
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="top"
                 android:orientation="vertical">
@@ -53,13 +47,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="App Name"
+                    android:textColor="@color/black"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     />
 
                 <!-- Ad Label + Star Rating -->
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:layout_marginTop="4dp"
@@ -71,7 +66,7 @@
                         android:layout_height="wrap_content"
                         android:text="Ad"
                         android:layout_marginStart="1dp"
-                        android:textSize="12sp"
+                        android:textSize="11sp"
                         android:paddingVertical="2dp"
                         android:paddingHorizontal="6dp"
                         android:background="@drawable/ad_label_bg"
@@ -82,18 +77,27 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textSize="14sp"
+                        android:maxLines="1"
+                        android:ellipsize="end"
                         android:layout_gravity="top"
                         android:layout_marginTop="-3dp"
-                        android:text="dasgagag"
+                        android:text="Description"
                         android:layout_marginStart="@dimen/_5sdp"
                         android:includeFontPadding="false"
-                        android:textColor="#666"
+                        android:textColor="@color/black"
                         />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
 
         <!-- Ad Body -->
+
+        <!-- Media Content (Main Ad Image or Video) -->
+        <com.google.android.gms.ads.nativead.MediaView
+            android:id="@+id/ad_media"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:scaleType="fitXY" />
 
         <!-- CTA Button -->
         <androidx.appcompat.widget.AppCompatButton

@@ -14,13 +14,7 @@
 
 
         <!-- Row for Icon, Title, Rating, Ad Label -->
-        <com.google.android.gms.ads.nativead.MediaView
-            android:id="@+id/ad_media"
-            android:layout_width="match_parent"
-            android:layout_height="160dp"
-            android:layout_marginBottom="8dp"
-            android:background="@color/shimmerColor"
-            android:scaleType="centerCrop" />
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -67,12 +61,20 @@
 
         <!-- Ad Body -->
 
+        <com.google.android.gms.ads.nativead.MediaView
+            android:id="@+id/ad_media"
+            android:layout_width="match_parent"
+            android:layout_height="146dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="5dp"
+            android:background="@color/shimmerColor"
+            android:scaleType="centerCrop" />
+
         <!-- CTA Button -->
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/ad_call_to_action"
             android:layout_width="match_parent"
             android:layout_height="42dp"
-            android:layout_marginTop="5dp"
             android:background="@color/shimmerColor"
             android:textAllCaps="true"
             android:textColor="@android:color/white"

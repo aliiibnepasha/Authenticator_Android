@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:background="@color/color_gray"
-        android:padding="8dp">
+        android:padding="7dp">
 
         <!-- Media Content (Main Ad Image or Video) -->
 
@@ -26,7 +26,6 @@
             android:layout_height="wrap_content"
             android:gravity="top"
             android:orientation="horizontal"
-            android:paddingTop="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/ad_call_to_action"
             app:layout_constraintStart_toStartOf="parent"
@@ -35,17 +34,18 @@
             <!-- Ad Icon -->
             <ImageView
                 android:id="@+id/ad_app_icon"
-                android:layout_width="55dp"
-                android:layout_height="55dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:layout_marginEnd="8dp"
                 android:background="@color/color_gray"
                 android:scaleType="fitCenter"
                 />
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="top"
+                android:layout_marginEnd="7dp"
                 android:orientation="vertical">
 
                 <!-- Ad Headline -->
@@ -54,12 +54,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="App Name"
+                    android:textColor="@color/black"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
                 <!-- Ad Label + Star Rating -->
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:gravity="top"
@@ -84,6 +85,8 @@
                         android:layout_gravity="top"
                         android:layout_marginStart="@dimen/_5sdp"
                         android:layout_marginTop="-3dp"
+                        android:maxLines="1"
+                        android:ellipsize="end"
                         android:includeFontPadding="false"
                         android:text="dasgagag"
                         android:textColor="#666"

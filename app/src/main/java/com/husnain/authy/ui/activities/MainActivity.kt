@@ -58,6 +58,7 @@ class MainActivity : LocalizationActivity() {
     private lateinit var adRequest: AdRequest
     private val vmMain: VmMain by viewModels()
     private var isAdLoaded = false
+    private var isNativeAdLoadedAndShown = false
     private lateinit var adView: AdView
     private var adTimer: CountDownTimer? = null
     private var visitCountForHome = 0
@@ -101,7 +102,6 @@ class MainActivity : LocalizationActivity() {
             preloadAd()
         } else {
             vmMain.isSubscriptionVisible.observe(this) { isVisible ->
-
                 if (!isVisible) {
                     binding.adView.setBanner(false)
                     binding.adView.setAdType(com.husnain.authy.utls.NativeAdView.AdType.SMALL)
@@ -118,14 +118,16 @@ class MainActivity : LocalizationActivity() {
                             binding.shimmerView.gone()
                             binding.adView.visible()
 
-                            val adView: NativeAdView =
-                                binding.adView.findViewById(R.id.native_ad_view)
+                            isNativeAdLoadedAndShown = true
+                            val adView: NativeAdView = binding.adView.findViewById(R.id.native_ad_view)
                             NativeAdUtils.populateNativeAdView(nativeAd, adView, true)
                         } else {
+                            isNativeAdLoadedAndShown = false
                             stopAndGoneShimmerAndAdView()
                         }
                     }
                 } else {
+                    isNativeAdLoadedAndShown = false
                     stopAndGoneShimmerAndAdView()
                 }
 
@@ -166,7 +168,7 @@ class MainActivity : LocalizationActivity() {
         }
     }
 
-    private fun stopAndGoneShimmerAndAdView() {
+    fun stopAndGoneShimmerAndAdView() {
         binding.shimmerLayout.stopShimmer()
         binding.shimmerLayout.gone()
         binding.shimmerView.gone()
@@ -245,6 +247,7 @@ class MainActivity : LocalizationActivity() {
                 }
 
                 else -> {
+                    vmMain.setSubscriptionVisible(true)
                     binding.adView.gone()
                     binding.bottomNavigationView.gone()
                 }

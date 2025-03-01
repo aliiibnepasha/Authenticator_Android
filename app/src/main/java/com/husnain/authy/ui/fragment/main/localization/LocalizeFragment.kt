@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import com.google.android.gms.ads.nativead.NativeAdView
 import com.google.rpc.context.AttributeContext.Auth
 import com.husnain.authy.BuildConfig
@@ -17,6 +18,7 @@ import com.husnain.authy.databinding.FragmentLocalizeBinding
 import com.husnain.authy.preferences.PreferenceManager
 import com.husnain.authy.ui.activities.AuthActivity
 import com.husnain.authy.ui.activities.MainActivity
+import com.husnain.authy.ui.activities.VmMain
 import com.husnain.authy.utls.RemoteConfigUtil
 import com.husnain.authy.utls.ShimmerView
 import com.husnain.authy.utls.admob.NativeAdUtils
@@ -37,6 +39,7 @@ class LocalizeFragment : Fragment() {
     @Inject
     lateinit var preferenceManager: PreferenceManager
     private lateinit var modelLang: ModelLanguage
+    private val vmMain: VmMain by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
