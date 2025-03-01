@@ -147,31 +147,33 @@ class SignupFragment : Fragment() {
 
         return when {
             name.isEmpty() -> {
-                showCustomToast("Name cannot be empty")
+                showCustomToast(getString(R.string.name_cannot_be_empty))
                 false
             }
 
             email.isEmpty() -> {
-                showCustomToast("Email cannot be empty")
+                showCustomToast(getString(R.string.email_cannot_be_empty))
                 false
             }
 
             !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches() -> {
-                showCustomToast("Invalid email")
+                showCustomToast(getString(R.string.invalid_email))
                 false
             }
 
             password.isEmpty() -> {
-                showCustomToast("Password cannot be empty")
+                showCustomToast(getString(R.string.password_cannot_be_empty))
                 false
             }
 
             password.length < 6 -> {
-                showCustomToast("Password must be at least 6 characters long")
+                showCustomToast(getString(R.string.password_must_be_at_least_6_characters_long))
                 false
             }
 
-            else -> true
+            else -> {
+                true
+            }
         }
     }
 

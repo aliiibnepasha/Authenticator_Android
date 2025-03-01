@@ -106,7 +106,7 @@ class AdapterHomeTotp(private var items: List<ModelTotp>) :
 
             binding.imgCopy.setOnClickListener {
                 it.context.copyToClip(binding.tvTotp.text.toString())
-                showSnackBar(binding.root, "Code copied to clipboard.")
+                showSnackBar(binding.root, itemView.context.getString(R.string.code_copied_to_clipboard))
             }
         }
 

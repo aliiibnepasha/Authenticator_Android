@@ -107,7 +107,7 @@ class AddAccountFragment : Fragment() {
                     binding.btnFlash.setImageResource(R.drawable.ic_btn_on_flash_light)
                 }
             } else {
-                showCustomToast("Camera not initialized yet")
+                showCustomToast(getString(R.string.camera_not_initialized_yet))
             }
         }
 
@@ -333,7 +333,7 @@ class AddAccountFragment : Fragment() {
                             onQRCodeScanned(uri)
                         },
                         onError = {
-                            showCustomToast("QR Code scan failed.")
+                            showCustomToast(getString(R.string.qr_code_scan_failed))
                         }
                     )
                 )

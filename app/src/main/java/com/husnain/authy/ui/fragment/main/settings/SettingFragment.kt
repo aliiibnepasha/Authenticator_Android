@@ -132,11 +132,11 @@ class SettingFragment : Fragment() {
         }
 
         binding.lyHowToUse.setOnClickListener {
-            showCustomToast("Coming Soon!")
+            showCustomToast(getString(R.string.coming_soon))
         }
 
         binding.ly2faGuides.setOnClickListener {
-            showCustomToast("Coming Soon!")
+            showCustomToast(getString(R.string.coming_soon))
         }
 
         binding.lyExport.setOnClickListener {

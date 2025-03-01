@@ -12,8 +12,8 @@ class SyncNotificationHelper(private val context: Context) {
 
     fun showStartNotification() {
         val notification = NotificationCompat.Builder(context, Constants.SYNC_CHANNEL_ID)
-            .setContentTitle("Sync")
-            .setContentText("Syncing...")
+            .setContentTitle(context.getString(R.string.sync))
+            .setContentText(context.getString(R.string.syncing))
             .setSmallIcon(R.drawable.img_baby_brain)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setSound(null)
@@ -24,8 +24,8 @@ class SyncNotificationHelper(private val context: Context) {
 
     fun showCompletionNotification() {
         val notification = NotificationCompat.Builder(context, Constants.SYNC_CHANNEL_ID)
-            .setContentTitle("Sync")
-            .setContentText("Sync Completed")
+            .setContentTitle(context.getString(R.string.sync))
+            .setContentText(context.getString(R.string.sync_completed))
             .setSmallIcon(R.drawable.img_baby_brain)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setSound(null)
@@ -36,7 +36,7 @@ class SyncNotificationHelper(private val context: Context) {
 
     fun updateProgress(currentProgress: Int, total: Int) {
         val notification = NotificationCompat.Builder(context, Constants.SYNC_CHANNEL_ID)
-            .setContentTitle("Sync")
+            .setContentTitle(context.getString(R.string.sync))
             .setContentText("Sync progress: $currentProgress/$total")
             .setSmallIcon(R.drawable.img_baby_brain)
             .setProgress(total, currentProgress, false)
@@ -48,8 +48,8 @@ class SyncNotificationHelper(private val context: Context) {
 
     fun showErrorNotification(message: String) {
         val notification = NotificationCompat.Builder(context, Constants.SYNC_CHANNEL_ID)
-            .setContentTitle("Sync Failed")
-            .setContentText("Something went wrong")
+            .setContentTitle(context.getString(R.string.sync_failed))
+            .setContentText(context.getString(R.string.something_went_wrong))
             .setSmallIcon(R.drawable.img_baby_brain)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .build()

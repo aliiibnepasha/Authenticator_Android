@@ -27,7 +27,7 @@
         android:fontFamily="@font/poppins_semibold"
         android:gravity="center"
         android:layout_marginBottom="@dimen/_30sdp"
-        android:text="Protect your accounts"
+        android:text="@string/protect_your_accounts"
         android:textColor="@color/colorPrimary"
         android:textSize="40sp"
         app:layout_constraintBottom_toTopOf="@+id/linearProgressIndicator2"

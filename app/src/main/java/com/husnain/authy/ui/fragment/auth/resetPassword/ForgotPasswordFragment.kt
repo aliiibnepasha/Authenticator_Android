@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.google.firebase.auth.FirebaseAuth
+import com.husnain.authy.R
 import com.husnain.authy.databinding.FragmentForgotPasswordBinding
 import com.husnain.authy.utls.CustomToast.showCustomToast
 import com.husnain.authy.utls.popBack
@@ -52,9 +53,9 @@ class ForgotPasswordFragment : Fragment() {
                 stopLoader()
                 if (task.isSuccessful) {
                     binding.emailEditText.setText("")
-                    showCustomToast("Password reset email sent successfully")
+                    showCustomToast(getString(R.string.password_reset_email_sent_successfully))
                 } else {
-                    showCustomToast("Failed to send password reset email.Please try again")
+                    showCustomToast(getString(R.string.failed_to_send_password_reset_email_please_try_again))
                 }
             }
     }
@@ -65,12 +66,12 @@ class ForgotPasswordFragment : Fragment() {
 
         return when {
             email.isEmpty() -> {
-                showCustomToast("Email field cannot be empty")
+                showCustomToast(getString(R.string.email_field_cannot_be_empty))
                 false
             }
 
             !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches() -> {
-                showCustomToast("Please enter a valid email address")
+                showCustomToast(getString(R.string.please_enter_a_valid_email_address))
                 false
             }
 

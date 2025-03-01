@@ -118,7 +118,7 @@ class AppLockFragment : Fragment() {
             }
 
             BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED -> {
-                showCustomToast("No biometric enrolled")
+                showCustomToast(getString(R.string.no_biometric_enrolled))
                 false
             }
 

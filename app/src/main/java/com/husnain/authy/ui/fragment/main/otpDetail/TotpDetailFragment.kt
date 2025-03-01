@@ -180,13 +180,13 @@ class TotpDetailFragment : Fragment() {
 
         binding.btnCopy.setOnClickListener {
             requireContext().copyToClip(binding.tvOtp.text.toString())
-            showSnackBar(binding.root, "Code copied to clipboard.")
+            showSnackBar(binding.root, getString(R.string.code_copied_to_clipboard))
         }
         binding.btnDeleteAccount.setOnClickListener {
             showBottomSheetDialog(
-                "Remove this account",
-                "move to trash",
-                "Remove",
+                getString(R.string.remove_this_account),
+                getString(R.string.move_to_trash),
+                getString(R.string.remove),
                 true,
                 onPrimaryClick = {
                     vmHome.insertToRecentlyDeleted(

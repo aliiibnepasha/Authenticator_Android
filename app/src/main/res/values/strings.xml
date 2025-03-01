@@ -135,6 +135,9 @@
     <string name="string_please_select_at_least_one">Please select at least one</string>
     <string name="string_lifetime_purchase_successful">Lifetime purchase is successful</string>
     <string name="string_subscription_successful">Subscribed successfully</string>
+
+
+    //new
     <string name="string_data_saved_successfully">Data Saved Successfully</string>
     <string name="account_name_cannot_be_empty">Account name cannot be empty</string>
     <string name="private_key_cannot_be_empty">Private key cannot be empty</string>
@@ -158,5 +161,66 @@
     <string name="delete">Delete</string>
     <string name="are_you_sure_you_want_to_logout">Are you sure you want to logout</string>
     <string name="yes">Yes</string>
+    <string name="privacy_policy">Privacy Policy</string>
+    <string name="account_name">Account name</string>
+    <string name="_2fa_code">2FA Code</string>
+    <string name="protect_your_accounts">Protect your accounts</string>
+    <string name="sign_in_to_backup">Sign In To Backup</string>
+    <string name="import_accounts">Import Accounts</string>
+    <string name="export_accounts">Export Accounts</string>
+    <string name="how_to_use">How to use</string>
+    <string name="_2fa_guides">2FA Guides</string>
+    <string name="next">Next</string>
+    <string name="done">Done</string>
+    <string name="import_from_google">Import from google</string>
+    <string name="select_method">Select Method</string>
+    <string name="import_from_another_device">Import from another device</string>
+    <string name="import_from_same_device">Import from same device</string>
+    <string name="scan_qr_code">Scan QR code</string>
+    <string name="how_to_scan_qr_code_from_another_device">How to Scan QR code from another Device</string>
+    <string name="step_1">Step 1:</string>
+    <string name="step_2">Step 2:</string>
+    <string name="step_3">Step 3:</string>
+    <string name="step_4">Step 4:</string>
+    <string name="step_5">Step 5:</string>
+    <string name="open_your_authenticator_app">Open your Authenticator App.</string>
+    <string name="go_to_settings_tap_on_quot_import_from_google_quot">Go to settings, tap on \"Import from Google\".</string>
+    <string name="on_your_other_device_open_google_authenticator_and_go_to_transfer_accounts_gt_export_accounts"><![CDATA[On your other device, open Google Authenticator and go to Transfer accounts > Export accounts.]]></string>
+    <string name="a_qr_code_will_appear_on_your_other_device">A QR code will appear on your other device.</string>
+    <string name="use_your_authenticator_app_s_scanner_to_scan_the_qr_code_your_accounts_will_be_imported_automatically">Use your Authenticator App’s scanner to scan the QR code. Your accounts will be imported automatically.</string>
+    <string name="export_codes">Export codes</string>
+    <string name="no_encryption">No Encryption</string>
+    <string name="export_file">Export File</string>
+    <string name="sync_amp_backup"><![CDATA[Sync & Backup]]></string>
+    <string name="take_a_screenshot_when_you_see_the_export_qr_code">Take a screenshot when you see the export QR code.</string>
+    <string name="open_the_authenticator_app_and_tap_on_quot_import_from_gallery_quot">Open the Authenticator App and tap on \"Import from Gallery\".</string>
+    <string name="select_the_screenshot_from_your_gallery_the_app_will_extract_the_qr_code_and_import_your_accounts">Select the screenshot from your gallery. The app will extract the QR code and import your accounts.</string>
+    <string name="select_from_gallery">Select from gallery</string>
+    <string name="auto_sync">Auto Sync</string>
+    <string name="to_enable_auto_sync_for_your_authenticator_data_please_register_or_log_in">To enable auto-sync for your authenticator data, please register or log in.</string>
+    <string name="enter_password">Enter Password</string>
+    <string name="ok">ok</string>
+    <string name="cancel">Cancel</string>
+    <string name="coming_soon">Coming Soon!</string>
+    <string name="wrong_pin">Wrong pin!</string>
+    <string name="code_copied_to_clipboard">Code copied to clipboard.</string>
+    <string name="sync">Sync</string>
+    <string name="syncing">Syncing...</string>
+    <string name="sync_completed">Sync Completed</string>
+    <string name="sync_failed">Sync Failed</string>
+    <string name="something_went_wrong">Something went wrong</string>
+    <string name="no_biometric_enrolled">No biometric enrolled</string>
+    <string name="camera_not_initialized_yet">Camera not initialized yet</string>
+    <string name="qr_code_scan_failed">QR Code scan failed.</string>
+    <string name="email_cannot_be_empty">Email cannot be empty</string>
+    <string name="invalid_email">Invalid email</string>
+    <string name="password_cannot_be_empty">Password cannot be empty</string>
+    <string name="password_must_be_at_least_6_characters_long">Password must be at least 6 characters long</string>
+    <string name="name_cannot_be_empty">Name cannot be empty</string>
+    <string name="please_enter_a_valid_email_address">Please enter a valid email address</string>
+    <string name="email_field_cannot_be_empty">Email field cannot be empty</string>
+    <string name="password_reset_email_sent_successfully">Password reset email sent successfully</string>
+    <string name="failed_to_send_password_reset_email_please_try_again">Failed to send password reset email.Please try again</string>
+    <string name="no_totp_data_found_to_sync">No TOTP data found to sync.</string>
 
 </resources>

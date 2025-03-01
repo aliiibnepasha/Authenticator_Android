@@ -58,7 +58,7 @@ class ExportCodesFragment : Fragment() {
         binding.btnExportFile.setOnClickListener {
             if (isWithEncryption) {
                 if (binding.edtPass.text.isNullOrEmpty()) {
-                    showCustomToast("Password is required")
+                    showCustomToast(getString(R.string.password_is_required))
                 } else {
                     openFilePicker()
                 }

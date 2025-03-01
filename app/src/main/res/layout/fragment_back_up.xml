@@ -67,7 +67,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_10sdp"
                 android:fontFamily="@font/poppins_semibold"
-                android:text="Sync &amp; Backup"
+                android:text="@string/sync_amp_backup"
                 android:textColor="#484C52"
                 android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="@+id/appCompatImageView10"

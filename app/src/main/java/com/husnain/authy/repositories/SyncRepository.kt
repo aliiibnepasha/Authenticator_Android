@@ -24,7 +24,7 @@ class SyncRepository @Inject constructor(
             val totpList = daoTotp.getAllTotpData()
 
             if (totpList.isEmpty()) {
-                _syncState.postValue(DataState.Error("No TOTP data found to sync."))
+                _syncState.postValue(DataState.Error(context.getString(R.string.no_totp_data_found_to_sync)))
                 return
             }
 

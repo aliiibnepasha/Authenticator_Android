@@ -24,7 +24,7 @@
         android:layout_marginTop="25dp"
         android:layout_marginEnd="10dp"
         android:fontFamily="@font/poppins_semibold"
-        android:text="Import from google"
+        android:text="@string/import_from_google"
         android:textColor="@color/black"
         android:textSize="@dimen/_16ssp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -50,7 +50,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:fontFamily="@font/poppins_semibold"
-            android:text="How to Scan QR code from another Device"
+            android:text="@string/how_to_scan_qr_code_from_another_device"
             android:textColor="@color/colorDarkBlue"
             android:textSize="12sp" />
 
@@ -72,7 +72,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_bold"
-                android:text="Step 1:"
+                android:text="@string/step_1"
                 android:textColor="@color/colorDarkBlue"
                 android:textSize="12sp" />
 
@@ -81,7 +81,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:fontFamily="@font/poppins_regular"
-                android:text="Open your Authenticator App."
+                android:text="@string/open_your_authenticator_app"
                 android:textSize="12sp" />
         </LinearLayout>
 
@@ -96,7 +96,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_bold"
-                android:text="Step 2:"
+                android:text="@string/step_2"
                 android:textColor="@color/colorDarkBlue"
                 android:textSize="12sp" />
 
@@ -105,7 +105,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:fontFamily="@font/poppins_regular"
-                android:text="Go to settings, tap on &quot;Import from Google&quot;."
+                android:text="@string/go_to_settings_tap_on_quot_import_from_google_quot"
                 android:textSize="12sp" />
         </LinearLayout>
 
@@ -119,7 +119,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_bold"
-                android:text="Step 3:"
+                android:text="@string/step_3"
                 android:textColor="@color/colorDarkBlue"
                 android:textSize="12sp" />
 
@@ -128,7 +128,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:fontFamily="@font/poppins_regular"
-                android:text="On your other device, open Google Authenticator and go to Transfer accounts &gt; Export accounts."
+                android:text="@string/on_your_other_device_open_google_authenticator_and_go_to_transfer_accounts_gt_export_accounts"
                 android:textSize="12sp" />
         </LinearLayout>
 
@@ -143,7 +143,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_bold"
-                android:text="Step 4:"
+                android:text="@string/step_4"
                 android:textColor="@color/colorDarkBlue"
                 android:textSize="12sp" />
 
@@ -152,7 +152,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:fontFamily="@font/poppins_regular"
-                android:text="A QR code will appear on your other device."
+                android:text="@string/a_qr_code_will_appear_on_your_other_device"
                 android:textSize="12sp" />
         </LinearLayout>
 
@@ -166,7 +166,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_bold"
-                android:text="Step 5:"
+                android:text="@string/step_5"
                 android:textColor="@color/colorDarkBlue"
                 android:textSize="12sp" />
 
@@ -175,8 +175,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:fontFamily="@font/poppins_regular"
-                android:text="Use your Authenticator App’s scanner to scan the
-QR code. Your accounts will be imported automatically."
+                android:text="@string/use_your_authenticator_app_s_scanner_to_scan_the_qr_code_your_accounts_will_be_imported_automatically"
                 android:textSize="12sp" />
         </LinearLayout>
     </LinearLayout>
@@ -204,7 +203,7 @@ QR code. Your accounts will be imported automatically."
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_bold"
-            android:text="Scan QR code"
+            android:text="@string/scan_qr_code"
             android:layout_marginStart="16dp"
             android:textColor="@color/white"
             android:textSize="20sp"/>

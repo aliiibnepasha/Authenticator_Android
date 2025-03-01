@@ -117,22 +117,22 @@ class SigninFragment : Fragment() {
         val password = binding.edtPass.text.toString().trim()
 
         if (email.isEmpty()) {
-            showCustomToast("Email cannot be empty")
+            showCustomToast(getString(R.string.email_cannot_be_empty))
             return false
         }
 
         if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            showCustomToast("Invalid email")
+            showCustomToast(getString(R.string.invalid_email))
             return false
         }
 
         if (password.isEmpty()) {
-            showCustomToast("Password cannot be empty")
+            showCustomToast(getString(R.string.password_cannot_be_empty))
             return false
         }
 
         if (password.length < 6) {
-            showCustomToast("Password must be at least 6 characters long")
+            showCustomToast(getString(R.string.password_must_be_at_least_6_characters_long))
             return false
         }
 

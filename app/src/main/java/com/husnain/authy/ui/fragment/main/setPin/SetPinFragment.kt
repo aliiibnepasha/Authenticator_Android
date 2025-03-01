@@ -134,7 +134,7 @@ class SetPinFragment : Fragment() {
     }
 
     private fun handleWrongPin() {
-        showCustomToast("Wrong pin!")
+        showCustomToast(getString(R.string.wrong_pin))
         //Clear active state of pinDots and clear entered pin
         for (i in pinDots.indices) {
             pinDots[i].setImageResource(R.drawable.ic_pin_dot_inactive)

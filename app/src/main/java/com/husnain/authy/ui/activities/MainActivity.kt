@@ -60,6 +60,7 @@ class MainActivity : LocalizationActivity() {
     private var isAdLoaded = false
     private lateinit var adView: AdView
     private var adTimer: CountDownTimer? = null
+    private var visitCountForHome = 0
 
     override fun onStart() {
         super.onStart()
@@ -130,10 +131,6 @@ class MainActivity : LocalizationActivity() {
 
             }
         }
-
-        if (!preferenceManager.isHomeBannerAdEnabled()) {
-            startTimer()
-        }
     }
 
     private fun getNativeAdId(): String {
@@ -161,11 +158,9 @@ class MainActivity : LocalizationActivity() {
     private fun loadNative() {
         NativeAdUtils.loadNativeAd(this, getNativeAdId()) { nativeAd ->
             if (nativeAd != null) {
-                startTimer()
                 val adView: NativeAdView = binding.adView.findViewById(R.id.native_ad_view)
                 NativeAdUtils.populateNativeAdView(nativeAd, adView, false)
             } else {
-                adTimer?.cancel()
                 stopAndGoneShimmerAndAdView()
             }
         }
@@ -229,9 +224,12 @@ class MainActivity : LocalizationActivity() {
             }
 
             if (destination.id == R.id.homeFragment) {
-                setStatusBarColor(R.color.white)
-            } else {
-                setStatusBarColor(R.color.white)
+                visitCountForHome++
+                if (!preferenceManager.isHomeBannerAdEnabled()) {
+                    if (visitCountForHome > 2) {
+                        loadNative()
+                    }
+                }
             }
 
             when (destination.id) {

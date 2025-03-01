@@ -24,7 +24,7 @@
         android:layout_marginTop="25dp"
         android:layout_marginEnd="10dp"
         android:fontFamily="@font/poppins_semibold"
-        android:text="Export codes"
+        android:text="@string/export_codes"
         android:textColor="@color/black"
         android:textSize="@dimen/_16ssp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -57,7 +57,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_regular"
-                android:text="No Encryption"
+                android:text="@string/no_encryption"
                 android:layout_marginStart="@dimen/_10sdp"
                 android:textColor="#484C52"
                 android:textSize="16sp"
@@ -133,7 +133,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_regular"
-            android:text="Export File"
+            android:text="@string/export_file"
             android:textColor="@color/white" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
