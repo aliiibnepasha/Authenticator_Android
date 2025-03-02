@@ -14,6 +14,7 @@
         android:layout_marginTop="@dimen/_15sdp"
         android:layout_marginStart="@dimen/_25sdp"
         android:layout_marginBottom="@dimen/_150sdp"
+        android:layoutDirection="ltr"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -29,7 +30,7 @@
         android:layout_marginBottom="@dimen/_30sdp"
         android:text="@string/protect_your_accounts"
         android:textColor="@color/colorPrimary"
-        android:textSize="40sp"
+        android:textSize="57sp"
         app:layout_constraintBottom_toTopOf="@+id/linearProgressIndicator2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -55,4 +56,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/appCompatTextView16"
         app:srcCompat="@drawable/ic_unloack" />
+
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvThisActionMayContainAds"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="this action may contains Ads"
+        android:layout_marginTop="10dp"
+        android:textSize="12sp"
+        android:fontFamily="@font/poppins_regular"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearProgressIndicator2" />
 </androidx.constraintlayout.widget.ConstraintLayout>

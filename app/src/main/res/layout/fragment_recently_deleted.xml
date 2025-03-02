@@ -38,7 +38,7 @@
                 android:fontFamily="@font/poppins_semibold"
                 android:text="@string/string_recently_deleted"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_16ssp"
+                android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -57,7 +57,7 @@
                 android:id="@+id/rvRecentlyDeleted"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/_10sdp"
+                android:layout_marginHorizontal="24dp"
                 android:layout_marginTop="@dimen/_20sdp"
                 android:layoutDirection="ltr"
                 android:nestedScrollingEnabled="true"

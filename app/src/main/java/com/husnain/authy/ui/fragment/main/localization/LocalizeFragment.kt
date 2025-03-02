@@ -39,7 +39,6 @@ class LocalizeFragment : Fragment() {
     @Inject
     lateinit var preferenceManager: PreferenceManager
     private lateinit var modelLang: ModelLanguage
-    private val vmMain: VmMain by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -154,12 +153,12 @@ class LocalizeFragment : Fragment() {
             ModelLanguage("Arabic (العربية)", "ar"),
             ModelLanguage("Spanish (Español)", "es"),
             ModelLanguage("French (Français)", "fr"),
-            ModelLanguage("Indonesian (Bahasa Indonesia)", "id"),
+            ModelLanguage("Indonesian (Bahasa Indonesia)", "in"),
             ModelLanguage("Chinese (中文)", "zh"),
-            ModelLanguage("Hebrew (עברית)", "he"),
+            ModelLanguage("Hebrew (עברית)", "iw"),
             ModelLanguage("Russian (русский)", "ru"),
             ModelLanguage("Hindi (हिंदी)", "hi"),
-            ModelLanguage("Filipino", "tl"),
+            ModelLanguage("Filipino", "fil"),
             ModelLanguage("Turkish (Türkçe)", "tr"),
             ModelLanguage("Urdu (اردو)", "ur")
         )

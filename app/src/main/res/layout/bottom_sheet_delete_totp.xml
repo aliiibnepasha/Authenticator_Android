@@ -16,17 +16,17 @@
         android:id="@+id/lyTopText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="22dp">
+        android:layout_marginTop="36dp">
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvTop"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_15sdp"
-            android:fontFamily="@font/poppins_bold"
+            android:fontFamily="@font/poppins_semibold"
             android:text="Restore"
             android:textColor="#FF6363"
-            android:textSize="17sp"
+            android:textSize="24sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -37,22 +37,25 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="start"
-        android:layout_marginEnd="@dimen/_15sdp"
         android:layout_marginStart="@dimen/_15sdp"
-        android:text="reuse account for 2-factor authentication" />
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="@dimen/_15sdp"
+        android:fontFamily="@font/poppins_regular"
+        android:text="reuse account for 2-factor authentication"
+        android:textSize="16sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_15sdp"
-        android:layout_marginBottom="@dimen/_20sdp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="27dp"
         android:gravity="center"
         android:orientation="horizontal">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/lyCancel"
             android:layout_width="150dp"
-            android:layout_height="50dp"
+            android:layout_height="60dp"
             android:layout_marginStart="@dimen/_15sdp"
             android:layout_weight="1"
             android:background="#E6F4F1">
@@ -60,10 +63,10 @@
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins_regular"
+                android:fontFamily="@font/poppins_medium"
                 android:text="@string/string_cancel"
                 android:textColor="@color/colorPrimary"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -73,7 +76,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/lyYes"
             android:layout_width="150dp"
-            android:layout_height="50dp"
+            android:layout_height="60dp"
             android:layout_marginStart="@dimen/_19sdp"
             android:layout_marginEnd="@dimen/_15sdp"
             android:layout_weight="1"
@@ -83,10 +86,10 @@
                 android:id="@+id/tvPrimaryButtonText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins_regular"
+                android:fontFamily="@font/poppins_medium"
                 android:text="@string/string_delete"
                 android:textColor="@color/white"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

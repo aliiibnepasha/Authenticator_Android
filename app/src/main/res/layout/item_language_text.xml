@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingVertical="@dimen/_5sdp"
-    android:layout_marginBottom="16dp"
+    android:layout_marginBottom="18dp"
     >
 
     <androidx.appcompat.widget.AppCompatTextView
@@ -14,8 +14,9 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/poppins_semibold"
         android:text="Default"
-        android:layout_marginStart="@dimen/_10sdp"
-        android:textSize="@dimen/_14ssp"
+        android:layout_marginStart="8.07dp"
+        android:textColor="@color/black"
+        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

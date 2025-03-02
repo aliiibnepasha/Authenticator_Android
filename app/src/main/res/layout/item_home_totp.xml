@@ -29,10 +29,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_10sdp"
-            android:fontFamily="@font/poppins_bold"
+            android:fontFamily="@font/poppins_semibold"
             android:text="569 404"
             android:textColor="#484C52"
-            android:textSize="@dimen/_13ssp"
+            android:textSize="16sp"
             app:layout_constraintStart_toEndOf="@+id/imgLogo"
             app:layout_constraintTop_toTopOf="@+id/imgLogo" />
 
@@ -44,8 +44,8 @@
             android:fontFamily="@font/poppins_regular"
             android:maxLines="1"
             android:text="Github"
-            android:textColor="@color/color_text_gray"
-            android:textSize="@dimen/_10ssp"
+            android:textColor="#7C8BA0"
+            android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="@+id/imgLogo"
             app:layout_constraintEnd_toStartOf="@+id/frameLayout"
             app:layout_constraintStart_toStartOf="@+id/tvTotp"
@@ -80,7 +80,7 @@
                 android:indeterminate="false"
                 android:max="30"
                 app:indicatorColor="@color/colorPrimary"
-                app:indicatorSize="30dp"
+                app:indicatorSize="32dp"
                 app:trackColor="#B9D1E8"
                 app:trackThickness="3dp" />
 

@@ -143,24 +143,11 @@ class MainActivity : LocalizationActivity() {
         }
     }
 
-    private fun startTimer() {
-        adTimer?.cancel()
-        adTimer = object : CountDownTimer(60000, 1000) {
-            override fun onTick(millisUntilFinished: Long) {
-                Log.d("AdTimer", "Time left: ${millisUntilFinished / 1000}s")
-            }
-
-            override fun onFinish() {
-                Log.d("AdTimer", "Timer finished, retrying ad load...")
-                loadNative()
-            }
-        }.start()
-    }
-
     private fun loadNative() {
         NativeAdUtils.loadNativeAd(this, getNativeAdId()) { nativeAd ->
             if (nativeAd != null) {
                 val adView: NativeAdView = binding.adView.findViewById(R.id.native_ad_view)
+                isNativeAdLoadedAndShown = true
                 NativeAdUtils.populateNativeAdView(nativeAd, adView, false)
             } else {
                 stopAndGoneShimmerAndAdView()
@@ -241,13 +228,14 @@ class MainActivity : LocalizationActivity() {
                             binding.adView.visible()
                         }
                     } else {
-                        binding.adView.visible()
+                        if (isNativeAdLoadedAndShown){
+                            binding.adView.visible()
+                        }
                     }
                     binding.bottomNavigationView.visible()
                 }
 
                 else -> {
-                    vmMain.setSubscriptionVisible(true)
                     binding.adView.gone()
                     binding.bottomNavigationView.gone()
                 }

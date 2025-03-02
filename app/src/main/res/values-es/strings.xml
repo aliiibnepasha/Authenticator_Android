@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name" translatable="false">Authenticator</string>
     <string name="hello_blank_fragment">Hola fragmento en blanco</string>
     <string name="string_error">Error</string>
     <string name="string_sign_up">Registrarse</string>
-    <string name="string_signup_desc">Se popularizó en la década de 1960 con el lanzamiento de hojas de Letraset que contenían Lorem Ipsum.</string>
+    <string name="string_signup_desc">Se hizo popular en la década de 1960 con el lanzamiento de las hojas de Letraset que contenían Lorem Ipsum.</string>
     <string name="string_google">Google</string>
     <string name="string_or">O</string>
     <string name="string_name">Nombre</string>
@@ -12,38 +13,36 @@
     <string name="string_create_account">Crear cuenta</string>
     <string name="string_do_you_have_account">¿Tienes una cuenta?</string>
     <string name="string_sign_in">Iniciar sesión</string>
-    <string name="string_signin_desc">Se popularizó en la década de 1960 con el lanzamiento de hojas de Letraset que contenían Lorem Ipsum.</string>
+    <string name="string_signin_desc">Se hizo popular en la década de 1960 con el lanzamiento de las hojas de Letraset que contenían Lorem Ipsum.</string>
     <string name="string_forgot_password">¿Olvidaste tu contraseña?</string>
     <string name="string_log_in">Iniciar sesión</string>
     <string name="string_don_t_have_account">¿No tienes una cuenta?</string>
-
-    <!-- Home -->
     <string name="string_forget_password2">Olvidar contraseña</string>
     <string name="string_continue">Continuar</string>
     <string name="string_authenticator">Autenticador</string>
-    <string name="string_scan_the_2fa_qr_code">Escanea el código QR 2FA</string>
+    <string name="string_scan_the_2fa_qr_code">Escanear el código QR 2FA</string>
     <string name="string_add_account_manually">Agregar cuenta manualmente</string>
     <string name="string_add_account">Agregar cuenta</string>
-    <string name="string_add_acount_desc">Ingresa la clave privada de la cuenta que deseas agregar.</string>
+    <string name="string_add_acount_desc">Ingrese la clave privada de la cuenta que desea agregar.</string>
     <string name="string_account_name">Nombre de la cuenta</string>
-    <string name="string_enter_private_key">Ingresa la clave privada</string>
+    <string name="string_enter_private_key">Ingrese clave privada</string>
     <string name="string_add">Agregar</string>
     <string name="string_localize_languages">Localizar idiomas</string>
     <string name="string_new_tools">Nuevas herramientas</string>
-    <string name="string_app_lock">Bloqueo de la aplicación</string>
-    <string name="string_allow_screenshots">Permitir capturas de pantalla</string>
-    <string name="string_manage_and_generate_passwords">Gestionar y generar contraseñas</string>
-    <string name="string_apploack_desc">Establece un PIN para proteger tu aplicación de autenticación</string>
-    <string name="string_pin_lock">Bloqueo con PIN</string>
+    <string name="string_app_lock">Bloqueo de aplicación</string>
+    <string name="string_allow_screenshots">Deshabilitar capturas de pantalla</string>
+    <string name="string_manage_and_generate_passwords">Administrar y generar contraseñas</string>
+    <string name="string_apploack_desc">Configura un PIN para proteger tu aplicación de autenticación</string>
+    <string name="string_pin_lock">Bloqueo por PIN</string>
     <string name="string_biometric_lock">Bloqueo biométrico</string>
-    <string name="string_relock_time">Rebloqueo</string>
+    <string name="string_relock_time">Tiempo de re-bloqueo</string>
     <string name="string_set_pin">Establecer PIN</string>
     <string name="string_set_your_pin">Establece tu PIN</string>
     <string name="string_setting">Configuración</string>
     <string name="string_get_premium">Obtener Premium</string>
     <string name="string_unlimited_access_to_all_features">Acceso ilimitado a todas las funciones</string>
-    <string name="string_localize_languages_setting">Configurar idiomas</string>
-    <string name="string_import_google_authenticator">Importar autenticador de Google</string>
+    <string name="string_localize_languages_setting">Configuración de idiomas</string>
+    <string name="string_import_google_authenticator">Importar Google Authenticator</string>
     <string name="string_delete_account">Eliminar cuenta</string>
     <string name="string_auto_fill_passwords">Autocompletar contraseñas</string>
     <string name="string_import_and_export_passwords">Importar y exportar contraseñas</string>
@@ -51,66 +50,8 @@
     <string name="string_share_our_app">Comparte nuestra aplicación</string>
     <string name="string_terms_amp_condition"><![CDATA[Términos y condiciones]]></string>
     <string name="string_privacy_policy">Política de privacidad</string>
-    <!-- Spanish -->
     <string name="string_general">General</string>
     <string name="string_backup">Copia de seguridad</string>
     <string name="string_security">Información y compartir</string>
-    <string name="string_sync">Sincroniza y Respaldo</string>
-    //new
-    <string name="stringenter_pin">Introduce el PIN</string>
-    <string name="string_enter_your_pin">Introduce tu PIN</string>
-    <string name="string_bottom_home">Inicio</string>
-    <string name="string_bottom_new_tools">Nuevas herramientas</string>
-    <string name="string_bottom_setting">Configuración</string>
-    <string name="delay_immediately">Inmediatamente</string>
-    <string name="delay_after_15s">Después de 15s</string>
-    <string name="delay_after_30s">Después de 30s</string>
-    <string name="delay_after_50s">Después de 50s</string>
-    <string name="delay_after_1m">Después de 1m</string>
-    <string name="delay_never">Nunca</string>
-    <string name="string_logout">Cerrar sesión</string>
-    <string name="string_recently_deleted">Eliminado recientemente</string>
-    <string name="string_sync_now">Sincronizar ahora</string>
-    <string name="string_subscription">Suscripción</string>
-    <string name="string_upgrade_to_pro">Actualizar a Pro</string>
-    <string name="string_secure_all_your_accounts">Asegura todas tus cuentas</string>
-    <string name="string_fast_amp_easy_setup">Configuración rápida y fácil</string>
-    <string name="string_auto_backup_amp_sync">Copia de seguridad y sincronización automáticas</string>
-    <string name="string_auto_renewel_cancel_anytime">Renovación automática. Cancelar en cualquier momento</string>
-    <string name="string_cancel">Cancelar</string>
-    <string name="string_camera">Cámara</string>
-    <string name="string_gallery">Galería</string>
-    <string name="string_no_data_found">No se encontraron datos</string>
-    <string name="string_delete_all">Eliminar todo</string>
-    <string name="string_restore_all">Restaurar todo</string>
-    <string name="string_permanently_delete">Eliminar permanentemente</string>
-    <string name="string_restore">Restaurar</string>
-    <string name="string_lets_add_your_first_account">Vamos a agregar tu primera cuenta</string>
-    <string name="string_add_your_account">+ Agregar tu cuenta</string>
-    <string name="string_add_new_account">+ Agregar nueva cuenta</string>
-    <string name="string_search_accounts">Buscar cuentas</string>
-    <string name="string_no">No</string>
-    <string name="string_yes">Sí</string>
-    <string name="string_account_dlt_confimation_text">¿Estás seguro de que deseas eliminar tu cuenta?</string>
-    <string name="string_continue_to_checkout">Continuar con la compra</string>
-    //new2
-    <string name="string_delete">Eliminar</string>
-    <string name="string_deleted_successfully">Eliminado con éxito</string>
-    <string name="string_something_went_wrong_please_try_again">Algo falló, inténtelo de nuevo.</string>
-    <string name="string_missing_permission_to_scan_qr_codes">Falta permiso para escanear QR.</string>
-    <string name="string_scanned_qr_is_not_a_2fa_qr">El QR escaneado no es 2FA.</string>
-    <string name="string_no_user_is_currently_logged_in">Ningún usuario conectado.</string>
-    <string name="string_user_already_exists">El usuario ya existe.</string>
-    <string name="string_authentication_failed">Error de autenticación.</string>
-    <string name="string_user_already_exists_with_same_email">Ya existe un usuario con el mismo correo.</string>
-    <string name="string_wrong_credentials">Credenciales incorrectas.</string>
-    <string name="string_repo_authentication_failed">Error de autenticación.</string>
-    <string name="string_singup_desc2">Protege tu mundo digital fácilmente. ¡Regístrate ahora!</string>
-    <string name="string_signin_desc2">¡Bienvenido! Accede a tu bóveda segura.</string>
-    <string name="string_forgot_password_new">Olvidé mi contraseña</string>
-
-    <string name="string_forgot_pass_desc">¿Olvidaste tu contraseña? Recupérala rápido y seguro.</string>
-    <string name="string_please_select_at_least_one">Selecciona al menos uno</string>
-    <string name="string_lifetime_purchase_successful">Compra de por vida realizada</string>
-    <string name="string_subscription_successful">Suscripción exitosa</string>
+    <string name="string_sync">Sincronización y copia de seguridad en la nube</string>
 </resources>

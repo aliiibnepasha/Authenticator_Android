@@ -122,6 +122,7 @@ class SplashFragment : Fragment() {
                 preferenceManager.isBiometricLockEnabled() -> {
                     binding.btnUnlock.visible()
                     binding.linearProgressIndicator2.invisible()
+                    binding.tvThisActionMayContainAds.invisible()
                     checkForBiometricLogin()
                 }
 
@@ -131,12 +132,14 @@ class SplashFragment : Fragment() {
 
                 else -> {
                     binding.linearProgressIndicator2.visible()
+                    binding.tvThisActionMayContainAds.visible()
                     binding.btnUnlock.gone()
                     goToMainActivity()
                 }
             }
         } else {
             binding.linearProgressIndicator2.visible()
+            binding.tvThisActionMayContainAds.visible()
             binding.btnUnlock.gone()
             goToMainActivity()
         }
